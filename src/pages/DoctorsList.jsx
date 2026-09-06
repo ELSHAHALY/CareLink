@@ -1,6 +1,8 @@
 import { useState } from "react";
 import DoctorFilterBar from "../components/doctors/DoctorFilterBar";
 import DoctorList from "../components/doctors/DoctorList";
+import "../styles/doctors.css";
+import Footer from "../components/layout/Footer";
 
 const doctors = [
   {
@@ -74,30 +76,33 @@ export default function DoctorsList() {
   };
 
   return (
-    <main className="doctors-page">
-      <div className="doctors-container">
-        <header className="doctors-header">
-          <p className="doctors-header__eyebrow">CARELINK</p>
+    <>
+      <main className="doctors-page">
+        <div className="doctors-container">
+          <header className="doctors-header">
+            <p className="doctors-header__eyebrow">CARELINK</p>
 
-          <h1>Find Your Doctor</h1>
+            <h1>Find Your Doctor</h1>
 
-          <p>Find the right healthcare professional for your needs.</p>
-        </header>
+            <p>Find the right healthcare professional for your needs.</p>
+          </header>
 
-        <DoctorFilterBar
-          filters={filters}
-          onFilterChange={handleFilterChange}
-          onClear={handleClearFilters}
-        />
+          <DoctorFilterBar
+            filters={filters}
+            onFilterChange={handleFilterChange}
+            onClear={handleClearFilters}
+          />
 
-        <div className="doctors-results-header">
-          <h2>Our Doctors</h2>
-          <span>{doctors.length} Doctors</span>
+          <div className="doctors-results-header">
+            <h2>Our Doctors</h2>
+            <span>{doctors.length} Doctors</span>
+          </div>
+
+          <DoctorList doctors={doctors} />
         </div>
+      </main>
 
-        <DoctorList doctors={doctors} />
-      </div>
-    </main>
+      <Footer />
+    </>
   );
 }
-
