@@ -1,3 +1,3 @@
 export default function DoctorProfile() {
-  return <div>Doctor profile â€” coming soon</div>;
+  return <div>Doctor profile — coming soon</div>;
 }

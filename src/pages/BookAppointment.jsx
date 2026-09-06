@@ -61,7 +61,7 @@ export default function BookAppointment() {
       <section aria-label="Doctor information">
         <h2>Doctor</h2>
         {doctor ? (
-          <p>{doctor.name} â€” {doctor.specialty}</p>
+          <p>{doctor.name} — {doctor.specialty}</p>
         ) : (
           <p className="placeholder-text">
             Doctor details will appear here once a doctor is selected.

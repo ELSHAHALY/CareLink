@@ -1,3 +1,3 @@
 export default function MyAppointments() {
-  return <div>My appointments â€” coming soon</div>;
+  return <div>My appointments — coming soon</div>;
 }
