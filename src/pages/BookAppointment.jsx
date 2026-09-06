@@ -1,0 +1,94 @@
+import { useLocation } from "react-router-dom";
+
+export default function BookAppointment() {
+  const location = useLocation();
+  const doctor = location.state?.doctor;
+
+  return (
+    <div className="book-appointment-page">
+      <style>{`
+        .book-appointment-page {
+          max-width: 700px;
+          margin: 0 auto;
+          padding: 1.5rem;
+          color: #343A40;
+          font-family: system-ui, -apple-system, sans-serif;
+        }
+        .book-appointment-page h1 {
+          color: #007BFF;
+          font-size: 1.5rem;
+          margin-bottom: 1.5rem;
+        }
+        .book-appointment-page section {
+          background: #F8F9FA;
+          border: 1px solid #e2e5e8;
+          border-radius: 8px;
+          padding: 1rem 1.25rem;
+          margin-bottom: 1rem;
+        }
+        .book-appointment-page h2 {
+          font-size: 1.05rem;
+          color: #343A40;
+          margin: 0 0 0.5rem 0;
+        }
+        .book-appointment-page .placeholder-text {
+          color: #6c757d;
+          font-size: 0.9rem;
+        }
+        .book-appointment-page .confirm-button {
+          background: #00A676;
+          color: #fff;
+          border: none;
+          border-radius: 6px;
+          padding: 0.75rem 1.5rem;
+          font-size: 1rem;
+          width: 100%;
+          cursor: not-allowed;
+          opacity: 0.6;
+        }
+        @media (min-width: 600px) {
+          .book-appointment-page {
+            padding: 2rem;
+          }
+          .book-appointment-page .confirm-button {
+            width: auto;
+          }
+        }
+      `}</style>
+
+      <h1>Book an Appointment</h1>
+
+      <section aria-label="Doctor information">
+        <h2>Doctor</h2>
+        {doctor ? (
+          <p>{doctor.name} — {doctor.specialty}</p>
+        ) : (
+          <p className="placeholder-text">
+            Doctor details will appear here once a doctor is selected.
+          </p>
+        )}
+      </section>
+
+      <section aria-label="Date selection">
+        <h2>Select a Date</h2>
+        <p className="placeholder-text">Date picker coming in Week 2.</p>
+      </section>
+
+      <section aria-label="Time slot selection">
+        <h2>Select a Time</h2>
+        <p className="placeholder-text">
+          Available time slots (TimeSlotPicker) coming in Week 2.
+        </p>
+      </section>
+
+      <section aria-label="Patient information">
+        <h2>Patient Information</h2>
+        <p className="placeholder-text">Booking form coming in Week 3.</p>
+      </section>
+
+      <button className="confirm-button" disabled>
+        Confirm Booking
+      </button>
+    </div>
+  );
+}
