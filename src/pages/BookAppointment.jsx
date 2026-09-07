@@ -1,11 +1,11 @@
-import { useLocation } from "react-router-dom";
+import { useLocation } from 'react-router-dom'
 
 export default function BookAppointment() {
-  const location = useLocation();
-  const doctor = location.state?.doctor;
+  const location = useLocation()
+  const doctor = location.state?.doctor
 
   return (
-    <div className="book-appointment-page">
+    <div className='book-appointment-page'>
       <style>{`
         .book-appointment-page {
           max-width: 700px;
@@ -58,37 +58,39 @@ export default function BookAppointment() {
 
       <h1>Book an Appointment</h1>
 
-      <section aria-label="Doctor information">
+      <section aria-label='Doctor information'>
         <h2>Doctor</h2>
         {doctor ? (
-          <p>{doctor.name} — {doctor.specialty}</p>
+          <p>
+            {doctor.name} — {doctor.specialty}
+          </p>
         ) : (
-          <p className="placeholder-text">
+          <p className='placeholder-text'>
             Doctor details will appear here once a doctor is selected.
           </p>
         )}
       </section>
 
-      <section aria-label="Date selection">
+      <section aria-label='Date selection'>
         <h2>Select a Date</h2>
-        <p className="placeholder-text">Date picker coming in Week 2.</p>
+        <p className='placeholder-text'>Date picker coming in Week 2.</p>
       </section>
 
-      <section aria-label="Time slot selection">
+      <section aria-label='Time slot selection'>
         <h2>Select a Time</h2>
-        <p className="placeholder-text">
+        <p className='placeholder-text'>
           Available time slots (TimeSlotPicker) coming in Week 2.
         </p>
       </section>
 
-      <section aria-label="Patient information">
+      <section aria-label='Patient information'>
         <h2>Patient Information</h2>
-        <p className="placeholder-text">Booking form coming in Week 3.</p>
+        <p className='placeholder-text'>Booking form coming in Week 3.</p>
       </section>
 
-      <button className="confirm-button" disabled>
+      <button className='confirm-button' disabled>
         Confirm Booking
       </button>
     </div>
-  );
+  )
 }
