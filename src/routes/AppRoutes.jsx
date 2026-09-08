@@ -1,4 +1,5 @@
 import { Routes, Route } from 'react-router-dom'
+import MainLayout from '../components/layout/MainLayout'
 import Home from '../pages/Home'
 import DoctorsList from '../pages/DoctorsList'
 import DoctorProfile from '../pages/DoctorProfile'
@@ -12,15 +13,20 @@ import NotFound from '../pages/NotFound'
 export default function AppRoutes() {
   return (
     <Routes>
-      <Route path='/' element={<Home />} />
-      <Route path='/doctors' element={<DoctorsList />} />
-      <Route path='/doctors/:doctorId' element={<DoctorProfile />} />
-      <Route path='/book-appointment' element={<BookAppointment />} />
-      <Route path='/dashboard' element={<Dashboard />} />
+      {/* Public pages share the Navbar + Footer via MainLayout */}
+      <Route element={<MainLayout />}>
+        <Route path='/' element={<Home />} />
+        <Route path='/doctors' element={<DoctorsList />} />
+        <Route path='/doctors/:doctorId' element={<DoctorProfile />} />
+        <Route path='/book-appointment' element={<BookAppointment />} />
+        <Route path='/appointments' element={<MyAppointments />} />
+        <Route path='/profile' element={<Profile />} />
+        <Route path='*' element={<NotFound />} />
+      </Route>
+
+      {/* Standalone pages: no shared Navbar/Footer */}
       <Route path='/login' element={<Login />} />
-      <Route path='/appointments' element={<MyAppointments />} />
-      <Route path='/profile' element={<Profile />} />
-      <Route path='*' element={<NotFound />} />
+      <Route path='/dashboard' element={<Dashboard />} />
     </Routes>
   )
 }
