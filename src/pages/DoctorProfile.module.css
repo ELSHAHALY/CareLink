@@ -1,0 +1,421 @@
+.pageContainer {
+  min-height: 100vh;
+  background-color: #f8fafc;
+  padding: 2rem 1rem;
+  font-family: 'Inter', sans-serif;
+  display: flex;
+  justify-content: center;
+}
+
+.contentWrapper {
+  width: 100%;
+  max-width: 1000px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.card {
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.sectionTitle {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #111827;
+  margin: 0 0 1.25rem;
+}
+
+.sectionSubtitle {
+  font-size: 0.875rem;
+  color: #6b7280;
+  margin-top: -0.875rem;
+  margin-bottom: 1.5rem;
+}
+
+.headerLayout {
+  display: flex;
+  gap: 2rem;
+  align-items: flex-start;
+}
+
+.avatarContainer {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.avatarImage {
+  width: 120px;
+  height: 120px;
+  border-radius: 12px;
+  object-fit: cover;
+  border: 1px solid #e2e8f0;
+}
+
+#verifiedBadgeIcon {
+  position: absolute;
+  bottom: -6px;
+  right: -6px;
+  color: #10b981;
+  background-color: white;
+  border-radius: 50%;
+  font-size: 24px;
+}
+
+.headerDetails {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.titleRow {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.doctorName {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #111827;
+  margin: 0;
+}
+
+.verifiedTag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #10b981;
+  background-color: #ecfdf5;
+  padding: 0.25rem 0.6rem;
+  border-radius: 999px;
+}
+
+.verifiedTag span {
+  font-size: 0.875rem;
+}
+
+.subtitleRow, .ratingRow, .infoRow {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  color: #4b5563;
+  flex-wrap: wrap;
+}
+
+.dot {
+  color: #d1d5db;
+}
+
+.recommendedText {
+  color: #10b981;
+  font-weight: 600;
+}
+
+.infoItem {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  color: #6b7280;
+}
+
+.infoItem span {
+  font-size: 1rem;
+}
+
+.headerActions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  min-width: 200px;
+}
+
+.primaryButton, .secondaryButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  padding: 0.625rem 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+  width: 100%;
+}
+
+.primaryButton {
+  background-color: #0f62fe;
+  color: white;
+  border: none;
+}
+
+.primaryButton:hover {
+  background-color: #0050e6;
+}
+
+.secondaryButton {
+  background-color: white;
+  color: #4b5563;
+  border: 1px solid #d1d5db;
+}
+
+.secondaryButton:hover {
+  background-color: #f9fafb;
+}
+
+.bioText {
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  color: #4b5563;
+  margin-bottom: 2rem;
+}
+
+.subSection {
+  margin-bottom: 1.5rem;
+}
+
+.subTitle {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #111827;
+  margin: 0 0 1rem;
+}
+
+.chipsContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  background-color: #f0f4ff;
+  color: #1e3a8a;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  padding: 0.4rem 0.75rem;
+  border-radius: 6px;
+}
+
+.chip span {
+  font-size: 1rem;
+}
+
+.educationGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 1rem;
+}
+
+.educationCard {
+  background-color: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 1rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+}
+
+.eduIconWrapper {
+  color: #3b82f6;
+  background-color: #eff6ff;
+  padding: 0.5rem;
+  border-radius: 6px;
+  display: flex;
+}
+
+.eduDetails {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.eduDegree {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #111827;
+  margin: 0;
+}
+
+.eduInstitution {
+  font-size: 0.8125rem;
+  color: #6b7280;
+  margin: 0;
+}
+
+.reviewsHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1.5rem;
+}
+
+.overallRatingBadge {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.overallRatingNumber {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #111827;
+}
+
+.reviewStars {
+  display: flex;
+  gap: 2px;
+}
+
+.starIcon {
+  font-size: 1.25rem;
+}
+
+.ratingStatistics {
+  display: flex;
+  gap: 2rem;
+  margin-bottom: 2rem;
+  padding: 1.25rem;
+  background-color: #f8fafc;
+  border-radius: 8px;
+  flex-wrap: wrap;
+}
+
+.ratingBarContainer {
+  flex: 1;
+  min-width: 200px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+}
+
+.ratingBarHeader {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.8125rem;
+  font-weight: 600;
+}
+
+.ratingBarLabel {
+  color: #374151;
+}
+
+.ratingBarValue {
+  color: #10b981;
+}
+
+.ratingBarTrack {
+  height: 6px;
+  background-color: #e5e7eb;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.ratingBarFill {
+  height: 100%;
+  background-color: #10b981;
+  border-radius: 999px;
+}
+
+.reviewsList {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.reviewCard {
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 1.25rem;
+}
+
+.reviewCardHeader {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.reviewerAvatar {
+  width: 40px;
+  height: 40px;
+  background-color: #e0e7ff;
+  color: #3730a3;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 0.875rem;
+  flex-shrink: 0;
+}
+
+.reviewerInfo {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+}
+
+.reviewerName {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: #111827;
+  margin: 0;
+}
+
+.reviewMeta {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  font-size: 0.75rem;
+  color: #6b7280;
+}
+
+.verifiedPatientText {
+  color: #10b981;
+}
+
+.reviewComment {
+  font-size: 0.875rem;
+  color: #4b5563;
+  line-height: 1.5;
+  margin: 0;
+}
+
+@media (max-width: 768px) {
+  .headerLayout {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .avatarContainer {
+    align-self: center;
+  }
+  
+  .headerActions {
+    margin-top: 1rem;
+  }
+  
+  .reviewsHeader {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .ratingStatistics {
+    flex-direction: column;
+    gap: 1rem;
+  }
+}

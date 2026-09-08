@@ -1,0 +1,59 @@
+{
+  "ratings": [
+    {
+      "doctorId": "doc-001",
+      "patientId": "pat-101",
+      "patientName": "Michael R.",
+      "score": 5,
+      "bedsideManner": 5.0,
+      "communication": 4.9,
+      "waitTime": 4.8,
+      "comment": "\"Dr. Jenkins took the time to listen to all my concerns regarding my arrhythmia. Her explanation was clear, comforting, and thorough.\"",
+      "date": "2024-10-15"
+    },
+    {
+      "doctorId": "doc-001",
+      "patientId": "pat-102",
+      "patientName": "Elena Gomez",
+      "score": 5,
+      "bedsideManner": 5.0,
+      "communication": 5.0,
+      "waitTime": 4.5,
+      "comment": "\"Incredible bedside manner and extremely professional. The clinic staff and appointment process were seamless.\"",
+      "date": "2024-09-02"
+    },
+    {
+      "doctorId": "doc-001",
+      "patientId": "pat-103",
+      "patientName": "David P.",
+      "score": 5,
+      "bedsideManner": 5.0,
+      "communication": 4.8,
+      "waitTime": 4.9,
+      "comment": "\"Hands down the best cardiologist in the city. Her preventive care plan has made a huge difference in my health.\"",
+      "date": "2024-08-20"
+    },
+    {
+      "doctorId": "doc-002",
+      "patientId": "pat-201",
+      "patientName": "Sarah T.",
+      "score": 5,
+      "bedsideManner": 5.0,
+      "communication": 4.9,
+      "waitTime": 4.2,
+      "comment": "\"Dr. Chen is amazing! My skin has never looked better.\"",
+      "date": "2024-05-20"
+    },
+    {
+      "doctorId": "doc-003",
+      "patientId": "pat-301",
+      "patientName": "James L.",
+      "score": 5,
+      "bedsideManner": 4.8,
+      "communication": 5.0,
+      "waitTime": 4.0,
+      "comment": "\"Dr. Kim is a genius. Diagnosed my condition when others couldn't.\"",
+      "date": "2024-04-20"
+    }
+  ]
+}

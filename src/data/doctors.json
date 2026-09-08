@@ -1,0 +1,116 @@
+{
+  "doctors": [
+    {
+      "id": "doc-001",
+      "name": "Dr. James Mitchell",
+      "specialty": "Cardiologist",
+      "image": "doctor-1.jpg",
+      "yearsOfExperience": 12,
+      "location": {
+        "address": "450 Heart Center Blvd",
+        "city": "New York",
+        "state": "NY",
+        "zip": "10016"
+      },
+      "phone": "+1 (212) 555-0147",
+      "email": "j.mitchell@carelink.com",
+      "bio": "Board-certified cardiologist specializing in interventional cardiology and cardiovascular disease prevention. Committed to providing personalized heart care using the latest evidence-based approaches.",
+      "education": [
+        "MD — Johns Hopkins School of Medicine",
+        "Residency — Massachusetts General Hospital",
+        "Fellowship — Cleveland Clinic, Interventional Cardiology"
+      ],
+      "specializations": [
+        "Coronary Artery Disease",
+        "Hypertension Management",
+        "Lipid Disorders",
+        "Echocardiography",
+        "Stress Testing"
+      ],
+      "languages": [
+        "English",
+        "Spanish"
+      ],
+      "availableDays": [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Friday"
+      ]
+    },
+    {
+      "id": "doc-002",
+      "name": "Dr. Sarah Chen",
+      "specialty": "Dermatologist",
+      "image": "doctor-2.jpg",
+      "yearsOfExperience": 8,
+      "location": {
+        "address": "220 Skin Care Ave",
+        "city": "San Francisco",
+        "state": "CA",
+        "zip": "94102"
+      },
+      "phone": "+1 (415) 555-0233",
+      "email": "s.chen@carelink.com",
+      "bio": "Dermatology specialist with expertise in cosmetic dermatology, skin cancer detection, and chronic skin condition management. Passionate about helping patients achieve healthy, radiant skin.",
+      "education": [
+        "MD — Stanford University School of Medicine",
+        "Residency — UCSF Medical Center",
+        "Fellowship — NYU Langone, Mohs Surgery"
+      ],
+      "specializations": [
+        "Cosmetic Dermatology",
+        "Skin Cancer Screening",
+        "Acne Treatment",
+        "Laser Therapy"
+      ],
+      "languages": [
+        "English",
+        "Mandarin"
+      ],
+      "availableDays": [
+        "Monday",
+        "Wednesday",
+        "Thursday",
+        "Friday"
+      ]
+    },
+    {
+      "id": "doc-003",
+      "name": "Dr. Robert Kim",
+      "specialty": "Neurologist",
+      "image": "doctor-3.jpg",
+      "yearsOfExperience": 20,
+      "location": {
+        "address": "780 Neuro Sciences Dr",
+        "city": "Chicago",
+        "state": "IL",
+        "zip": "60601"
+      },
+      "phone": "+1 (312) 555-0389",
+      "email": "r.kim@carelink.com",
+      "bio": "Senior neurologist with two decades of experience in treating neurological disorders, including epilepsy, stroke recovery, and neurodegenerative diseases. Pioneer in advanced neuroimaging diagnostics.",
+      "education": [
+        "MD — Harvard Medical School",
+        "Residency — Mayo Clinic",
+        "Fellowship — Johns Hopkins Hospital, Clinical Neurology"
+      ],
+      "specializations": [
+        "Epilepsy Management",
+        "Stroke Recovery",
+        "Neurodegenerative Diseases",
+        "Migraine Treatment"
+      ],
+      "languages": [
+        "English",
+        "Korean",
+        "Japanese"
+      ],
+      "availableDays": [
+        "Tuesday",
+        "Wednesday",
+        "Thursday"
+      ]
+    }
+  ]
+}

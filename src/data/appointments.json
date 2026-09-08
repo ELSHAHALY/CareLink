@@ -1,0 +1,175 @@
+{
+  "appointments": [
+    {
+      "doctorId": "doc-001",
+      "appointmentId": "apt-001",
+      "patientId": "pat-101",
+      "date": "2026-06-10",
+      "time": "09:00",
+      "status": "completed",
+      "type": "Consultation"
+    },
+    {
+      "doctorId": "doc-001",
+      "appointmentId": "apt-002",
+      "patientId": "pat-102",
+      "date": "2026-06-28",
+      "time": "10:30",
+      "status": "completed",
+      "type": "Follow-up"
+    },
+    {
+      "doctorId": "doc-001",
+      "appointmentId": "apt-003",
+      "patientId": "pat-103",
+      "date": "2026-07-15",
+      "time": "14:00",
+      "status": "completed",
+      "type": "Consultation"
+    },
+    {
+      "doctorId": "doc-001",
+      "appointmentId": "apt-004",
+      "patientId": "pat-104",
+      "date": "2026-08-01",
+      "time": "11:00",
+      "status": "completed",
+      "type": "Check-up"
+    },
+    {
+      "doctorId": "doc-001",
+      "appointmentId": "apt-005",
+      "patientId": "pat-105",
+      "date": "2026-08-05",
+      "time": "15:30",
+      "status": "completed",
+      "type": "Consultation"
+    },
+    {
+      "doctorId": "doc-001",
+      "appointmentId": "apt-006",
+      "patientId": "pat-106",
+      "date": "2026-08-20",
+      "time": "09:30",
+      "status": "completed",
+      "type": "Follow-up"
+    },
+    {
+      "doctorId": "doc-001",
+      "appointmentId": "apt-007",
+      "patientId": "pat-107",
+      "date": "2026-09-15",
+      "time": "10:00",
+      "status": "scheduled",
+      "type": "Consultation"
+    },
+    {
+      "doctorId": "doc-002",
+      "appointmentId": "apt-101",
+      "patientId": "pat-201",
+      "date": "2026-05-15",
+      "time": "10:00",
+      "status": "completed",
+      "type": "Consultation"
+    },
+    {
+      "doctorId": "doc-002",
+      "appointmentId": "apt-102",
+      "patientId": "pat-202",
+      "date": "2026-06-12",
+      "time": "13:00",
+      "status": "completed",
+      "type": "Treatment"
+    },
+    {
+      "doctorId": "doc-002",
+      "appointmentId": "apt-103",
+      "patientId": "pat-203",
+      "date": "2026-07-05",
+      "time": "11:30",
+      "status": "completed",
+      "type": "Follow-up"
+    },
+    {
+      "doctorId": "doc-002",
+      "appointmentId": "apt-104",
+      "patientId": "pat-204",
+      "date": "2026-08-01",
+      "time": "09:00",
+      "status": "completed",
+      "type": "Treatment"
+    },
+    {
+      "doctorId": "doc-002",
+      "appointmentId": "apt-105",
+      "patientId": "pat-205",
+      "date": "2026-09-10",
+      "time": "14:00",
+      "status": "scheduled",
+      "type": "Consultation"
+    },
+    {
+      "doctorId": "doc-003",
+      "appointmentId": "apt-201",
+      "patientId": "pat-301",
+      "date": "2026-04-15",
+      "time": "09:00",
+      "status": "completed",
+      "type": "Consultation"
+    },
+    {
+      "doctorId": "doc-003",
+      "appointmentId": "apt-202",
+      "patientId": "pat-302",
+      "date": "2026-05-10",
+      "time": "10:30",
+      "status": "completed",
+      "type": "Consultation"
+    },
+    {
+      "doctorId": "doc-003",
+      "appointmentId": "apt-203",
+      "patientId": "pat-303",
+      "date": "2026-06-20",
+      "time": "14:00",
+      "status": "completed",
+      "type": "Treatment"
+    },
+    {
+      "doctorId": "doc-003",
+      "appointmentId": "apt-204",
+      "patientId": "pat-304",
+      "date": "2026-07-25",
+      "time": "11:00",
+      "status": "completed",
+      "type": "Follow-up"
+    },
+    {
+      "doctorId": "doc-003",
+      "appointmentId": "apt-205",
+      "patientId": "pat-305",
+      "date": "2026-08-14",
+      "time": "15:00",
+      "status": "completed",
+      "type": "Consultation"
+    },
+    {
+      "doctorId": "doc-003",
+      "appointmentId": "apt-206",
+      "patientId": "pat-306",
+      "date": "2026-08-24",
+      "time": "09:30",
+      "status": "completed",
+      "type": "Follow-up"
+    },
+    {
+      "doctorId": "doc-003",
+      "appointmentId": "apt-207",
+      "patientId": "pat-307",
+      "date": "2026-09-20",
+      "time": "10:00",
+      "status": "scheduled",
+      "type": "Consultation"
+    }
+  ]
+}
