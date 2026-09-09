@@ -162,7 +162,7 @@ export default function DoctorProfile() {
             <div className={styles.headerActions}>
               <button
                 className={styles.primaryButton}
-                onClick={() => navigate('/book-appointment')}
+                onClick={() => navigate('/book-appointment', { state: { doctor } })}
               >
                 <span className="material-symbols-outlined">calendar_month</span>
                 Book Appointment

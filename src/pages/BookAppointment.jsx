@@ -1,8 +1,18 @@
+import { useState } from 'react'
 import { useLocation } from 'react-router-dom'
+import TimeSlotPicker from '../components/appointments/TimeSlotPicker'
 
 export default function BookAppointment() {
   const location = useLocation()
   const doctor = location.state?.doctor
+
+  const [selectedDate, setSelectedDate] = useState('')
+  const [selectedTime, setSelectedTime] = useState('')
+
+  const handleDateChange = (event) => {
+    setSelectedDate(event.target.value)
+    setSelectedTime('')
+  }
 
   return (
     <div className='book-appointment-page'>
@@ -34,6 +44,31 @@ export default function BookAppointment() {
         .book-appointment-page .placeholder-text {
           color: #6c757d;
           font-size: 0.9rem;
+        }
+        .book-appointment-page label {
+          display: block;
+          font-size: 0.85rem;
+          color: #343A40;
+          margin-bottom: 0.35rem;
+        }
+        .book-appointment-page input[type='date'] {
+          padding: 0.5rem 0.75rem;
+          border: 1px solid #ced4da;
+          border-radius: 6px;
+          font-size: 0.95rem;
+          color: #343A40;
+          width: 100%;
+          max-width: 220px;
+        }
+        .book-appointment-page input[type='date']:focus {
+          outline: none;
+          border-color: #007BFF;
+          box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.2);
+        }
+        .book-appointment-page .selected-time-summary {
+          margin-top: 0.75rem;
+          font-size: 0.9rem;
+          color: #343A40;
         }
         .book-appointment-page .confirm-button {
           background: #00A676;
@@ -73,14 +108,28 @@ export default function BookAppointment() {
 
       <section aria-label='Date selection'>
         <h2>Select a Date</h2>
-        <p className='placeholder-text'>Date picker coming in Week 2.</p>
+        <label htmlFor='appointment-date'>Appointment date</label>
+        <input
+          id='appointment-date'
+          type='date'
+          value={selectedDate}
+          onChange={handleDateChange}
+        />
       </section>
 
       <section aria-label='Time slot selection'>
         <h2>Select a Time</h2>
-        <p className='placeholder-text'>
-          Available time slots (TimeSlotPicker) coming in Week 2.
-        </p>
+        <TimeSlotPicker
+          key={selectedDate}
+          doctorId={doctor?.id}
+          selectedDate={selectedDate}
+          onSelectTime={setSelectedTime}
+        />
+        {selectedTime && (
+          <p className='selected-time-summary'>
+            Selected time: <strong>{selectedTime}</strong>
+          </p>
+        )}
       </section>
 
       <section aria-label='Patient information'>
