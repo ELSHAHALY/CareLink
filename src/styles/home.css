@@ -100,7 +100,10 @@
   font-weight: 600;
   text-decoration: none;
 
-  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease;
 }
 
 .home-btn--primary {
@@ -253,7 +256,9 @@
   text-decoration: none;
   color: #343a40;
 
-  transition: border-color 0.2s ease, transform 0.2s ease;
+  transition:
+    border-color 0.2s ease,
+    transform 0.2s ease;
 }
 
 .home-specialty-card:hover {

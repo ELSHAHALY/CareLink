@@ -98,7 +98,7 @@ export default function DoctorProfile() {
         communication: acc.communication + (r.communication || r.score),
         waitTime: acc.waitTime + (r.waitTime || r.score),
       }),
-      { bedsideManner: 0, communication: 0, waitTime: 0 }
+      { bedsideManner: 0, communication: 0, waitTime: 0 },
     )
     return {
       bedsideManner: sums.bedsideManner / validRatings.length,
@@ -123,7 +123,10 @@ export default function DoctorProfile() {
                   className={styles.avatarImage}
                 />
               )}
-              <span className="material-symbols-outlined" id={styles.verifiedBadgeIcon}>
+              <span
+                className='material-symbols-outlined'
+                id={styles.verifiedBadgeIcon}
+              >
                 verified
               </span>
             </div>
@@ -132,7 +135,7 @@ export default function DoctorProfile() {
               <div className={styles.titleRow}>
                 <h1 className={styles.doctorName}>{doctor.name}, MD</h1>
                 <span className={styles.verifiedTag}>
-                  <span className="material-symbols-outlined">verified</span>
+                  <span className='material-symbols-outlined'>verified</span>
                   Verified Doctor
                 </span>
               </div>
@@ -144,7 +147,10 @@ export default function DoctorProfile() {
               </div>
 
               <div className={styles.ratingRow}>
-                <StarRating ratings={rawDoctorRatings} appointments={doctorAppointments} />
+                <StarRating
+                  ratings={rawDoctorRatings}
+                  appointments={doctorAppointments}
+                />
                 <span className={styles.dot}>•</span>
                 <span className={styles.recommendedText}>
                   {count > 0 ? 'Highly Recommended' : 'New Doctor'}
@@ -153,7 +159,7 @@ export default function DoctorProfile() {
 
               <div className={styles.infoRow}>
                 <span className={styles.infoItem}>
-                  <span className="material-symbols-outlined">translate</span>
+                  <span className='material-symbols-outlined'>translate</span>
                   Speaks {doctor.languages.join(' & ')}
                 </span>
               </div>
@@ -162,13 +168,17 @@ export default function DoctorProfile() {
             <div className={styles.headerActions}>
               <button
                 className={styles.primaryButton}
-                onClick={() => navigate('/book-appointment', { state: { doctor } })}
+                onClick={() =>
+                  navigate('/book-appointment', { state: { doctor } })
+                }
               >
-                <span className="material-symbols-outlined">calendar_month</span>
+                <span className='material-symbols-outlined'>
+                  calendar_month
+                </span>
                 Book Appointment
               </button>
               <button className={styles.secondaryButton}>
-                <span className="material-symbols-outlined">share</span>
+                <span className='material-symbols-outlined'>share</span>
                 Share Profile
               </button>
             </div>
@@ -176,7 +186,10 @@ export default function DoctorProfile() {
         </section>
 
         <section className={styles.card}>
-          <h2 className={styles.sectionTitle}>About {doctor.name.includes('Dr.') ? doctor.name : `Dr. ${lastName}`}</h2>
+          <h2 className={styles.sectionTitle}>
+            About{' '}
+            {doctor.name.includes('Dr.') ? doctor.name : `Dr. ${lastName}`}
+          </h2>
           <p className={styles.bioText}>{doctor.bio}</p>
 
           {doctor.specializations && doctor.specializations.length > 0 && (
@@ -185,7 +198,9 @@ export default function DoctorProfile() {
               <div className={styles.chipsContainer}>
                 {doctor.specializations.map((spec, index) => (
                   <span key={index} className={styles.chip}>
-                    <span className="material-symbols-outlined">medical_services</span>
+                    <span className='material-symbols-outlined'>
+                      medical_services
+                    </span>
                     {spec}
                   </span>
                 ))}
@@ -201,15 +216,19 @@ export default function DoctorProfile() {
                   const parts = typeof edu === 'string' ? edu.split(' — ') : []
                   const degree = parts[0] || edu.degree || edu
                   const institution = parts[1] || edu.institution || ''
-                  
+
                   return (
                     <div key={index} className={styles.educationCard}>
                       <div className={styles.eduIconWrapper}>
-                        <span className="material-symbols-outlined">school</span>
+                        <span className='material-symbols-outlined'>
+                          school
+                        </span>
                       </div>
                       <div className={styles.eduDetails}>
                         <h4 className={styles.eduDegree}>{degree}</h4>
-                        {institution && <p className={styles.eduInstitution}>{institution}</p>}
+                        {institution && (
+                          <p className={styles.eduInstitution}>{institution}</p>
+                        )}
                       </div>
                     </div>
                   )
@@ -223,26 +242,37 @@ export default function DoctorProfile() {
           <section className={styles.card}>
             <div className={styles.reviewsHeader}>
               <div>
-                <h2 className={styles.sectionTitle}>Patient Reviews & Testimonials</h2>
+                <h2 className={styles.sectionTitle}>
+                  Patient Reviews & Testimonials
+                </h2>
                 <p className={styles.sectionSubtitle}>
                   Verified reviews from patients treated in the last 12 months
                 </p>
               </div>
               <div className={styles.overallRatingBadge}>
-                <span className={styles.overallRatingNumber}>{average.toFixed(1)}</span>
+                <span className={styles.overallRatingNumber}>
+                  {average.toFixed(1)}
+                </span>
                 <MiniStars score={Math.round(average)} />
               </div>
             </div>
 
             <div className={styles.ratingStatistics}>
-              <RatingBar label="Bedside Manner" value={categoryAverages.bedsideManner} />
-              <RatingBar label="Communication" value={categoryAverages.communication} />
-              <RatingBar label="Wait Time" value={categoryAverages.waitTime} />
+              <RatingBar
+                label='Bedside Manner'
+                value={categoryAverages.bedsideManner}
+              />
+              <RatingBar
+                label='Communication'
+                value={categoryAverages.communication}
+              />
+              <RatingBar label='Wait Time' value={categoryAverages.waitTime} />
             </div>
 
             <div className={styles.reviewsList}>
               {validRatings.map((review, idx) => {
-                const name = review.patientName || `Patient ${review.patientId.slice(-3)}`
+                const name =
+                  review.patientName || `Patient ${review.patientId.slice(-3)}`
                 const initials = name
                   .split(' ')
                   .map((n) => n[0])
@@ -257,7 +287,9 @@ export default function DoctorProfile() {
                       <div className={styles.reviewerInfo}>
                         <h4 className={styles.reviewerName}>{name}</h4>
                         <div className={styles.reviewMeta}>
-                          <span className={styles.verifiedPatientText}>Verified Patient</span>
+                          <span className={styles.verifiedPatientText}>
+                            Verified Patient
+                          </span>
                           <span className={styles.dot}>•</span>
                           <span>{formatMonthYear(review.date)}</span>
                         </div>
