@@ -56,7 +56,9 @@
   padding: 6px 2px;
   border-bottom: 2px solid transparent;
 
-  transition: color 0.2s ease, border-color 0.2s ease;
+  transition:
+    color 0.2s ease,
+    border-color 0.2s ease;
 }
 
 .navbar__link:hover {
@@ -99,7 +101,10 @@
 
   padding: 9px 18px;
 
-  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease;
 }
 
 .navbar__btn--ghost {
@@ -146,7 +151,9 @@
   width: 100%;
   background: #343a40;
   border-radius: 2px;
-  transition: transform 0.25s ease, opacity 0.25s ease;
+  transition:
+    transform 0.25s ease,
+    opacity 0.25s ease;
 }
 
 .navbar__toggle--open span:nth-child(1) {
@@ -170,7 +177,9 @@
   background: #ffffff;
   border-top: 1px solid transparent;
 
-  transition: max-height 0.3s ease, border-color 0.3s ease;
+  transition:
+    max-height 0.3s ease,
+    border-color 0.3s ease;
 }
 
 .navbar__mobile--open {
