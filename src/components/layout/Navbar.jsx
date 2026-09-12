@@ -66,7 +66,10 @@ export default function Navbar() {
         <div className='navbar__actions'>
           {user ? (
             <>
-              <Link to='/dashboard' className='navbar__user'>
+              <Link
+                to={user.role === 'doctor' ? '/doctor/dashboard' : '/dashboard'}
+                className='navbar__user'
+              >
                 Hi, {user.name}
               </Link>
               <button
@@ -126,7 +129,7 @@ export default function Navbar() {
           {user ? (
             <>
               <Link
-                to='/dashboard'
+                to={user.role === 'doctor' ? '/doctor/dashboard' : '/dashboard'}
                 className='navbar__btn navbar__btn--ghost'
                 onClick={handleLinkClick}
               >

@@ -1,0 +1,126 @@
+.loadingWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background: #f5f7fa;
+}
+
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #212529;
+  margin: 0;
+}
+
+.error {
+  color: #b91c1c;
+  font-size: 0.875rem;
+}
+
+.card {
+  background: #fff;
+  border: 1px solid #e9ecef;
+  border-radius: 10px;
+  padding: 1.5rem;
+}
+
+.header {
+  display: flex;
+  gap: 1.25rem;
+  align-items: flex-start;
+  margin-bottom: 1.25rem;
+}
+
+.avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 10px;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.headerInfo {
+  min-width: 0;
+}
+
+.name {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #212529;
+  margin: 0 0 0.25rem;
+}
+
+.specialty {
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: #007bff;
+  margin: 0 0 0.25rem;
+}
+
+.experience {
+  font-size: 0.8125rem;
+  color: #6c757d;
+  margin: 0;
+}
+
+.bio {
+  font-size: 0.9375rem;
+  color: #495057;
+  line-height: 1.6;
+  margin: 0 0 1.5rem;
+}
+
+.details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin: 0;
+}
+
+.detailRow {
+  display: flex;
+  gap: 1rem;
+  padding: 0.625rem 0;
+  border-bottom: 1px solid #f1f3f5;
+}
+
+.detailRow:last-child {
+  border-bottom: none;
+}
+
+.detailRow dt {
+  min-width: 120px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: #6c757d;
+  flex-shrink: 0;
+}
+
+.detailRow dd {
+  margin: 0;
+  font-size: 0.875rem;
+  color: #212529;
+  word-break: break-word;
+}
+
+@media (max-width: 480px) {
+  .header {
+    flex-direction: column;
+  }
+
+  .detailRow {
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .detailRow dt {
+    min-width: auto;
+  }
+}

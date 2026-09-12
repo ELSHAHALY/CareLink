@@ -27,16 +27,8 @@
         "Echocardiography",
         "Stress Testing"
       ],
-      "languages": [
-        "English",
-        "Spanish"
-      ],
-      "availableDays": [
-        "Monday",
-        "Tuesday",
-        "Wednesday",
-        "Friday"
-      ]
+      "languages": ["English", "Spanish"],
+      "availableDays": ["Monday", "Tuesday", "Wednesday", "Friday"]
     },
     {
       "id": "doc-002",
@@ -64,16 +56,8 @@
         "Acne Treatment",
         "Laser Therapy"
       ],
-      "languages": [
-        "English",
-        "Mandarin"
-      ],
-      "availableDays": [
-        "Monday",
-        "Wednesday",
-        "Thursday",
-        "Friday"
-      ]
+      "languages": ["English", "Mandarin"],
+      "availableDays": ["Monday", "Wednesday", "Thursday", "Friday"]
     },
     {
       "id": "doc-003",
@@ -101,16 +85,8 @@
         "Neurodegenerative Diseases",
         "Migraine Treatment"
       ],
-      "languages": [
-        "English",
-        "Korean",
-        "Japanese"
-      ],
-      "availableDays": [
-        "Tuesday",
-        "Wednesday",
-        "Thursday"
-      ]
+      "languages": ["English", "Korean", "Japanese"],
+      "availableDays": ["Tuesday", "Wednesday", "Thursday"]
     }
   ]
 }
