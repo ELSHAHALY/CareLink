@@ -64,13 +64,13 @@
 }
 
 .home-hero__search-input:focus {
-  border-color: #00a676;
+  border-color: #007bff;
 }
 
 .home-hero__search-btn {
   padding: 14px 24px;
 
-  background: #00a676;
+  background: #007bff;
   color: #ffffff;
 
   border: none;
@@ -85,7 +85,7 @@
 }
 
 .home-hero__search-btn:hover {
-  background: #00905f;
+  background: #0069d9;
 }
 
 /* Buttons (shared) */
@@ -104,12 +104,12 @@
 }
 
 .home-btn--primary {
-  background: #00a676;
+  background: #007bff;
   color: #ffffff;
 }
 
 .home-btn--primary:hover {
-  background: #00905f;
+  background: #0069d9;
 }
 
 .home-btn--ghost {
@@ -119,8 +119,8 @@
 }
 
 .home-btn--ghost:hover {
-  border-color: #00a676;
-  color: #00a676;
+  border-color: #007bff;
+  color: #007bff;
 }
 
 .home-hero__actions {
@@ -273,7 +273,7 @@
 /* CTA banner */
 
 .home-cta {
-  background: #00a676;
+  background: #007bff;
   padding: 64px 24px;
   text-align: center;
 }
@@ -291,14 +291,14 @@
 }
 
 .home-cta__text {
-  color: #e6fff6;
+  color: #e6f2ff;
   font-size: 15px;
   margin: 0 0 28px;
 }
 
 .home-cta .home-btn--primary {
   background: #ffffff;
-  color: #00a676;
+  color: #007bff;
 }
 
 .home-cta .home-btn--primary:hover {

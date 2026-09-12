@@ -22,6 +22,10 @@
 /* Logo */
 
 .navbar__logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
   color: #343a40;
   text-decoration: none;
 
@@ -29,6 +33,12 @@
   font-weight: 700;
 
   white-space: nowrap;
+}
+
+.navbar__logo-icon {
+  width: 30px;
+  height: 30px;
+  object-fit: contain;
 }
 
 .navbar__logo span {
@@ -60,12 +70,12 @@
 }
 
 .navbar__link:hover {
-  color: #00a676;
+  color: #007bff;
 }
 
 .navbar__link--active {
-  color: #00a676;
-  border-bottom-color: #00a676;
+  color: #007bff;
+  border-bottom-color: #007bff;
 }
 
 /* Desktop actions */
@@ -109,17 +119,17 @@
 }
 
 .navbar__btn--ghost:hover {
-  border-color: #00a676;
-  color: #00a676;
+  border-color: #007bff;
+  color: #007bff;
 }
 
 .navbar__btn--primary {
-  background: #00a676;
+  background: #007bff;
   color: #ffffff;
 }
 
 .navbar__btn--primary:hover {
-  background: #00905f;
+  background: #0069d9;
 }
 
 /* Mobile hamburger */
@@ -196,7 +206,7 @@
 }
 
 .navbar__mobile-link--active {
-  color: #00a676;
+  color: #007bff;
 }
 
 .navbar__mobile-actions {

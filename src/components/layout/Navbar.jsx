@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { NavLink, Link, useNavigate } from 'react-router-dom'
 import useAuth from '../../hooks/useAuth'
+import logoIcon from '../../assets/logo-icon.png'
 import '../../styles/navbar.css'
 
 const NAV_LINKS = [
@@ -37,6 +38,11 @@ export default function Navbar() {
     <header className='navbar'>
       <div className='navbar__container'>
         <Link to='/' className='navbar__logo' onClick={handleLinkClick}>
+          <img
+            src={logoIcon}
+            alt='CareLink logo'
+            className='navbar__logo-icon'
+          />
           Care<span>Link</span>
         </Link>
 
