@@ -1,6 +1,4 @@
-import { useState } from 'react'
 import doctorsData from '../../data/doctors.json'
-import appointmentsData from '../../data/appointments.json'
 
 const START_HOUR = 9
 const END_HOUR = 17
@@ -31,9 +29,11 @@ function getWeekdayName(dateString) {
 export default function TimeSlotPicker({
   doctorId,
   selectedDate,
+  selectedTime,
+  appointments,
   onSelectTime,
 }) {
-  const [activeTime, setActiveTime] = useState('')
+  const safeAppointments = Array.isArray(appointments) ? appointments : []
 
   if (!doctorId) {
     return (
@@ -70,18 +70,19 @@ export default function TimeSlotPicker({
     )
   }
 
-  const bookedTimes = appointmentsData.appointments
+  const bookedTimes = safeAppointments
     .filter(
-      (apt) =>
-        apt.doctorId === doctorId &&
-        apt.date === selectedDate &&
-        apt.status === 'scheduled',
+      (appointment) =>
+        appointment.doctorId === doctorId &&
+        appointment.date === selectedDate &&
+        appointment.status === 'scheduled',
     )
-    .map((apt) => apt.time)
+    .map((appointment) => appointment.time)
 
   const handleSelect = (time) => {
-    setActiveTime(time)
-    onSelectTime(time)
+    if (typeof onSelectTime === 'function') {
+      onSelectTime(time)
+    }
   }
 
   return (
@@ -123,7 +124,7 @@ export default function TimeSlotPicker({
       `}</style>
       {DAILY_SLOTS.map((time) => {
         const isBooked = bookedTimes.includes(time)
-        const isSelected = time === activeTime
+        const isSelected = time === selectedTime
         return (
           <button
             key={time}
