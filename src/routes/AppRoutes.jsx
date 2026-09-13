@@ -8,8 +8,7 @@ import Login from '../pages/Login'
 import MyAppointments from '../pages/MyAppointments'
 import Profile from '../pages/Profile'
 import NotFound from '../pages/NotFound'
-import { Home } from 'lucide-react'
-
+import Home from '../pages/Home'
 export default function AppRoutes() {
   return (
     <Routes>
