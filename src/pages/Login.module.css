@@ -117,6 +117,39 @@
   text-decoration: underline;
 }
 
+.divider {
+  text-align: center;
+  font-size: 0.8125rem;
+  color: #6b7280;
+  margin: 1rem 0 0;
+}
+
+.secondaryButton {
+  width: 100%;
+  margin-top: 0.75rem;
+  padding: 0.7rem;
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  background: #fff;
+  color: #343a40;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    border-color 0.2s,
+    color 0.2s;
+}
+
+.secondaryButton:hover {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
+.secondaryButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
 .globalError {
   background-color: #fef2f2;
   border: 1px solid #fecaca;

@@ -7,7 +7,7 @@ import doctorsData from '../data/doctors.json'
 import '../styles/doctors.css'
 
 export default function DoctorsList() {
-const doctors = doctorsData.doctors;
+  const doctors = doctorsData.doctors
   // Seed the filters from the URL once on load, so a search or specialty
   // picked on the Home page arrives here already applied.
   const [searchParams] = useSearchParams()
