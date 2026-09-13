@@ -5,6 +5,8 @@
       "name": "Dr. James Mitchell",
       "specialty": "Cardiologist",
       "image": "doctor-1.jpg",
+      "rating": 4.8,
+      "reviews": 124,
       "yearsOfExperience": 12,
       "location": {
         "address": "450 Heart Center Blvd",
@@ -27,22 +29,16 @@
         "Echocardiography",
         "Stress Testing"
       ],
-      "languages": [
-        "English",
-        "Spanish"
-      ],
-      "availableDays": [
-        "Monday",
-        "Tuesday",
-        "Wednesday",
-        "Friday"
-      ]
+      "languages": ["English", "Spanish"],
+      "availableDays": ["Monday", "Tuesday", "Wednesday", "Friday"]
     },
     {
       "id": "doc-002",
       "name": "Dr. Sarah Chen",
       "specialty": "Dermatologist",
       "image": "doctor-2.jpg",
+      "rating": 4.9,
+      "reviews": 200,
       "yearsOfExperience": 8,
       "location": {
         "address": "220 Skin Care Ave",
@@ -64,22 +60,16 @@
         "Acne Treatment",
         "Laser Therapy"
       ],
-      "languages": [
-        "English",
-        "Mandarin"
-      ],
-      "availableDays": [
-        "Monday",
-        "Wednesday",
-        "Thursday",
-        "Friday"
-      ]
+      "languages": ["English", "Mandarin"],
+      "availableDays": ["Monday", "Wednesday", "Thursday", "Friday"]
     },
     {
       "id": "doc-003",
       "name": "Dr. Robert Kim",
       "specialty": "Neurologist",
       "image": "doctor-3.jpg",
+      "rating": 4.6,
+      "reviews": 350,
       "yearsOfExperience": 20,
       "location": {
         "address": "780 Neuro Sciences Dr",
@@ -101,16 +91,8 @@
         "Neurodegenerative Diseases",
         "Migraine Treatment"
       ],
-      "languages": [
-        "English",
-        "Korean",
-        "Japanese"
-      ],
-      "availableDays": [
-        "Tuesday",
-        "Wednesday",
-        "Thursday"
-      ]
+      "languages": ["English", "Korean", "Japanese"],
+      "availableDays": ["Tuesday", "Wednesday", "Thursday"]
     }
   ]
 }
