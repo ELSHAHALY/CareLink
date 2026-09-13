@@ -6,7 +6,7 @@
 
 ---
 
-## For Everyone (شرح بسيط لأي حد)
+
 
 ### What does the app do?
 
