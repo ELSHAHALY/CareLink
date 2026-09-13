@@ -33,7 +33,7 @@ export default function DoctorFilterBar({ filters, onFilterChange, onClear }) {
         >
           <option value=''>All Cities</option>
           <option value='New York'>New York</option>
-          <option value='Los Angeles'>San Francisco</option>
+          <option value='San Francisco'>San Francisco</option>
           <option value='Chicago'>Chicago</option>
         </select>
 

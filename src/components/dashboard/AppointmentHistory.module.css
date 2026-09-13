@@ -1,0 +1,111 @@
+.section {
+  margin-bottom: 0;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.title {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: #212529;
+  margin: 0;
+}
+
+.viewAll {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #007bff;
+  text-decoration: none;
+}
+
+.viewAll:hover {
+  text-decoration: underline;
+}
+
+.viewAll:focus-visible {
+  outline: 2px solid #007bff;
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.875rem 1rem;
+  border: 1px solid #e9ecef;
+  border-bottom: none;
+  background: #fff;
+}
+
+.row:last-child {
+  border-bottom: 1px solid #e9ecef;
+}
+
+.row:first-child {
+  border-radius: 10px 10px 0 0;
+}
+
+.row:last-child {
+  border-radius: 0 0 10px 10px;
+}
+
+.row:only-child {
+  border-radius: 10px;
+}
+
+.rowMain {
+  flex: 1;
+  min-width: 0;
+}
+
+.doctorName {
+  margin: 0 0 0.125rem;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: #212529;
+}
+
+.specialty {
+  margin: 0;
+  font-size: 0.8125rem;
+  color: #6c757d;
+}
+
+.rowMeta {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-shrink: 0;
+}
+
+.date {
+  font-size: 0.8125rem;
+  color: #6c757d;
+  white-space: nowrap;
+}
+
+@media (max-width: 480px) {
+  .row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .rowMeta {
+    width: 100%;
+    justify-content: space-between;
+  }
+}

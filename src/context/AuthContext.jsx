@@ -1,8 +1,19 @@
 import { createContext, useState, useEffect, useCallback } from 'react'
+import doctorsData from '../data/doctors.json'
 
 export const AuthContext = createContext(null)
 
 const STORAGE_KEY = 'carelink_user'
+
+function resolveRole(email) {
+  const doctor = doctorsData.doctors.find(
+    (d) => d.email.toLowerCase() === email.toLowerCase(),
+  )
+  if (doctor) {
+    return { role: 'doctor', doctorId: doctor.id, doctorName: doctor.name }
+  }
+  return { role: 'patient', doctorId: null, doctorName: null }
+}
 
 function loadUser() {
   try {
@@ -28,10 +39,8 @@ export function AuthProvider({ children }) {
   const login = useCallback(async (email, password) => {
     setLoading(true)
     try {
-      // Simulate network delay
       await new Promise((resolve) => setTimeout(resolve, 800))
 
-      // Mock validation: accept any valid email + password >= 6 chars
       if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
         throw new Error('Please enter a valid email address')
       }
@@ -39,14 +48,18 @@ export function AuthProvider({ children }) {
         throw new Error('Password must be at least 6 characters')
       }
 
+      const { role, doctorId, doctorName } = resolveRole(email)
+
       const mockUser = {
-        id: 1,
-        name: email.split('@')[0],
+        id: role === 'doctor' ? doctorId : 1,
+        name: role === 'doctor' ? doctorName : email.split('@')[0],
         email,
         avatar: null,
+        role,
+        doctorId,
       }
       setUser(mockUser)
-      return { success: true }
+      return { success: true, role }
     } catch (err) {
       return { success: false, error: err.message }
     } finally {

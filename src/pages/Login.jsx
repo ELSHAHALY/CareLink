@@ -31,7 +31,11 @@ export default function Login() {
 
     const result = await login(email, password)
     if (result.success) {
-      navigate('/dashboard')
+      if (result.role === 'doctor') {
+        navigate('/doctor/dashboard')
+      } else {
+        navigate('/dashboard')
+      }
     } else {
       setServerError(result.error)
     }
@@ -99,6 +103,25 @@ export default function Login() {
             Create one
           </Link>
         </p>
+
+        <p className={styles.divider}>or</p>
+
+        <button
+          type='button'
+          className={styles.secondaryButton}
+          disabled={loading}
+          onClick={async () => {
+            setServerError('')
+            const result = await login('j.mitchell@carelink.com', '123456')
+            if (result.success) {
+              navigate('/doctor/dashboard')
+            } else {
+              setServerError(result.error)
+            }
+          }}
+        >
+          Continue as Doctor (Demo)
+        </button>
       </div>
     </div>
   )

@@ -1,6 +1,9 @@
 import { useState } from 'react'
 import { useLocation } from 'react-router-dom'
+import AppointmentForm from '../components/appointments/AppointmentForm'
 import TimeSlotPicker from '../components/appointments/TimeSlotPicker'
+import useAuth from '../hooks/useAuth'
+import { useAppointments } from '../hooks/useAppointments'
 
 function getLocalDateString(date = new Date()) {
   const year = date.getFullYear()
@@ -13,8 +16,13 @@ export default function BookAppointment() {
   const location = useLocation()
   const doctor = location.state?.doctor
 
+  const { user } = useAuth()
+  const { appointments, createAppointment } = useAppointments()
+
   const [selectedDate, setSelectedDate] = useState('')
   const [selectedTime, setSelectedTime] = useState('')
+  const [submissionError, setSubmissionError] = useState(null)
+  const [confirmedAppointment, setConfirmedAppointment] = useState(null)
 
   const minimumDate = getLocalDateString()
 
@@ -25,6 +33,61 @@ export default function BookAppointment() {
     }
     setSelectedDate(nextDate)
     setSelectedTime('')
+    setSubmissionError(null)
+  }
+
+  const handleTimeSelect = (time) => {
+    setSelectedTime(time)
+    setSubmissionError(null)
+  }
+
+  const handleBookingSubmit = (patientData) => {
+    setSubmissionError(null)
+
+    if (!doctor || !selectedDate || !selectedTime) {
+      setSubmissionError('Select a doctor, date, and time before booking.')
+      return
+    }
+
+    // Mock auth has no real patient identity (user.id is always hardcoded
+    // to 1), so the authenticated user's email stands in for patientId
+    // here; the booking route itself remains public and login is not
+    // required to book.
+    const patientId = user?.email
+      ? user.email.trim().toLowerCase()
+      : patientData.patientEmail.trim().toLowerCase()
+
+    const result = createAppointment({
+      doctorId: doctor.id,
+      patientId,
+      date: selectedDate,
+      time: selectedTime,
+      type: patientData.type,
+      patientName: patientData.patientName,
+      patientEmail: patientData.patientEmail,
+      patientPhone: patientData.patientPhone,
+      notes: patientData.notes,
+    })
+
+    if (!result.success) {
+      setSubmissionError(result.error)
+      return
+    }
+
+    setConfirmedAppointment(result.appointment)
+    setSubmissionError(null)
+  }
+
+  const handleBookAnother = () => {
+    setConfirmedAppointment(null)
+    setSelectedDate('')
+    setSelectedTime('')
+    setSubmissionError(null)
+  }
+
+  const initialValues = {
+    patientName: user?.name ?? '',
+    patientEmail: user?.email ?? '',
   }
 
   return (
@@ -83,23 +146,43 @@ export default function BookAppointment() {
           font-size: 0.9rem;
           color: #343A40;
         }
-        .book-appointment-page .confirm-button {
-          background: #00A676;
+        .book-appointment-page .booking-confirmation {
+          background: #fff;
+          border: 1px solid #00A676;
+          border-radius: 8px;
+          padding: 1.25rem;
+        }
+        .book-appointment-page .booking-confirmation h2 {
+          color: #00A676;
+          margin: 0 0 0.75rem 0;
+        }
+        .book-appointment-page .confirmation-details {
+          display: flex;
+          flex-direction: column;
+          gap: 0.15rem;
+          margin: 0 0 1rem 0;
+          font-size: 0.95rem;
+        }
+        .book-appointment-page .confirmation-details dt {
+          font-weight: 600;
+          color: #343A40;
+        }
+        .book-appointment-page .confirmation-details dd {
+          margin: 0 0 0.6rem 0;
+          color: #343A40;
+        }
+        .book-appointment-page .book-another-button {
+          background: #007BFF;
           color: #fff;
           border: none;
           border-radius: 6px;
           padding: 0.75rem 1.5rem;
           font-size: 1rem;
-          width: 100%;
-          cursor: not-allowed;
-          opacity: 0.6;
+          cursor: pointer;
         }
         @media (min-width: 600px) {
           .book-appointment-page {
             padding: 2rem;
-          }
-          .book-appointment-page .confirm-button {
-            width: auto;
           }
         }
       `}</style>
@@ -134,10 +217,11 @@ export default function BookAppointment() {
       <section aria-label='Time slot selection'>
         <h2>Select a Time</h2>
         <TimeSlotPicker
-          key={selectedDate}
           doctorId={doctor?.id}
           selectedDate={selectedDate}
-          onSelectTime={setSelectedTime}
+          selectedTime={selectedTime}
+          appointments={appointments}
+          onSelectTime={handleTimeSelect}
         />
         {selectedTime && (
           <p className='selected-time-summary'>
@@ -146,14 +230,56 @@ export default function BookAppointment() {
         )}
       </section>
 
-      <section aria-label='Patient information'>
-        <h2>Patient Information</h2>
-        <p className='placeholder-text'>Booking form coming in Week 3.</p>
-      </section>
-
-      <button className='confirm-button' disabled>
-        Confirm Booking
-      </button>
+      {confirmedAppointment ? (
+        <section aria-label='Booking confirmation'>
+          <div
+            className='booking-confirmation'
+            role='status'
+            aria-live='polite'
+          >
+            <h2>Appointment Confirmed</h2>
+            <dl className='confirmation-details'>
+              <dt>Doctor</dt>
+              <dd>{doctor?.name}</dd>
+              <dt>Specialty</dt>
+              <dd>{doctor?.specialty}</dd>
+              <dt>Date</dt>
+              <dd>{confirmedAppointment.date}</dd>
+              <dt>Time</dt>
+              <dd>{confirmedAppointment.time}</dd>
+              <dt>Appointment type</dt>
+              <dd>{confirmedAppointment.type}</dd>
+              <dt>Patient name</dt>
+              <dd>{confirmedAppointment.patientName}</dd>
+              <dt>Confirmation ID</dt>
+              <dd>{confirmedAppointment.appointmentId}</dd>
+            </dl>
+            <button
+              type='button'
+              className='book-another-button'
+              onClick={handleBookAnother}
+            >
+              Book Another Appointment
+            </button>
+          </div>
+        </section>
+      ) : (
+        <section aria-label='Patient information'>
+          <h2>Patient Information</h2>
+          {doctor && selectedDate && selectedTime ? (
+            <AppointmentForm
+              initialValues={initialValues}
+              onSubmit={handleBookingSubmit}
+              submissionError={submissionError}
+            />
+          ) : (
+            <p className='placeholder-text'>
+              Select a doctor, date, and available time before entering patient
+              information.
+            </p>
+          )}
+        </section>
+      )}
     </div>
   )
 }
