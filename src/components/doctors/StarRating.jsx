@@ -60,13 +60,9 @@ export default function StarRating({ ratings = [], appointments = [] }) {
     <div
       className='star-rating'
       role='img'
-<<<<<<< HEAD
-      aria-label={`Rating: ${average.toFixed(1)} out of 5 stars based on ${count} reviews`}
-=======
       aria-label={`Rating: ${average.toFixed(
         1,
       )} out of 5 stars based on ${count} reviews`}
->>>>>>> origin/main
     >
       <div className='star-rating__stars'>
         {[0, 1, 2, 3, 4].map(renderStar)}
