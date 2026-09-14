@@ -4,11 +4,16 @@ export default function DoctorFilterBar({ filters, onFilterChange, onClear }) {
   return (
     <section className='doctor-filters'>
       <div className='doctor-search'>
-        <span className='search-icon'>
+        <label htmlFor='doctor-search' className='visually-hidden'>
+          Search doctors
+        </label>
+
+        <span className='search-icon' aria-hidden='true'>
           <FcSearch size={20} />
         </span>
 
         <input
+          id='doctor-search'
           type='text'
           placeholder='Search by doctor name or specialty...'
           value={filters.search}
@@ -17,7 +22,11 @@ export default function DoctorFilterBar({ filters, onFilterChange, onClear }) {
       </div>
 
       <div className='doctor-filter-options'>
+        <label htmlFor='doctor-specialty' className='visually-hidden'>
+          Specialty
+        </label>
         <select
+          id='doctor-specialty'
           value={filters.specialty}
           onChange={(e) => onFilterChange('specialty', e.target.value)}
         >
@@ -27,7 +36,11 @@ export default function DoctorFilterBar({ filters, onFilterChange, onClear }) {
           <option value='Dermatologist'>Dermatology</option>
         </select>
 
+        <label htmlFor='doctor-city' className='visually-hidden'>
+          City
+        </label>
         <select
+          id='doctor-city'
           value={filters.city}
           onChange={(e) => onFilterChange('city', e.target.value)}
         >
@@ -37,7 +50,11 @@ export default function DoctorFilterBar({ filters, onFilterChange, onClear }) {
           <option value='Chicago'>Chicago</option>
         </select>
 
+        <label htmlFor='doctor-rating' className='visually-hidden'>
+          Rating
+        </label>
         <select
+          id='doctor-rating'
           value={filters.rating}
           onChange={(e) => onFilterChange('rating', e.target.value)}
         >

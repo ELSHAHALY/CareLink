@@ -31,7 +31,6 @@
 
 .pagination button:hover:not(:disabled) {
   border-color: #00a676;
-  color: #001a12;
 }
 
 .pagination button.active {
