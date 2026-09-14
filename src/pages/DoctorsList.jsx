@@ -4,6 +4,7 @@ import DoctorFilterBar from '../components/doctors/DoctorFilterBar'
 import DoctorList from '../components/doctors/DoctorList'
 import useDoctors from '../hooks/useDoctors'
 import '../styles/doctors.css'
+import Pagination from '../components/doctors/Pagination'
 
 export default function DoctorsList() {
   const [searchParams] = useSearchParams()
@@ -17,11 +18,25 @@ export default function DoctorsList() {
 
   const { doctors: filteredDoctors, loading, error } = useDoctors(filters)
 
+  const [currentPage, setCurrentPage] = useState(1)
+  const doctorsPerPage = 6
+
+  const totalPages = Math.ceil(filteredDoctors.length / doctorsPerPage)
+
+  const startIndex = (currentPage - 1) * doctorsPerPage
+
+  const paginatedDoctors = filteredDoctors.slice(
+    startIndex,
+    startIndex + doctorsPerPage,
+  )
+
   const handleFilterChange = (name, value) => {
     setFilters((prev) => ({
       ...prev,
       [name]: value,
     }))
+
+    setCurrentPage(1)
   }
 
   const handleClearFilters = () => {
@@ -31,6 +46,7 @@ export default function DoctorsList() {
       city: '',
       rating: '',
     })
+    setCurrentPage(1)
   }
 
   return (
@@ -56,8 +72,26 @@ export default function DoctorsList() {
         </div>
 
         {loading && <p>Loading doctors...</p>}
+
         {error && <p className='error-message'>{error}</p>}
-        {!loading && !error && <DoctorList doctors={filteredDoctors} />}
+
+        {!loading && !error && filteredDoctors.length === 0 && (
+          <p>No Doctors Found.</p>
+        )}
+
+        {!loading && !error && filteredDoctors.length > 0 && (
+          <>
+            <DoctorList doctors={paginatedDoctors} />
+
+            {totalPages > 1 && (
+              <Pagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                onPageChange={setCurrentPage}
+              />
+            )}
+          </>
+        )}
       </div>
     </main>
   )
