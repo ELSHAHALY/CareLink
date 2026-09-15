@@ -6,14 +6,9 @@ import appointmentsData from '../data/appointments.json'
 import StarRating, { calculateRatings } from '../components/doctors/StarRating'
 import styles from './DoctorProfile.module.css'
 
-const imageModules = import.meta.glob('../assets/doctor-*.jpg', {
-  eager: true,
-  import: 'default',
-})
-
 function resolveImage(filename) {
-  const key = `../assets/${filename}`
-  return imageModules[key] ?? null
+  if (!filename) return null;
+  return filename.startsWith('/') ? filename : `/${filename}`;
 }
 
 function MiniStars({ score }) {

@@ -3,3 +3,4 @@ dist/
 *.ps1
 others/
 dockerfile
+*.cjs
