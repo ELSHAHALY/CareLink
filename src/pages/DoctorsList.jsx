@@ -2,37 +2,51 @@ import { useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import DoctorFilterBar from '../components/doctors/DoctorFilterBar'
 import DoctorList from '../components/doctors/DoctorList'
-import doctorsData from '../data/doctors.json'
-
+import useDoctors from '../hooks/useDoctors'
 import '../styles/doctors.css'
+import Pagination from '../components/doctors/Pagination'
 
 export default function DoctorsList() {
-  const doctors = doctorsData.doctors
-  // Seed the filters from the URL once on load, so a search or specialty
-  // picked on the Home page arrives here already applied.
   const [searchParams] = useSearchParams()
 
   const [filters, setFilters] = useState({
     search: searchParams.get('search') || '',
     specialty: searchParams.get('specialty') || '',
-    availability: '',
+    city: '',
     rating: '',
   })
+
+  const { doctors: filteredDoctors, loading, error } = useDoctors(filters)
+
+  const [currentPage, setCurrentPage] = useState(1)
+  const doctorsPerPage = 6
+
+  const totalPages = Math.ceil(filteredDoctors.length / doctorsPerPage)
+
+  const startIndex = (currentPage - 1) * doctorsPerPage
+
+  const paginatedDoctors = filteredDoctors.slice(
+    startIndex,
+    startIndex + doctorsPerPage,
+  )
 
   const handleFilterChange = (name, value) => {
     setFilters((prev) => ({
       ...prev,
       [name]: value,
     }))
+
+    setCurrentPage(1)
   }
 
   const handleClearFilters = () => {
     setFilters({
       search: '',
       specialty: '',
-      availability: '',
+      city: '',
       rating: '',
     })
+    setCurrentPage(1)
   }
 
   return (
@@ -54,10 +68,30 @@ export default function DoctorsList() {
 
         <div className='doctors-results-header'>
           <h2>Our Doctors</h2>
-          <span>{doctors.length} Doctors</span>
+          <span>{filteredDoctors.length} Doctors</span>
         </div>
 
-        <DoctorList doctors={doctors} />
+        {loading && <p>Loading doctors...</p>}
+
+        {error && <p className='error-message'>{error}</p>}
+
+        {!loading && !error && filteredDoctors.length === 0 && (
+          <p>No Doctors Found.</p>
+        )}
+
+        {!loading && !error && filteredDoctors.length > 0 && (
+          <>
+            <DoctorList doctors={paginatedDoctors} />
+
+            {totalPages > 1 && (
+              <Pagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                onPageChange={setCurrentPage}
+              />
+            )}
+          </>
+        )}
       </div>
     </main>
   )

@@ -1,10 +1,19 @@
+import { FcSearch } from 'react-icons/fc'
+
 export default function DoctorFilterBar({ filters, onFilterChange, onClear }) {
   return (
     <section className='doctor-filters'>
       <div className='doctor-search'>
-        <span className='search-icon'>⌕</span>
+        <label htmlFor='doctor-search' className='visually-hidden'>
+          Search doctors
+        </label>
+
+        <span className='search-icon' aria-hidden='true'>
+          <FcSearch size={20} />
+        </span>
 
         <input
+          id='doctor-search'
           type='text'
           placeholder='Search by doctor name or specialty...'
           value={filters.search}
@@ -13,27 +22,39 @@ export default function DoctorFilterBar({ filters, onFilterChange, onClear }) {
       </div>
 
       <div className='doctor-filter-options'>
+        <label htmlFor='doctor-specialty' className='visually-hidden'>
+          Specialty
+        </label>
         <select
+          id='doctor-specialty'
           value={filters.specialty}
           onChange={(e) => onFilterChange('specialty', e.target.value)}
         >
           <option value=''>All Specialties</option>
           <option value='Cardiologist'>Cardiology</option>
-          <option value='Dentist'>Dentistry</option>
           <option value='Neurologist'>Neurology</option>
           <option value='Dermatologist'>Dermatology</option>
         </select>
 
+        <label htmlFor='doctor-city' className='visually-hidden'>
+          City
+        </label>
         <select
-          value={filters.availability}
-          onChange={(e) => onFilterChange('availability', e.target.value)}
+          id='doctor-city'
+          value={filters.city}
+          onChange={(e) => onFilterChange('city', e.target.value)}
         >
-          <option value=''>Any Availability</option>
-          <option value='available'>Available Today</option>
-          <option value='unavailable'>Unavailable</option>
+          <option value=''>All Cities</option>
+          <option value='New York'>New York</option>
+          <option value='San Francisco'>San Francisco</option>
+          <option value='Chicago'>Chicago</option>
         </select>
 
+        <label htmlFor='doctor-rating' className='visually-hidden'>
+          Rating
+        </label>
         <select
+          id='doctor-rating'
           value={filters.rating}
           onChange={(e) => onFilterChange('rating', e.target.value)}
         >

@@ -5,7 +5,7 @@ export default function DoctorCard({ doctor }) {
       <div className='doctor-card__image-wrapper'>
         <img
           src={doctor.image}
-          alt={doctor.name}
+          alt={`Dr. ${doctor.name}`}
           className='doctor-card__image'
         />
       </div>
@@ -31,8 +31,8 @@ export default function DoctorCard({ doctor }) {
           <span className='availability-dot'></span>
           {doctor.available ? 'Available Today' : 'Unavailable'}
         </div>
-        <Link to={`/doctors/${doctor.id}`}>
-          <button className='doctor-card__button'>View Profile</button>
+        <Link to={`/doctors/${doctor.id}`} className='doctor-card__button'>
+          View Profile
         </Link>
       </div>
     </article>
