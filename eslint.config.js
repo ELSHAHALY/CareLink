@@ -36,7 +36,12 @@ export default [
       'react-refresh/only-export-components': 'warn',
       'react/react-in-jsx-scope': 'off',
       'react/no-unescaped-entities': 'warn',
-      'prettier/prettier': 'warn',
+      'prettier/prettier': [
+        'warn',
+        {
+          endOfLine: 'auto',
+        },
+      ],
       'react/prop-types': 'off',
     },
   },
