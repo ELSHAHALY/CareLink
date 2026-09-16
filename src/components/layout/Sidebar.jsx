@@ -16,9 +16,18 @@ const DOCTOR_LINKS = [
   { to: '/doctor/profile', label: 'Profile' },
 ]
 
+const ADMIN_LINKS = [
+  { to: '/admin/doctors', label: 'Manage Doctors', end: true },
+]
+
 export default function Sidebar({ isOpen, onClose }) {
   const { user, logout } = useAuth()
-  const links = user?.role === 'doctor' ? DOCTOR_LINKS : PATIENT_LINKS
+  const links =
+    user?.role === 'admin'
+      ? ADMIN_LINKS
+      : user?.role === 'doctor'
+        ? DOCTOR_LINKS
+        : PATIENT_LINKS
 
   return (
     <>

@@ -230,18 +230,16 @@ export function AuthProvider({ children }) {
           email: trimmedEmail,
           password,
           options: {
-            data: { name: trimmedName, role: 'doctor', doctor_id: doctorId },
+            data: { name: trimmedName, role: 'patient', doctor_id: doctorId },
           },
         })
         if (error) throw new Error(mapSupabaseError(error.message))
         if (!data.user) throw new Error('Signup failed. Please try again.')
 
-        // Promote to doctor — requires RLS allowing self-update of role/doctor_id,
-        // or admin will set it. Try optimistic update for demo; ignore failure.
-        await supabase
-          .from('profiles')
-          .update({ role: 'doctor', doctor_id: doctorId, name: trimmedName })
-          .eq('id', data.user.id)
+        // Role promotion to 'doctor' must be done by an admin via the
+        // AdminDoctors page.  The trigger creates the profile as 'patient'
+        // by default.  We do NOT update role from the client to prevent
+        // privilege escalation.
 
         return { success: true }
       } catch (err) {

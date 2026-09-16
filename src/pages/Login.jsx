@@ -1,5 +1,5 @@
-import { useState } from 'react'
-import { useNavigate, Link, Navigate } from 'react-router-dom'
+import { useState, useEffect } from 'react'
+import { useNavigate, Link, Navigate, useLocation } from 'react-router-dom'
 import useAuth from '../hooks/useAuth'
 import styles from './Login.module.css'
 
@@ -8,9 +8,18 @@ export default function Login() {
   const [password, setPassword] = useState('')
   const [errors, setErrors] = useState({})
   const [serverError, setServerError] = useState('')
+  const [successMessage, setSuccessMessage] = useState('')
 
   const { user, authLoading, login, loading } = useAuth()
   const navigate = useNavigate()
+  const location = useLocation()
+
+  useEffect(() => {
+    if (location.state?.message) {
+      setSuccessMessage(location.state.message)
+      window.history.replaceState({}, '')
+    }
+  }, [location.state])
 
   if (!authLoading && user) {
     if (user.role === 'doctor')
@@ -38,7 +47,9 @@ export default function Login() {
 
     const result = await login(email, password)
     if (result.success) {
-      if (result.role === 'doctor') {
+      if (result.role === 'admin') {
+        navigate('/admin/doctors')
+      } else if (result.role === 'doctor') {
         navigate('/doctor/dashboard')
       } else {
         navigate('/dashboard')
@@ -57,6 +68,12 @@ export default function Login() {
         {serverError && (
           <div className={styles.globalError}>
             <p className={styles.errorText}>{serverError}</p>
+          </div>
+        )}
+
+        {successMessage && (
+          <div className={styles.successText}>
+            <p>{successMessage}</p>
           </div>
         )}
 

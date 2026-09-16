@@ -6,6 +6,17 @@ do $$ begin
 exception when duplicate_object then null;
 end $$;
 
+-- Doctor catalog: mirrors the static doctors.json so doctor_id has a
+-- real table reference.  The client app still reads doctors.json for
+-- display; this table exists purely so the profiles.doctor_id FK is
+-- valid and RLS/admin queries can join if needed.
+create table if not exists public.doctors (
+  id text primary key,
+  name text not null,
+  specialty text not null,
+  email text unique
+);
+
 create table if not exists public.profiles (
   id uuid primary key references auth.users(id) on delete cascade,
   email text not null unique,

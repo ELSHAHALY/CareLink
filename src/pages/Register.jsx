@@ -32,7 +32,9 @@ export default function Register() {
     if (!validate()) return
     const result = await signupPatient({ name, email, password })
     if (result.success) {
-      navigate('/dashboard')
+      navigate('/login', {
+        state: { message: 'Account created successfully. Please sign in.' },
+      })
     } else {
       setServerError(result.error)
     }

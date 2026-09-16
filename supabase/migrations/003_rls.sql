@@ -1,6 +1,6 @@
 -- 003_rls.sql
 -- Row Level Security: each user can only read/update own profile.
--- Admin override is intentionally NOT added here -- use service_role or future admin policy.
+-- Admins get full access to manage all profiles.
 
 alter table public.profiles enable row level security;
 
@@ -25,6 +25,48 @@ create policy "profiles_update_own"
   to authenticated
   using (auth.uid() = id)
   with check (auth.uid() = id);
+
+-- Admin: full read access to all profiles (for admin dashboard)
+drop policy if exists "profiles_admin_select" on public.profiles;
+create policy "profiles_admin_select"
+  on public.profiles for select
+  to authenticated
+  using (
+    exists (
+      select 1 from public.profiles
+      where id = auth.uid() and role = 'admin'
+    )
+  );
+
+-- Admin: full update access to all profiles (for promote/demote)
+drop policy if exists "profiles_admin_update" on public.profiles;
+create policy "profiles_admin_update"
+  on public.profiles for update
+  to authenticated
+  using (
+    exists (
+      select 1 from public.profiles
+      where id = auth.uid() and role = 'admin'
+    )
+  )
+  with check (
+    exists (
+      select 1 from public.profiles
+      where id = auth.uid() and role = 'admin'
+    )
+  );
+
+-- Admin: insert access (for creating doctor profiles directly)
+drop policy if exists "profiles_admin_insert" on public.profiles;
+create policy "profiles_admin_insert"
+  on public.profiles for insert
+  to authenticated
+  with check (
+    exists (
+      select 1 from public.profiles
+      where id = auth.uid() and role = 'admin'
+    )
+  );
 
 -- To seed the first admin, run as service_role / SQL editor (bypasses RLS):
 --   update public.profiles set role = 'admin' where email = 'admin@carelink.com';
