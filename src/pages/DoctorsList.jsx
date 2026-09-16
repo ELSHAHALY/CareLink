@@ -5,6 +5,8 @@ import DoctorList from '../components/doctors/DoctorList'
 import useDoctors from '../hooks/useDoctors'
 import '../styles/doctors.css'
 import Pagination from '../components/doctors/Pagination'
+import ratingsData from '../data/ratings.json'
+import appointmentsData from '../data/appointments.json'
 
 export default function DoctorsList() {
   const [searchParams] = useSearchParams()
@@ -81,7 +83,11 @@ export default function DoctorsList() {
 
         {!loading && !error && filteredDoctors.length > 0 && (
           <>
-            <DoctorList doctors={paginatedDoctors} />
+            <DoctorList
+              doctors={paginatedDoctors}
+              ratings={ratingsData.ratings}
+              appointments={appointmentsData.appointments}
+            />
 
             {totalPages > 1 && (
               <Pagination
