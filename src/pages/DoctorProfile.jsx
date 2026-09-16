@@ -7,8 +7,8 @@ import StarRating, { calculateRatings } from '../components/doctors/StarRating'
 import styles from './DoctorProfile.module.css'
 
 function resolveImage(filename) {
-  if (!filename) return null;
-  return filename.startsWith('/') ? filename : `/${filename}`;
+  if (!filename) return null
+  return filename.startsWith('/') ? filename : `/${filename}`
 }
 
 function MiniStars({ score }) {

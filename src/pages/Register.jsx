@@ -1,41 +1,27 @@
-import { useState, useEffect } from 'react'
-import { useNavigate, Link, Navigate, useLocation } from 'react-router-dom'
+import { useState } from 'react'
+import { useNavigate, Link } from 'react-router-dom'
 import useAuth from '../hooks/useAuth'
 import styles from './Login.module.css'
 
-export default function Login() {
+export default function Register() {
+  const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [confirm, setConfirm] = useState('')
   const [errors, setErrors] = useState({})
   const [serverError, setServerError] = useState('')
-  const [successMessage, setSuccessMessage] = useState('')
-
-  const { user, authLoading, login, loading } = useAuth()
+  const { signupPatient, loading } = useAuth()
   const navigate = useNavigate()
-  const location = useLocation()
-
-  useEffect(() => {
-    if (location.state?.message) {
-      setSuccessMessage(location.state.message)
-      window.history.replaceState({}, '')
-    }
-  }, [location.state])
-
-  if (!authLoading && user) {
-    if (user.role === 'doctor')
-      return <Navigate to='/doctor/dashboard' replace />
-    if (user.role === 'admin') return <Navigate to='/admin/doctors' replace />
-    return <Navigate to='/dashboard' replace />
-  }
 
   function validate() {
     const next = {}
-    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    if (!name.trim() || name.trim().length < 2)
+      next.name = 'Name must be at least 2 characters'
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
       next.email = 'Please enter a valid email address'
-    }
-    if (!password || password.length < 6) {
+    if (!password || password.length < 6)
       next.password = 'Password must be at least 6 characters'
-    }
+    if (password !== confirm) next.confirm = 'Passwords do not match'
     setErrors(next)
     return Object.keys(next).length === 0
   }
@@ -44,16 +30,11 @@ export default function Login() {
     e.preventDefault()
     setServerError('')
     if (!validate()) return
-
-    const result = await login(email, password)
+    const result = await signupPatient({ name, email, password })
     if (result.success) {
-      if (result.role === 'admin') {
-        navigate('/admin/doctors')
-      } else if (result.role === 'doctor') {
-        navigate('/doctor/dashboard')
-      } else {
-        navigate('/dashboard')
-      }
+      navigate('/login', {
+        state: { message: 'Account created successfully. Please sign in.' },
+      })
     } else {
       setServerError(result.error)
     }
@@ -62,8 +43,8 @@ export default function Login() {
   return (
     <div className={styles.container}>
       <div className={styles.card}>
-        <h1 className={styles.title}>Welcome back</h1>
-        <p className={styles.subtitle}>Sign in to your CareLink account</p>
+        <h1 className={styles.title}>Create account</h1>
+        <p className={styles.subtitle}>Join CareLink as a patient</p>
 
         {serverError && (
           <div className={styles.globalError}>
@@ -71,13 +52,25 @@ export default function Login() {
           </div>
         )}
 
-        {successMessage && (
-          <div className={styles.successText}>
-            <p>{successMessage}</p>
-          </div>
-        )}
-
         <form className={styles.form} onSubmit={handleSubmit} noValidate>
+          <div className={styles.field}>
+            <label className={styles.label} htmlFor='name'>
+              Full name
+            </label>
+            <input
+              id='name'
+              type='text'
+              className={`${styles.input} ${
+                errors.name ? styles.inputError : ''
+              }`}
+              placeholder='John Doe'
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              autoComplete='name'
+            />
+            {errors.name && <p className={styles.errorText}>{errors.name}</p>}
+          </div>
+
           <div className={styles.field}>
             <label className={styles.label} htmlFor='email'>
               Email
@@ -109,26 +102,42 @@ export default function Login() {
               placeholder='Min. 6 characters'
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              autoComplete='current-password'
+              autoComplete='new-password'
             />
             {errors.password && (
               <p className={styles.errorText}>{errors.password}</p>
             )}
           </div>
 
+          <div className={styles.field}>
+            <label className={styles.label} htmlFor='confirm'>
+              Confirm password
+            </label>
+            <input
+              id='confirm'
+              type='password'
+              className={`${styles.input} ${
+                errors.confirm ? styles.inputError : ''
+              }`}
+              placeholder='Repeat password'
+              value={confirm}
+              onChange={(e) => setConfirm(e.target.value)}
+              autoComplete='new-password'
+            />
+            {errors.confirm && (
+              <p className={styles.errorText}>{errors.confirm}</p>
+            )}
+          </div>
+
           <button type='submit' className={styles.button} disabled={loading}>
-            {loading ? 'Signing in...' : 'Sign in'}
+            {loading ? 'Creating account...' : 'Create account'}
           </button>
         </form>
 
-        <p className={styles.forgotLink}>
-          <Link to='/forgot-password'>Forgot password?</Link>
-        </p>
-
         <p className={styles.footer}>
-          Don&apos;t have an account?{' '}
-          <Link to='/register' className={styles.link}>
-            Create one
+          Already have an account?{' '}
+          <Link to='/login' className={styles.link}>
+            Sign in
           </Link>
         </p>
       </div>

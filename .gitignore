@@ -4,3 +4,6 @@ dist/
 others/
 dockerfile
 *.cjs
+.env
+.env.local
+.env.*.local
