@@ -25,7 +25,6 @@ import doctor1 from '../assets/doctor-1.jpg'
 import doctor2 from '../assets/doctor-2.jpg'
 import doctor3 from '../assets/doctor-3.jpg'
 
-// Fallback dummy data if JSON imports are missing
 import doctorsData from '../data/doctors.json'
 import appointmentsData from '../data/appointments.json'
 import ratingsData from '../data/ratings.json'
