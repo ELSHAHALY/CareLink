@@ -1,15 +1,12 @@
 import { useMemo } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
-import doctorsData from '../data/doctors.json'
 import ratingsData from '../data/ratings.json'
 import appointmentsData from '../data/appointments.json'
 import StarRating, { calculateRatings } from '../components/doctors/StarRating'
+import { useDoctorById } from '../hooks/useDoctors'
+import { resolveDoctorImage as resolveImage } from '../utils/doctors'
+import Loader from '../components/common/Loader'
 import styles from './DoctorProfile.module.css'
-
-function resolveImage(filename) {
-  if (!filename) return null
-  return filename.startsWith('/') ? filename : `/${filename}`
-}
 
 function MiniStars({ score }) {
   return (
@@ -58,26 +55,19 @@ function RatingBar({ label, value }) {
 export default function DoctorProfile() {
   const { doctorId } = useParams()
   const navigate = useNavigate()
+  const { doctor, loading } = useDoctorById(doctorId)
 
-  const doctor = useMemo(() => {
-    if (doctorId) {
-      return (
-        doctorsData.doctors.find((d) => d.id === doctorId) ??
-        doctorsData.doctors[0]
-      )
-    }
-    return doctorsData.doctors[0]
-  }, [doctorId])
-
-  const imageSrc = resolveImage(doctor.image)
+  const imageSrc = resolveImage(doctor?.image)
 
   const rawDoctorRatings = useMemo(() => {
+    if (!doctor) return []
     return ratingsData.ratings.filter((r) => r.doctorId === doctor.id)
-  }, [doctor.id])
+  }, [doctor])
 
   const doctorAppointments = useMemo(() => {
+    if (!doctor) return []
     return appointmentsData.appointments.filter((a) => a.doctorId === doctor.id)
-  }, [doctor.id])
+  }, [doctor])
 
   const { average, count, validRatings } = useMemo(() => {
     return calculateRatings(rawDoctorRatings, doctorAppointments)
@@ -102,8 +92,41 @@ export default function DoctorProfile() {
     }
   }, [validRatings])
 
-  const nameParts = doctor.name.split(' ')
+  const nameParts = (doctor?.name || 'Doctor').split(' ')
   const lastName = nameParts[nameParts.length - 1]
+
+  if (loading) {
+    return (
+      <div className={styles.pageContainer}>
+        <div className={styles.contentWrapper}>
+          <Loader message='Loading doctor...' />
+        </div>
+      </div>
+    )
+  }
+
+  if (!doctor) {
+    return (
+      <div className={styles.pageContainer}>
+        <div className={styles.contentWrapper}>
+          <section className={styles.card}>
+            <h1 className={styles.doctorName}>Doctor not found</h1>
+            <p className={styles.bioText}>
+              This doctor profile does not exist or is no longer published.
+            </p>
+            <div className={styles.headerActions}>
+              <button
+                className={styles.primaryButton}
+                onClick={() => navigate('/doctors')}
+              >
+                Back to doctors
+              </button>
+            </div>
+          </section>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className={styles.pageContainer}>
@@ -155,7 +178,7 @@ export default function DoctorProfile() {
               <div className={styles.infoRow}>
                 <span className={styles.infoItem}>
                   <span className='material-symbols-outlined'>translate</span>
-                  Speaks {doctor.languages.join(' & ')}
+                  Speaks {(doctor.languages || []).join(' & ') || '—'}
                 </span>
               </div>
             </div>

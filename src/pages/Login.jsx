@@ -1,6 +1,11 @@
 import { useState, useEffect } from 'react'
 import { useNavigate, Link, Navigate, useLocation } from 'react-router-dom'
 import useAuth from '../hooks/useAuth'
+import {
+  validateEmail,
+  validatePassword,
+  getRoleRedirect,
+} from '../context/AuthContext'
 import styles from './Login.module.css'
 
 export default function Login() {
@@ -10,7 +15,8 @@ export default function Login() {
   const [serverError, setServerError] = useState('')
   const [successMessage, setSuccessMessage] = useState('')
 
-  const { user, authLoading, login, loading } = useAuth()
+  const { user, authLoading, login, loading, configError, isMockAuthAllowed } =
+    useAuth()
   const navigate = useNavigate()
   const location = useLocation()
 
@@ -30,10 +36,10 @@ export default function Login() {
 
   function validate() {
     const next = {}
-    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    if (!validateEmail(email)) {
       next.email = 'Please enter a valid email address'
     }
-    if (!password || password.length < 6) {
+    if (!validatePassword(password)) {
       next.password = 'Password must be at least 6 characters'
     }
     setErrors(next)
@@ -47,13 +53,7 @@ export default function Login() {
 
     const result = await login(email, password)
     if (result.success) {
-      if (result.role === 'admin') {
-        navigate('/admin/doctors')
-      } else if (result.role === 'doctor') {
-        navigate('/doctor/dashboard')
-      } else {
-        navigate('/dashboard')
-      }
+      navigate(getRoleRedirect(result.role))
     } else {
       setServerError(result.error)
     }
@@ -64,6 +64,21 @@ export default function Login() {
       <div className={styles.card}>
         <h1 className={styles.title}>Welcome back</h1>
         <p className={styles.subtitle}>Sign in to your CareLink account</p>
+
+        {configError && !isMockAuthAllowed && (
+          <div className={styles.globalError}>
+            <p className={styles.errorText}>{configError}</p>
+          </div>
+        )}
+
+        {isMockAuthAllowed && (
+          <div className={styles.globalError}>
+            <p className={styles.errorText}>
+              Dev mode: Supabase not configured, using mock auth. Set .env for
+              real authentication.
+            </p>
+          </div>
+        )}
 
         {serverError && (
           <div className={styles.globalError}>

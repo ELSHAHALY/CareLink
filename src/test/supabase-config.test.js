@@ -1,85 +1,48 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest'
+import { describe, it, expect } from 'vitest'
+import {
+  isValidSupabaseUrl,
+  isValidAnonKey,
+  containsPlaceholder,
+} from '../services/supabase'
 
-describe('Supabase client configuration', () => {
-  beforeEach(() => {
-    vi.resetModules()
-  })
-
+describe('Supabase client configuration (real implementation)', () => {
   it('detects placeholder URLs', () => {
-    const url = 'https://your-project.placeholder.supabase.co'
-    const anonKey = 'your-anon-key-placeholder'
-    const isPlaceholder =
-      !url || !anonKey || url.includes('placeholder') || anonKey.includes('placeholder')
-    expect(isPlaceholder).toBe(true)
-  })
-
-  it('detects .env.example default values as placeholders', () => {
-    const url = 'https://your-project.supabase.co'
-    const anonKey = 'your-anon-key-here'
-    // The actual app checks for 'placeholder' substring, not example defaults
-    // This documents the detection boundary
-    const isPlaceholder =
-      !url || !anonKey || url.includes('placeholder') || anonKey.includes('placeholder')
-    // These are NOT detected as placeholders by the current implementation
-    // They would need to be set to actual values
-    expect(isPlaceholder).toBe(false)
-  })
-
-  it('detects real URLs', () => {
-    const url = 'https://abc123.supabase.co'
-    const anonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.test'
-    const isPlaceholder =
-      !url || !anonKey || url.includes('placeholder') || anonKey.includes('placeholder')
-    expect(isPlaceholder).toBe(false)
-  })
-
-  it('detects missing env vars', () => {
-    const url = undefined
-    const anonKey = undefined
-    const isPlaceholder =
-      !url || !anonKey || url?.includes('placeholder') || anonKey?.includes('placeholder')
-    expect(isPlaceholder).toBe(true)
-  })
-})
-
-describe('Error message mapping', () => {
-  function mapSupabaseError(msg) {
-    const m = msg.toLowerCase()
-    if (m.includes('invalid login credentials')) return 'Invalid email or password.'
-    if (m.includes('email already registered') || m.includes('already registered'))
-      return 'An account with this email already exists.'
-    if (m.includes('email not confirmed')) return 'Please confirm your email first.'
-    if (m.includes('password should be at least')) return 'Password must be at least 6 characters.'
-    if (m.includes('rate limit') || m.includes('too many requests'))
-      return 'Too many attempts. Please try again later.'
-    if (m.includes('network') || m.includes('fetch'))
-      return 'Network error. Please check your connection.'
-    return msg
-  }
-
-  it('maps invalid login credentials', () => {
-    expect(mapSupabaseError('Invalid login credentials')).toBe('Invalid email or password.')
-  })
-
-  it('maps email already registered', () => {
-    expect(mapSupabaseError('Email already registered')).toBe(
-      'An account with this email already exists.',
+    expect(
+      isValidSupabaseUrl('https://your-project.placeholder.supabase.co'),
+    ).toBe(false)
+    expect(containsPlaceholder('https://your-project.placeholder.supabase.co')).toBe(
+      true,
     )
   })
 
-  it('maps rate limit errors', () => {
-    expect(mapSupabaseError('Rate limit exceeded')).toBe(
-      'Too many attempts. Please try again later.',
-    )
+  it('rejects .env.example default values as invalid', () => {
+    // Regression test: old code only checked for 'placeholder' and treated
+    // https://your-project.supabase.co as configured, causing runtime crash.
+    expect(isValidSupabaseUrl('https://your-project.supabase.co')).toBe(false)
+    expect(isValidAnonKey('your-anon-key-here')).toBe(false)
   })
 
-  it('maps network errors', () => {
-    expect(mapSupabaseError('Network request failed')).toBe(
-      'Network error. Please check your connection.',
-    )
+  it('accepts real https URLs', () => {
+    expect(isValidSupabaseUrl('https://abc123.supabase.co')).toBe(true)
   })
 
-  it('preserves unknown errors', () => {
-    expect(mapSupabaseError('Some unknown error')).toBe('Some unknown error')
+  it('accepts local Supabase CLI http URLs', () => {
+    expect(isValidSupabaseUrl('http://127.0.0.1:54321')).toBe(true)
+    expect(isValidSupabaseUrl('http://localhost:54321')).toBe(true)
+  })
+
+  it('rejects non-local http and malformed URLs', () => {
+    expect(isValidSupabaseUrl('http://evil.com:54321')).toBe(false)
+    expect(isValidSupabaseUrl('not-a-url')).toBe(false)
+    expect(isValidSupabaseUrl('')).toBe(false)
+    expect(isValidSupabaseUrl(undefined)).toBe(false)
+  })
+
+  it('rejects short or placeholder anon keys', () => {
+    expect(isValidAnonKey(undefined)).toBe(false)
+    expect(isValidAnonKey('short')).toBe(false)
+    expect(
+      isValidAnonKey('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.test.payload.signature-long-enough'),
+    ).toBe(true)
   })
 })

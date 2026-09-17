@@ -1,18 +1,12 @@
 import { describe, it, expect } from 'vitest'
+import {
+  validateEmail,
+  validatePassword,
+  validateName,
+  mapSupabaseError,
+} from '../context/AuthContext'
 
-describe('Auth validation helpers', () => {
-  function validateEmail(email) {
-    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
-  }
-
-  function validatePassword(password) {
-    return !!(password && password.length >= 6)
-  }
-
-  function validateName(name) {
-    return !!(name && name.trim().length >= 2)
-  }
-
+describe('Auth validation helpers (real implementation)', () => {
   describe('email validation', () => {
     it('accepts valid emails', () => {
       expect(validateEmail('user@example.com')).toBe(true)
@@ -26,6 +20,8 @@ describe('Auth validation helpers', () => {
       expect(validateEmail('@domain.com')).toBe(false)
       expect(validateEmail('user@')).toBe(false)
       expect(validateEmail('user @domain.com')).toBe(false)
+      expect(validateEmail(null)).toBe(false)
+      expect(validateEmail(undefined)).toBe(false)
     })
   })
 
@@ -39,6 +35,7 @@ describe('Auth validation helpers', () => {
       expect(validatePassword('')).toBe(false)
       expect(validatePassword('12345')).toBe(false)
       expect(validatePassword('abc')).toBe(false)
+      expect(validatePassword(null)).toBe(false)
     })
   })
 
@@ -53,6 +50,26 @@ describe('Auth validation helpers', () => {
       expect(validateName('')).toBe(false)
       expect(validateName(' ')).toBe(false)
       expect(validateName('A')).toBe(false)
+    })
+  })
+
+  describe('Supabase error mapping (real implementation)', () => {
+    it('maps invalid login credentials to safe message', () => {
+      expect(mapSupabaseError('Invalid login credentials')).toBe(
+        'Invalid email or password.',
+      )
+    })
+
+    it('maps duplicate email without leaking internals', () => {
+      expect(mapSupabaseError('User already registered')).toBe(
+        'An account with this email already exists.',
+      )
+    })
+
+    it('maps rate limit errors', () => {
+      expect(mapSupabaseError('Rate limit exceeded')).toBe(
+        'Too many attempts. Please try again later.',
+      )
     })
   })
 })

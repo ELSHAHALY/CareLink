@@ -41,7 +41,7 @@ export default function BookAppointment() {
     setSubmissionError(null)
   }
 
-  const handleBookingSubmit = (patientData) => {
+  const handleBookingSubmit = async (patientData) => {
     setSubmissionError(null)
 
     if (!doctor || !selectedDate || !selectedTime) {
@@ -49,15 +49,13 @@ export default function BookAppointment() {
       return
     }
 
-    // Mock auth has no real patient identity (user.id is always hardcoded
-    // to 1), so the authenticated user's email stands in for patientId
-    // here; the booking route itself remains public and login is not
-    // required to book.
+    // Authenticated user's email stands in for patientId in local mode;
+    // in Supabase mode the server uses auth.uid() as patient_id.
     const patientId = user?.email
       ? user.email.trim().toLowerCase()
       : patientData.patientEmail.trim().toLowerCase()
 
-    const result = createAppointment({
+    const result = await createAppointment({
       doctorId: doctor.id,
       patientId,
       date: selectedDate,

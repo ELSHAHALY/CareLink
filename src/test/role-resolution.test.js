@@ -1,24 +1,11 @@
 import { describe, it, expect } from 'vitest'
+import {
+  resolveMockRole,
+  toUserFromProfile,
+  getRoleRedirect,
+} from '../context/AuthContext'
 
-describe('Role resolution', () => {
-  // Replicate the mock role resolution logic from AuthContext
-  const doctorsData = {
-    doctors: [
-      { id: 'doc-001', name: 'Dr. James Mitchell', email: 'j.mitchell@carelink.com' },
-      { id: 'doc-002', name: 'Dr. Sarah Chen', email: 's.chen@carelink.com' },
-    ],
-  }
-
-  function resolveMockRole(email) {
-    const doctor = doctorsData.doctors.find(
-      (d) => d.email.toLowerCase() === email.toLowerCase(),
-    )
-    if (doctor) {
-      return { role: 'doctor', doctorId: doctor.id, doctorName: doctor.name }
-    }
-    return { role: 'patient', doctorId: null, doctorName: null }
-  }
-
+describe('Role resolution (real implementation)', () => {
   it('resolves doctor role for known doctor emails', () => {
     const result = resolveMockRole('j.mitchell@carelink.com')
     expect(result.role).toBe('doctor')
@@ -37,30 +24,46 @@ describe('Role resolution', () => {
     expect(result.doctorId).toBeNull()
   })
 
-  it('resolves patient role for admin emails in mock mode', () => {
+  it('resolves patient role for admin emails in mock mode (no admin in mock)', () => {
     const result = resolveMockRole('admin@carelink.com')
     expect(result.role).toBe('patient')
-    expect(result.doctorId).toBeNull()
+  })
+
+  it('defaults to patient when profile is missing (fail-closed, no escalation)', () => {
+    const sessionUser = { id: 'uuid-1', email: 'x@test.com' }
+    const user = toUserFromProfile(sessionUser, null)
+    expect(user.role).toBe('patient')
+    expect(user.profileMissing).toBe(true)
+  })
+
+  it('uses profile role when present', () => {
+    const sessionUser = { id: 'uuid-2', email: 'd@test.com' }
+    expect(
+      toUserFromProfile(sessionUser, { role: 'doctor', doctor_id: 'doc-002' })
+        .role,
+    ).toBe('doctor')
+    expect(
+      toUserFromProfile(sessionUser, { role: 'admin', doctor_id: null }).role,
+    ).toBe('admin')
   })
 })
 
-describe('Route role mapping', () => {
-  const ROLE_REDIRECTS = {
-    admin: '/admin/doctors',
-    doctor: '/doctor/dashboard',
-    patient: '/dashboard',
-  }
-
+describe('Route role mapping (real implementation)', () => {
   it('maps admin to admin doctors page', () => {
-    expect(ROLE_REDIRECTS.admin).toBe('/admin/doctors')
+    expect(getRoleRedirect('admin')).toBe('/admin/doctors')
   })
 
   it('maps doctor to doctor dashboard', () => {
-    expect(ROLE_REDIRECTS.doctor).toBe('/doctor/dashboard')
+    expect(getRoleRedirect('doctor')).toBe('/doctor/dashboard')
   })
 
   it('maps patient to patient dashboard', () => {
-    expect(ROLE_REDIRECTS.patient).toBe('/dashboard')
+    expect(getRoleRedirect('patient')).toBe('/dashboard')
+  })
+
+  it('defaults unknown roles to patient dashboard (no privilege leak)', () => {
+    expect(getRoleRedirect(undefined)).toBe('/dashboard')
+    expect(getRoleRedirect('hacker')).toBe('/dashboard')
   })
 })
 

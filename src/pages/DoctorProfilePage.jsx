@@ -1,20 +1,16 @@
-import { useMemo } from 'react'
 import { Navigate } from 'react-router-dom'
 import useAuth from '../hooks/useAuth'
-import doctorsData from '../data/doctors.json'
+import { useDoctorById } from '../hooks/useDoctors'
+import { resolveDoctorImage } from '../utils/doctors'
 import DashboardLayout from '../components/layout/DashboardLayout'
 import Loader from '../components/common/Loader'
 import styles from './DoctorProfilePage.module.css'
 
 export default function DoctorProfilePage() {
   const { user, loading } = useAuth()
+  const { doctor, loading: doctorLoading } = useDoctorById(user?.doctorId)
 
-  const doctor = useMemo(() => {
-    if (!user?.doctorId) return null
-    return doctorsData.doctors.find((d) => d.id === user.doctorId) || null
-  }, [user?.doctorId])
-
-  if (loading) {
+  if (loading || (user?.role === 'doctor' && user?.doctorId && doctorLoading)) {
     return (
       <div className={styles.loadingWrapper}>
         <Loader message='Loading profile...' />
@@ -27,16 +23,23 @@ export default function DoctorProfilePage() {
   }
 
   if (user.role !== 'doctor') {
+    if (user.role === 'admin') return <Navigate to='/admin/doctors' replace />
     return <Navigate to='/dashboard' replace />
   }
 
   if (!doctor) {
     return (
       <DashboardLayout>
-        <p className={styles.error}>Doctor profile not found.</p>
+        <p className={styles.error}>
+          Doctor profile not found. Ask your admin to link your account to a
+          doctor in the catalog.
+        </p>
       </DashboardLayout>
     )
   }
+
+  const languages = doctor.languages || []
+  const location = doctor.location || {}
 
   return (
     <DashboardLayout>
@@ -45,43 +48,67 @@ export default function DoctorProfilePage() {
 
         <section className={styles.card}>
           <div className={styles.header}>
-            <img
-              src={`/${doctor.image}`}
-              alt={doctor.name}
-              className={styles.avatar}
-            />
+            {resolveDoctorImage(doctor.image) && (
+              <img
+                src={resolveDoctorImage(doctor.image)}
+                alt={doctor.name}
+                className={styles.avatar}
+              />
+            )}
             <div className={styles.headerInfo}>
               <h2 className={styles.name}>{doctor.name}</h2>
-              <p className={styles.specialty}>{doctor.specialty}</p>
-              <p className={styles.experience}>
-                {doctor.yearsOfExperience} years of experience
-              </p>
+              {doctor.specialty && (
+                <p className={styles.specialty}>{doctor.specialty}</p>
+              )}
+              {doctor.yearsOfExperience > 0 && (
+                <p className={styles.experience}>
+                  {doctor.yearsOfExperience} years of experience
+                </p>
+              )}
             </div>
           </div>
 
-          <p className={styles.bio}>{doctor.bio}</p>
+          {doctor.bio && <p className={styles.bio}>{doctor.bio}</p>}
 
           <dl className={styles.details}>
             <div className={styles.detailRow}>
-              <dt>Email</dt>
-              <dd>{doctor.email}</dd>
+              <dt>Account email</dt>
+              <dd>{user.email}</dd>
             </div>
-            <div className={styles.detailRow}>
-              <dt>Phone</dt>
-              <dd>{doctor.phone}</dd>
-            </div>
-            <div className={styles.detailRow}>
-              <dt>Location</dt>
-              <dd>
-                {doctor.location.address}, {doctor.location.city},{' '}
-                {doctor.location.state} {doctor.location.zip}
-              </dd>
-            </div>
-            <div className={styles.detailRow}>
-              <dt>Languages</dt>
-              <dd>{doctor.languages.join(', ')}</dd>
-            </div>
-            {doctor.specializations && (
+            {doctor.email && (
+              <div className={styles.detailRow}>
+                <dt>Email</dt>
+                <dd>{doctor.email}</dd>
+              </div>
+            )}
+            {doctor.phone && (
+              <div className={styles.detailRow}>
+                <dt>Phone</dt>
+                <dd>{doctor.phone}</dd>
+              </div>
+            )}
+            {(location.address || location.city) && (
+              <div className={styles.detailRow}>
+                <dt>Location</dt>
+                <dd>
+                  {[
+                    location.address,
+                    location.city,
+                    location.state,
+                    location.zip,
+                  ]
+                    .filter(Boolean)
+                    .join(', ')}
+                </dd>
+              </div>
+            )}
+            {languages.length > 0 && (
+              <div className={styles.detailRow}>
+                <dt>Languages</dt>
+                <dd>{languages.join(', ')}</dd>
+              </div>
+            )}
+            {doctor.specializations && doctor.specializations.length > 0 && (
               <div className={styles.detailRow}>
                 <dt>Specializations</dt>
                 <dd>{doctor.specializations.join(', ')}</dd>

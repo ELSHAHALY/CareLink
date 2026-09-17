@@ -26,6 +26,10 @@ export default function Dashboard() {
     return <Navigate to='/doctor/dashboard' replace />
   }
 
+  if (user.role === 'admin') {
+    return <Navigate to='/admin/doctors' replace />
+  }
+
   return (
     <DashboardLayout>
       <div className={styles.dashboard}>

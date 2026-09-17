@@ -1,33 +1,15 @@
 import { describe, it, expect } from 'vitest'
+import {
+  findMissingFields,
+  isSlotTaken,
+  isBlank,
+  isValidStatus,
+  toLegacyAppointment,
+  mapSupabaseAppointmentError,
+  REQUIRED_APPOINTMENT_FIELDS,
+} from '../utils/appointments'
 
-describe('Appointment validation', () => {
-  const REQUIRED_FIELDS = [
-    'doctorId',
-    'patientId',
-    'date',
-    'time',
-    'type',
-    'patientName',
-    'patientEmail',
-    'patientPhone',
-  ]
-
-  const VALID_STATUSES = ['scheduled', 'completed', 'cancelled']
-
-  function isBlank(value) {
-    if (typeof value !== 'string') return true
-    return value.trim() === ''
-  }
-
-  function findMissingFields(data, fields) {
-    return fields.filter((field) => isBlank(data?.[field]))
-  }
-
-  function generateAppointmentId() {
-    const random = Math.random().toString(36).slice(2, 8)
-    return `apt-${Date.now()}-${random}`
-  }
-
+describe('Appointment validation (real implementation)', () => {
   it('finds no missing fields for complete data', () => {
     const data = {
       doctorId: 'doc-001',
@@ -39,15 +21,12 @@ describe('Appointment validation', () => {
       patientEmail: 'patient@test.com',
       patientPhone: '555-0100',
     }
-    expect(findMissingFields(data, REQUIRED_FIELDS)).toEqual([])
+    expect(findMissingFields(data, REQUIRED_APPOINTMENT_FIELDS)).toEqual([])
   })
 
   it('finds missing fields', () => {
-    const data = {
-      doctorId: 'doc-001',
-      patientId: 'patient@test.com',
-    }
-    const missing = findMissingFields(data, REQUIRED_FIELDS)
+    const data = { doctorId: 'doc-001', patientId: 'patient@test.com' }
+    const missing = findMissingFields(data, REQUIRED_APPOINTMENT_FIELDS)
     expect(missing).toContain('date')
     expect(missing).toContain('time')
     expect(missing).toContain('type')
@@ -65,62 +44,109 @@ describe('Appointment validation', () => {
       patientEmail: 'patient@test.com',
       patientPhone: '555-0100',
     }
-    const missing = findMissingFields(data, REQUIRED_FIELDS)
+    const missing = findMissingFields(data, REQUIRED_APPOINTMENT_FIELDS)
     expect(missing).toContain('date')
     expect(missing).toContain('time')
   })
 
-  it('validates appointment statuses', () => {
-    expect(VALID_STATUSES).toContain('scheduled')
-    expect(VALID_STATUSES).toContain('completed')
-    expect(VALID_STATUSES).toContain('cancelled')
-    expect(VALID_STATUSES).not.toContain('pending')
-    expect(VALID_STATUSES).not.toContain('deleted')
+  it('treats non-string required values as blank', () => {
+    expect(isBlank(undefined)).toBe(true)
+    expect(isBlank(null)).toBe(true)
+    expect(isBlank(123)).toBe(true)
   })
 
-  it('generates unique appointment IDs', () => {
-    const id1 = generateAppointmentId()
-    const id2 = generateAppointmentId()
-    expect(id1).toMatch(/^apt-\d+-[a-z0-9]+$/)
-    expect(id2).toMatch(/^apt-\d+-[a-z0-9]+$/)
-    expect(id1).not.toBe(id2)
+  it('validates appointment statuses', () => {
+    expect(isValidStatus('scheduled')).toBe(true)
+    expect(isValidStatus('completed')).toBe(true)
+    expect(isValidStatus('cancelled')).toBe(true)
+    expect(isValidStatus('pending')).toBe(false)
+    expect(isValidStatus('deleted')).toBe(false)
+  })
+
+  it('maps Supabase rows to legacy shape without leaking extra fields', () => {
+    const legacy = toLegacyAppointment({
+      id: 'uuid-1',
+      doctor_id: 'doc-001',
+      patient_id: 'patient-uuid',
+      date: '2026-01-15',
+      time: '10:00',
+      type: 'Consultation',
+      status: 'scheduled',
+      patient_name: 'John',
+      patient_email: 'p@test.com',
+      patient_phone: '123',
+      notes: 'n',
+    })
+    expect(legacy).toMatchObject({
+      appointmentId: 'uuid-1',
+      doctorId: 'doc-001',
+      patientId: 'patient-uuid',
+    })
+    expect(legacy).not.toHaveProperty('doctor_id')
+  })
+
+  it('maps unique violations to double-booking message', () => {
+    expect(
+      mapSupabaseAppointmentError({ code: '23505', message: 'duplicate key' }),
+    ).toMatch(/already has a scheduled appointment/i)
   })
 })
 
-describe('Slot conflict detection', () => {
-  function isSlotTaken(appointments, { doctorId, date, time }, excludeId = null) {
-    return appointments.some(
-      (a) =>
-        a.appointmentId !== excludeId &&
-        a.doctorId === doctorId &&
-        a.date === date &&
-        a.time === time &&
-        a.status === 'scheduled',
-    )
-  }
-
+describe('Slot conflict detection (real implementation)', () => {
   const existingAppointments = [
-    { appointmentId: 'apt-1', doctorId: 'doc-001', date: '2026-01-15', time: '10:00', status: 'scheduled' },
-    { appointmentId: 'apt-2', doctorId: 'doc-001', date: '2026-01-15', time: '11:00', status: 'cancelled' },
+    {
+      appointmentId: 'apt-1',
+      doctorId: 'doc-001',
+      date: '2026-01-15',
+      time: '10:00',
+      status: 'scheduled',
+    },
+    {
+      appointmentId: 'apt-2',
+      doctorId: 'doc-001',
+      date: '2026-01-15',
+      time: '11:00',
+      status: 'cancelled',
+    },
   ]
 
   it('detects slot conflict', () => {
-    expect(isSlotTaken(existingAppointments, { doctorId: 'doc-001', date: '2026-01-15', time: '10:00' })).toBe(true)
+    expect(
+      isSlotTaken(existingAppointments, {
+        doctorId: 'doc-001',
+        date: '2026-01-15',
+        time: '10:00',
+      }),
+    ).toBe(true)
   })
 
   it('allows slot that only has cancelled appointment', () => {
-    expect(isSlotTaken(existingAppointments, { doctorId: 'doc-001', date: '2026-01-15', time: '11:00' })).toBe(false)
+    expect(
+      isSlotTaken(existingAppointments, {
+        doctorId: 'doc-001',
+        date: '2026-01-15',
+        time: '11:00',
+      }),
+    ).toBe(false)
   })
 
-  it('allows slot for different doctor', () => {
-    expect(isSlotTaken(existingAppointments, { doctorId: 'doc-002', date: '2026-01-15', time: '10:00' })).toBe(false)
-  })
-
-  it('allows different time slot', () => {
-    expect(isSlotTaken(existingAppointments, { doctorId: 'doc-001', date: '2026-01-15', time: '14:00' })).toBe(false)
+  it('allows slot for different doctor (isolation)', () => {
+    expect(
+      isSlotTaken(existingAppointments, {
+        doctorId: 'doc-002',
+        date: '2026-01-15',
+        time: '10:00',
+      }),
+    ).toBe(false)
   })
 
   it('allows excluding the appointment being edited', () => {
-    expect(isSlotTaken(existingAppointments, { doctorId: 'doc-001', date: '2026-01-15', time: '10:00' }, 'apt-1')).toBe(false)
+    expect(
+      isSlotTaken(
+        existingAppointments,
+        { doctorId: 'doc-001', date: '2026-01-15', time: '10:00' },
+        'apt-1',
+      ),
+    ).toBe(false)
   })
 })
