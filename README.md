@@ -130,6 +130,42 @@ npm run format   # auto-fix formatting
 npm run build    # production build
 ```
 
+### Deploy to Fly.io
+
+This project includes a production `Dockerfile`, Nginx SPA fallback, and `fly.toml`.
+
+1. Install and authenticate the Fly CLI, then make sure Docker is running:
+
+```bash
+fly auth login
+```
+
+2. Change the `app` value in `fly.toml` to a globally unique Fly app name, then create it:
+
+```bash
+fly apps create YOUR_UNIQUE_APP_NAME
+```
+
+3. Deploy with the Supabase values used by the production Vite build:
+
+```bash
+fly deploy --build-arg VITE_SUPABASE_URL=https://YOUR_PROJECT.supabase.co --build-arg VITE_SUPABASE_ANON_KEY=YOUR_SUPABASE_ANON_KEY
+```
+
+The anon key is intended for browser use, but do not use a Supabase service-role key here. After deployment, open the URL shown by `fly status` or run `fly open`.
+
+Because this is a static Vite build, changing Supabase values requires another `fly deploy` with the new build arguments.
+
+#### GitHub Actions deployment
+
+The included `.github/workflows/fly-deploy.yml` deploys automatically when code is pushed to `main`. Add these repository secrets in GitHub under **Settings → Secrets and variables → Actions**:
+
+- `FLY_API_TOKEN`: create with `fly tokens create deploy`
+- `VITE_SUPABASE_URL`: your Supabase project URL
+- `VITE_SUPABASE_ANON_KEY`: your Supabase public anon key
+
+Update `app` in `fly.toml` before pushing. The Fly app must already exist with that exact name.
+
 ### Demo Accounts
 
 | Role | Email | Password | Redirect |
