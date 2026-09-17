@@ -1,16 +1,16 @@
-# fly.toml app configuration file generated for carelink-iso4tq on 2026-09-17T18:51:41Z
+# fly.toml app configuration file generated for carelink-1dpvtq on 2026-09-17T19:22:50Z
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
 
-app = 'carelink-iso4tq'
-primary_region = 'iad'
+app = 'carelink-1dpvtq'
+primary_region = 'ams'
 
 [build]
   dockerfile = 'Dockerfile'
 
 [http_service]
-  internal_port = 80
+  internal_port = 8080
   force_https = true
   auto_stop_machines = 'stop'
   auto_start_machines = true
