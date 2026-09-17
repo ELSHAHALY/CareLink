@@ -4,21 +4,31 @@ import logoIcon from '../../assets/logo-icon.png'
 import styles from './Sidebar.module.css'
 
 const PATIENT_LINKS = [
-  { to: '/dashboard', label: 'Dashboard', end: true },
+  { to: '/dashboard', label: 'Overview', end: true },
   { to: '/doctors', label: 'Find a Doctor' },
   { to: '/appointments', label: 'My Appointments' },
   { to: '/profile', label: 'Profile' },
 ]
 
 const DOCTOR_LINKS = [
-  { to: '/doctor/dashboard', label: 'Dashboard', end: true },
+  { to: '/doctor/dashboard', label: 'Overview', end: true },
   { to: '/doctor/appointments', label: 'Appointments' },
-  { to: '/doctor/profile', label: 'Profile' },
+  { to: '/doctor/profile', label: 'My Profile' },
+]
+
+const ADMIN_LINKS = [
+  { to: '/admin', label: 'Overview', end: true },
+  { to: '/admin/doctors', label: 'Doctors' },
 ]
 
 export default function Sidebar({ isOpen, onClose }) {
   const { user, logout } = useAuth()
-  const links = user?.role === 'doctor' ? DOCTOR_LINKS : PATIENT_LINKS
+  const links =
+    user?.role === 'admin'
+      ? ADMIN_LINKS
+      : user?.role === 'doctor'
+      ? DOCTOR_LINKS
+      : PATIENT_LINKS
 
   return (
     <>
@@ -31,7 +41,11 @@ export default function Sidebar({ isOpen, onClose }) {
         aria-label='Dashboard navigation'
       >
         <div className={styles.header}>
-          <Link to='/' className={styles.logo}>
+          <Link
+            to={user?.role === 'admin' ? '/admin' : '/dashboard'}
+            className={styles.logo}
+            onClick={onClose}
+          >
             <img
               src={logoIcon}
               alt='CareLink logo'
@@ -58,7 +72,12 @@ export default function Sidebar({ isOpen, onClose }) {
         </nav>
 
         <div className={styles.footer}>
-          {user && <p className={styles.userName}>{user.name}</p>}
+          {user && (
+            <div className={styles.userBlock}>
+              <p className={styles.userName}>{user.name}</p>
+              <p className={styles.userRole}>{user.role}</p>
+            </div>
+          )}
           <button
             type='button'
             className={styles.logoutBtn}

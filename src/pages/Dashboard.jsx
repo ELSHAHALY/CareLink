@@ -26,6 +26,10 @@ export default function Dashboard() {
     return <Navigate to='/doctor/dashboard' replace />
   }
 
+  if (user.role === 'admin') {
+    return <Navigate to='/admin/doctors' replace />
+  }
+
   return (
     <DashboardLayout>
       <div className={styles.dashboard}>
@@ -42,7 +46,7 @@ export default function Dashboard() {
             <Link to='/doctors' className={styles.actionBtn}>
               Find a Doctor
             </Link>
-            <Link to='/doctors' className={styles.actionBtn}>
+            <Link to='/book-appointment' className={styles.actionBtn}>
               Book Appointment
             </Link>
           </div>

@@ -180,22 +180,6 @@
   margin: 0 0 14px;
 }
 
-.doctor-card__rating {
-  display: flex;
-  gap: 5px;
-  align-items: center;
-  margin-bottom: 12px;
-}
-
-.doctor-card__rating span:first-child {
-  color: #f5a623;
-}
-
-.doctor-card__reviews {
-  color: #6c757d;
-  font-size: 13px;
-}
-
 .doctor-card__location {
   color: #6c757d;
   font-size: 14px;

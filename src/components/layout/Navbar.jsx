@@ -67,7 +67,13 @@ export default function Navbar() {
           {user ? (
             <>
               <Link
-                to={user.role === 'doctor' ? '/doctor/dashboard' : '/dashboard'}
+                to={
+                  user.role === 'admin'
+                    ? '/admin/doctors'
+                    : user.role === 'doctor'
+                    ? '/doctor/dashboard'
+                    : '/dashboard'
+                }
                 className='navbar__user'
               >
                 Hi, {user.name}
@@ -129,7 +135,13 @@ export default function Navbar() {
           {user ? (
             <>
               <Link
-                to={user.role === 'doctor' ? '/doctor/dashboard' : '/dashboard'}
+                to={
+                  user.role === 'admin'
+                    ? '/admin/doctors'
+                    : user.role === 'doctor'
+                    ? '/doctor/dashboard'
+                    : '/dashboard'
+                }
                 className='navbar__btn navbar__btn--ghost'
                 onClick={handleLinkClick}
               >

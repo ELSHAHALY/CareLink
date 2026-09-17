@@ -1,13 +1,17 @@
-import { useState } from 'react'
+import { useState, useContext } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import DoctorFilterBar from '../components/doctors/DoctorFilterBar'
 import DoctorList from '../components/doctors/DoctorList'
+import DoctorSkeleton from '../components/doctors/DoctorSkeleton'
 import useDoctors from '../hooks/useDoctors'
+import { AppointmentContext } from '../context/AppointmentContext'
 import '../styles/doctors.css'
 import Pagination from '../components/doctors/Pagination'
+import ratingsData from '../data/ratings.json'
 
 export default function DoctorsList() {
   const [searchParams] = useSearchParams()
+  const { appointments } = useContext(AppointmentContext)
 
   const [filters, setFilters] = useState({
     search: searchParams.get('search') || '',
@@ -71,7 +75,7 @@ export default function DoctorsList() {
           <span>{filteredDoctors.length} Doctors</span>
         </div>
 
-        {loading && <p>Loading doctors...</p>}
+        {loading && <DoctorSkeleton />}
 
         {error && <p className='error-message'>{error}</p>}
 
@@ -81,7 +85,11 @@ export default function DoctorsList() {
 
         {!loading && !error && filteredDoctors.length > 0 && (
           <>
-            <DoctorList doctors={paginatedDoctors} />
+            <DoctorList
+              doctors={paginatedDoctors}
+              ratings={ratingsData.ratings}
+              appointments={appointments}
+            />
 
             {totalPages > 1 && (
               <Pagination

@@ -5,8 +5,6 @@
       "name": "Dr. James Mitchell",
       "specialty": "Cardiologist",
       "image": "doctor-1.jpg",
-      "rating": 4.8,
-      "reviews": 124,
       "yearsOfExperience": 12,
       "location": {
         "address": "450 Heart Center Blvd",
@@ -37,8 +35,6 @@
       "name": "Dr. Sarah Chen",
       "specialty": "Dermatologist",
       "image": "doctor-2.jpg",
-      "rating": 4.9,
-      "reviews": 200,
       "yearsOfExperience": 8,
       "location": {
         "address": "220 Skin Care Ave",
@@ -68,8 +64,6 @@
       "name": "Dr. Robert Kim",
       "specialty": "Neurologist",
       "image": "doctor-3.jpg",
-      "rating": 4.6,
-      "reviews": 350,
       "yearsOfExperience": 20,
       "location": {
         "address": "780 Neuro Sciences Dr",
@@ -99,8 +93,6 @@
       "name": "Dr. Emily Carter",
       "specialty": "Pediatrician",
       "image": "doctor-4.png",
-      "rating": 4.7,
-      "reviews": 168,
       "yearsOfExperience": 10,
       "location": {
         "address": "125 Children's Medical Center",
@@ -129,8 +121,6 @@
       "name": "Dr. Michael Anderson",
       "specialty": "Orthopedic Surgeon",
       "image": "doctor-5.jpg",
-      "rating": 4.5,
-      "reviews": 142,
       "yearsOfExperience": 15,
       "location": {
         "address": "310 Bone & Joint Center",
@@ -159,8 +149,6 @@
       "name": "Dr. Olivia Brown",
       "specialty": "Gynecologist",
       "image": "doctor-6.jpg",
-      "rating": 4.9,
-      "reviews": 215,
       "yearsOfExperience": 11,
       "location": {
         "address": "95 Women's Health Center",
@@ -189,8 +177,6 @@
       "name": "Dr. Daniel Wilson",
       "specialty": "Cardiologist",
       "image": "doctor-7.jpg",
-      "rating": 4.4,
-      "reviews": 98,
       "yearsOfExperience": 9,
       "location": {
         "address": "610 Cardiac Care Avenue",
@@ -219,8 +205,6 @@
       "name": "Dr. Sophia Martinez",
       "specialty": "Dermatologist",
       "image": "doctor-8.jpg",
-      "rating": 4.3,
-      "reviews": 87,
       "yearsOfExperience": 7,
       "location": {
         "address": "180 Dermatology Plaza",
@@ -249,8 +233,6 @@
       "name": "Dr. William Taylor",
       "specialty": "Neurologist",
       "image": "doctor-9.jpg",
-      "rating": 4.8,
-      "reviews": 176,
       "yearsOfExperience": 14,
       "location": {
         "address": "420 Neurology Institute",
@@ -279,8 +261,6 @@
       "name": "Dr. Emma Davis",
       "specialty": "Pediatrician",
       "image": "doctor-10.png",
-      "rating": 4.6,
-      "reviews": 132,
       "yearsOfExperience": 6,
       "location": {
         "address": "75 Pediatric Health Center",
@@ -309,8 +289,6 @@
       "name": "Dr. Christopher Lee",
       "specialty": "Orthopedic Surgeon",
       "image": "doctor-11.jpg",
-      "rating": 4.7,
-      "reviews": 154,
       "yearsOfExperience": 18,
       "location": {
         "address": "540 Orthopedic Institute",
@@ -339,8 +317,6 @@
       "name": "Dr. Rachel Thompson",
       "specialty": "Gynecologist",
       "image": "doctor-12.jpg",
-      "rating": 4.5,
-      "reviews": 119,
       "yearsOfExperience": 13,
       "location": {
         "address": "260 Women's Wellness Center",
