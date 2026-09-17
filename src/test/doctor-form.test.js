@@ -103,7 +103,11 @@ describe('Doctor profile payload', () => {
 
   it('validates required profile fields', () => {
     expect(
-      validateDoctorProfile({ name_en: 'A', specialty_en: 'B', slug: 'a-b' }),
+      validateDoctorProfile({
+        name_en: 'AB',
+        specialty_en: 'CD',
+        slug: 'ab-cd',
+      }),
     ).toBeNull()
     expect(
       validateDoctorProfile({ name_en: 'x', specialty_en: 'B', slug: 'a' }),
