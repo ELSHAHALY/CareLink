@@ -1,10 +1,10 @@
-import { useMemo } from 'react'
+import { useMemo, useContext } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import ratingsData from '../data/ratings.json'
-import appointmentsData from '../data/appointments.json'
 import StarRating, { calculateRatings } from '../components/doctors/StarRating'
 import { useDoctorById } from '../hooks/useDoctors'
 import { resolveDoctorImage as resolveImage } from '../utils/doctors'
+import { AppointmentContext } from '../context/AppointmentContext'
 import Loader from '../components/common/Loader'
 import styles from './DoctorProfile.module.css'
 
@@ -56,6 +56,7 @@ export default function DoctorProfile() {
   const { doctorId } = useParams()
   const navigate = useNavigate()
   const { doctor, loading } = useDoctorById(doctorId)
+  const { appointments } = useContext(AppointmentContext)
 
   const imageSrc = resolveImage(doctor?.image)
 
@@ -66,8 +67,8 @@ export default function DoctorProfile() {
 
   const doctorAppointments = useMemo(() => {
     if (!doctor) return []
-    return appointmentsData.appointments.filter((a) => a.doctorId === doctor.id)
-  }, [doctor])
+    return appointments.filter((a) => a.doctorId === doctor.id)
+  }, [doctor, appointments])
 
   const { average, count, validRatings } = useMemo(() => {
     return calculateRatings(rawDoctorRatings, doctorAppointments)

@@ -8,5 +8,10 @@ export default defineConfig({
     globals: true,
     setupFiles: ['./src/test/setup.js'],
     css: true,
+    // Mock auth is explicitly enabled for the test environment only.
+    env: {
+      MODE: 'test',
+      VITE_ALLOW_MOCK_AUTH: 'true',
+    },
   },
 })

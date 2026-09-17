@@ -71,8 +71,8 @@ export default function Navbar() {
                   user.role === 'admin'
                     ? '/admin/doctors'
                     : user.role === 'doctor'
-                      ? '/doctor/dashboard'
-                      : '/dashboard'
+                    ? '/doctor/dashboard'
+                    : '/dashboard'
                 }
                 className='navbar__user'
               >
@@ -139,8 +139,8 @@ export default function Navbar() {
                   user.role === 'admin'
                     ? '/admin/doctors'
                     : user.role === 'doctor'
-                      ? '/doctor/dashboard'
-                      : '/dashboard'
+                    ? '/doctor/dashboard'
+                    : '/dashboard'
                 }
                 className='navbar__btn navbar__btn--ghost'
                 onClick={handleLinkClick}

@@ -5,7 +5,8 @@ import {
   validateEmail,
   validateName,
   validatePassword,
-} from '../context/AuthContext'
+} from '../utils/validation'
+import PasswordStrength from '../components/common/PasswordStrength'
 import styles from './Login.module.css'
 
 export default function Register() {
@@ -21,8 +22,7 @@ export default function Register() {
   function validate() {
     const next = {}
     if (!validateName(name)) next.name = 'Name must be at least 2 characters'
-    if (!validateEmail(email))
-      next.email = 'Please enter a valid email address'
+    if (!validateEmail(email)) next.email = 'Please enter a valid email address'
     if (!validatePassword(password))
       next.password = 'Password must be at least 6 characters'
     if (password !== confirm) next.confirm = 'Passwords do not match'
@@ -36,8 +36,8 @@ export default function Register() {
     if (!validate()) return
     const result = await signupPatient({ name, email, password })
     if (result.success) {
-      navigate('/login', {
-        state: { message: 'Account created successfully. Please sign in.' },
+      navigate('/check-email', {
+        state: { email },
       })
     } else {
       setServerError(result.error)
@@ -111,6 +111,7 @@ export default function Register() {
             {errors.password && (
               <p className={styles.errorText}>{errors.password}</p>
             )}
+            <PasswordStrength password={password} />
           </div>
 
           <div className={styles.field}>

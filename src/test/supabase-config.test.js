@@ -10,9 +10,9 @@ describe('Supabase client configuration (real implementation)', () => {
     expect(
       isValidSupabaseUrl('https://your-project.placeholder.supabase.co'),
     ).toBe(false)
-    expect(containsPlaceholder('https://your-project.placeholder.supabase.co')).toBe(
-      true,
-    )
+    expect(
+      containsPlaceholder('https://your-project.placeholder.supabase.co'),
+    ).toBe(true)
   })
 
   it('rejects .env.example default values as invalid', () => {
@@ -42,7 +42,9 @@ describe('Supabase client configuration (real implementation)', () => {
     expect(isValidAnonKey(undefined)).toBe(false)
     expect(isValidAnonKey('short')).toBe(false)
     expect(
-      isValidAnonKey('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.test.payload.signature-long-enough'),
+      isValidAnonKey(
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.test.payload.signature-long-enough',
+      ),
     ).toBe(true)
   })
 })

@@ -1,7 +1,8 @@
 import { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import useAuth from '../hooks/useAuth'
-import { validatePassword } from '../context/AuthContext'
+import { validatePassword } from '../utils/validation'
+import PasswordStrength from '../components/common/PasswordStrength'
 import styles from './Login.module.css'
 
 export default function ResetPassword() {
@@ -59,6 +60,7 @@ export default function ResetPassword() {
               onChange={(e) => setPassword(e.target.value)}
               autoComplete='new-password'
             />
+            <PasswordStrength password={password} />
           </div>
           <div className={styles.field}>
             <label className={styles.label} htmlFor='confirm'>

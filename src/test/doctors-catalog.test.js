@@ -67,7 +67,7 @@ describe('Catalog mapping (real cloud schema)', () => {
     expect(resolveDoctorImage('https://x/y.jpg')).toBe('https://x/y.jpg')
     expect(resolveDoctorImage('a.png')).toBe('/a.png')
     expect(resolveDoctorImage('/a.png')).toBe('/a.png')
-    expect(resolveDoctorImage(null)).toBeNull()
+    expect(resolveDoctorImage(null)).toMatch(/^data:image\/svg\+xml/)
   })
 
   it('builds admin dropdown labels without crashing', () => {
