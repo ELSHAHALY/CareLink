@@ -3,7 +3,7 @@ import {
   validateEmail,
   validateName,
   validatePassword,
-} from '../../context/AuthContext'
+} from '../../utils/validation'
 import {
   doctorOptionLabel,
   parseServicesInput,
@@ -11,7 +11,7 @@ import {
   validateDoctorProfile,
 } from '../../utils/doctors'
 import { validateDoctorImage } from '../../services/doctorImages'
-import styles from '../../pages/AdminDoctors.module.css'
+import styles from './DoctorForm.module.css'
 
 const EMPTY_PROFILE = {
   slug: '',
@@ -119,7 +119,13 @@ export default function DoctorForm({ catalog, submitting, onSubmit }) {
       setFormError(profileError)
       return
     }
-    const name = accountName.trim() || profile.name_en.trim()
+    // Fallback logic: if accountName is empty and name_en is Arabic-only (no Latin chars),
+    // use slugified name_en or email prefix as fallback
+    const hasLatinChars = /[a-zA-Z]/.test(profile.name_en)
+    const fallbackName = hasLatinChars
+      ? profile.name_en.trim()
+      : slugifyName(profile.name_en) || trimmedEmail.split('@')[0]
+    const name = accountName.trim() || fallbackName
     if (!validateName(name)) {
       setFormError('Account name must be at least 2 characters')
       return

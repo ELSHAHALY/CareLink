@@ -1,6 +1,5 @@
 export const REQUIRED_APPOINTMENT_FIELDS = [
   'doctorId',
-  'patientId',
   'date',
   'time',
   'type',

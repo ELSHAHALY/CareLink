@@ -46,7 +46,7 @@ export default function Dashboard() {
             <Link to='/doctors' className={styles.actionBtn}>
               Find a Doctor
             </Link>
-            <Link to='/doctors' className={styles.actionBtn}>
+            <Link to='/book-appointment' className={styles.actionBtn}>
               Book Appointment
             </Link>
           </div>

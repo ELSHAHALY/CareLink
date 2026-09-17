@@ -13,6 +13,8 @@ import Register from '../pages/Register'
 import DoctorRegister from '../pages/DoctorRegister'
 import ForgotPassword from '../pages/ForgotPassword'
 import ResetPassword from '../pages/ResetPassword'
+import CheckEmail from '../pages/CheckEmail'
+import AdminDashboard from '../pages/AdminDashboard'
 import AdminDoctors from '../pages/AdminDoctors'
 import MyAppointments from '../pages/MyAppointments'
 import Profile from '../pages/Profile'
@@ -51,6 +53,7 @@ export default function AppRoutes() {
       {/* Auth pages (standalone) */}
       <Route path='/login' element={<Login />} />
       <Route path='/register' element={<Register />} />
+      <Route path='/check-email' element={<CheckEmail />} />
       <Route path='/doctor/register' element={<DoctorRegister />} />
       <Route path='/forgot-password' element={<ForgotPassword />} />
       <Route path='/reset-password' element={<ResetPassword />} />
@@ -85,6 +88,14 @@ export default function AppRoutes() {
         element={
           <RequireRole roles={['doctor']}>
             <DoctorOwnProfile />
+          </RequireRole>
+        }
+      />
+      <Route
+        path='/admin'
+        element={
+          <RequireRole roles={['admin']}>
+            <AdminDashboard />
           </RequireRole>
         }
       />

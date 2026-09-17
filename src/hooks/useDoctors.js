@@ -11,6 +11,7 @@ const CATALOG_COLUMNS =
   'id,slug,name_ar,name_en,specialty_ar,specialty_en,bio_ar,bio_en,image,services,status,sort_order,verified'
 
 // Legacy local-dev schema from migrations 001/004 (text ids).
+// Only used as fallback for local Supabase CLI development.
 const LEGACY_COLUMNS = 'id, name, specialty, email'
 
 export function filterDoctors(doctors, filters = {}) {
@@ -33,6 +34,7 @@ export function filterDoctors(doctors, filters = {}) {
 
 async function loadCatalogDoctors() {
   // Strategy 1: real cloud catalog (uuid + bilingual columns).
+  // This is the production path - should always succeed in production.
   try {
     const { data, error } = await supabase
       .from('doctors')
@@ -53,6 +55,7 @@ async function loadCatalogDoctors() {
   }
 
   // Strategy 2: legacy text-id schema (local Supabase CLI output).
+  // Only reached in local development environments.
   const { data, error } = await supabase.from('doctors').select(LEGACY_COLUMNS)
   if (error) throw error
   if (!data || data.length === 0) return []

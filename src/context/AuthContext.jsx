@@ -3,6 +3,7 @@ import doctorsData from '../data/doctors.json'
 import supabase, {
   isSupabaseConfigured,
   isProduction,
+  allowMockAuth,
   getSupabaseConfigError,
 } from '../services/supabase'
 
@@ -10,9 +11,9 @@ export const AuthContext = createContext(null)
 
 const STORAGE_KEY = 'carelink_user'
 
-// Mock fallback is DEV-ONLY. In production builds without Supabase env,
-// authentication fails closed instead of silently using mock users.
-export const isMockAuthAllowed = !isSupabaseConfigured && !isProduction
+// Mock auth is opt-in via VITE_ALLOW_MOCK_AUTH=true.
+// In production builds, mock auth is NEVER allowed (isProduction overrides).
+export const isMockAuthAllowed = allowMockAuth && !isProduction
 
 // Mock fallback when Supabase not configured — keeps app usable without .env
 export function resolveMockRole(email) {
@@ -184,6 +185,8 @@ export function AuthProvider({ children }) {
               'Authentication is not configured. Contact support.',
           )
         }
+        // In dev/test, mock auth is opt-in via VITE_ALLOW_MOCK_AUTH=true.
+        // Never silently fall back to mock auth.
         if (!isMockAuthAllowed) {
           throw new Error(
             getSupabaseConfigError() || 'Authentication is not configured.',
@@ -283,8 +286,7 @@ export function AuthProvider({ children }) {
     if (!isSupabaseConfigured || !supabase) {
       return {
         success: false,
-        error:
-          getSupabaseConfigError() || 'Password reset requires Supabase.',
+        error: getSupabaseConfigError() || 'Password reset requires Supabase.',
       }
     }
     const trimmed = email.trim()
@@ -293,6 +295,25 @@ export function AuthProvider({ children }) {
     }
     const { error } = await supabase.auth.resetPasswordForEmail(trimmed, {
       redirectTo: `${window.location.origin}/reset-password`,
+    })
+    if (error) return { success: false, error: mapSupabaseError(error.message) }
+    return { success: true }
+  }, [])
+
+  const resendConfirmation = useCallback(async (email) => {
+    if (!isSupabaseConfigured || !supabase) {
+      return {
+        success: false,
+        error: getSupabaseConfigError() || 'Not configured.',
+      }
+    }
+    const trimmed = email.trim()
+    if (!validateEmail(trimmed)) {
+      return { success: false, error: 'Please enter a valid email address' }
+    }
+    const { error } = await supabase.auth.resend({
+      type: 'signup',
+      email: trimmed,
     })
     if (error) return { success: false, error: mapSupabaseError(error.message) }
     return { success: true }
@@ -328,6 +349,7 @@ export function AuthProvider({ children }) {
     logout,
     resetPassword,
     updatePassword,
+    resendConfirmation,
   }
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
