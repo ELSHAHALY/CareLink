@@ -35,6 +35,7 @@ export default function DoctorDashboard() {
   }
 
   if (user.role !== 'doctor') {
+    if (user.role === 'admin') return <Navigate to='/admin/doctors' replace />
     return <Navigate to='/dashboard' replace />
   }
 

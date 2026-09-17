@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import useAuth from '../hooks/useAuth'
+import { validatePassword } from '../context/AuthContext'
 import styles from './Login.module.css'
 
 export default function ResetPassword() {
@@ -14,7 +15,7 @@ export default function ResetPassword() {
   async function handleSubmit(e) {
     e.preventDefault()
     setError('')
-    if (!password || password.length < 6) {
+    if (!validatePassword(password)) {
       setError('Password must be at least 6 characters')
       return
     }

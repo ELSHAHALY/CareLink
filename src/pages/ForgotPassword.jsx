@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import useAuth from '../hooks/useAuth'
+import { validateEmail } from '../context/AuthContext'
 import styles from './Login.module.css'
 
 export default function ForgotPassword() {
@@ -13,7 +14,7 @@ export default function ForgotPassword() {
     e.preventDefault()
     setError('')
     setSuccess('')
-    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    if (!validateEmail(email)) {
       setError('Please enter a valid email address')
       return
     }

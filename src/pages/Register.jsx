@@ -1,6 +1,11 @@
 import { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import useAuth from '../hooks/useAuth'
+import {
+  validateEmail,
+  validateName,
+  validatePassword,
+} from '../context/AuthContext'
 import styles from './Login.module.css'
 
 export default function Register() {
@@ -15,11 +20,10 @@ export default function Register() {
 
   function validate() {
     const next = {}
-    if (!name.trim() || name.trim().length < 2)
-      next.name = 'Name must be at least 2 characters'
-    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
+    if (!validateName(name)) next.name = 'Name must be at least 2 characters'
+    if (!validateEmail(email))
       next.email = 'Please enter a valid email address'
-    if (!password || password.length < 6)
+    if (!validatePassword(password))
       next.password = 'Password must be at least 6 characters'
     if (password !== confirm) next.confirm = 'Passwords do not match'
     setErrors(next)

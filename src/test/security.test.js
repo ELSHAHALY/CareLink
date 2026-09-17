@@ -1,91 +1,130 @@
 import { describe, it, expect } from 'vitest'
+import * as fs from 'node:fs'
+import { validateEmail, toUserFromProfile } from '../context/AuthContext'
+import { isValidSupabaseUrl } from '../services/supabase'
+import { filterDoctors } from '../hooks/useDoctors'
 
-describe('Security constraints', () => {
-  describe('Role assignment cannot be done from client', () => {
-    it('signupDoctor does not send role update from client', () => {
-      // The fixed signupDoctor should NOT include a profiles.update() call
-      // with { role: 'doctor' }. It should only call supabase.auth.signUp()
-      // and let the admin handle role assignment.
-      // This test verifies the architectural constraint.
-      const CLIENT_FORBIDDEN_OPS = [
-        'profiles.update({ role:',
-        '.update({ role: \'doctor\'',
-        '.update({ role: "doctor"',
-      ]
+function readSource(rel) {
+  // Resolve relative to this test file without relying on cwd.
+  const here = new URL(import.meta.url)
+  const file = new URL(rel, here)
+  return fs.readFileSync(file, 'utf8')
+}
 
-      // These patterns should NOT appear in the signupDoctor function
-      expect(CLIENT_FORBIDDEN_OPS.length).toBeGreaterThan(0) // sanity check
-    })
-
-    it('patient cannot self-assign admin role', () => {
-      const VALID_PATIENT_ROLES = ['patient']
-      expect(VALID_PATIENT_ROLES).not.toContain('admin')
-      expect(VALID_PATIENT_ROLES).not.toContain('doctor')
-    })
+describe('Security constraints (evidence-based)', () => {
+  it('never bundles a service_role key in client source', () => {
+    const authSrc = readSource('../context/AuthContext.jsx')
+    const supabaseSrc = readSource('../services/supabase.js')
+    const adminSrc = readSource('../pages/AdminDoctors.jsx')
+    for (const src of [authSrc, supabaseSrc, adminSrc]) {
+      expect(src.toLowerCase()).not.toContain('service_role')
+      expect(src.toLowerCase()).not.toContain('service-role')
+    }
   })
 
-  describe('Auth flow security', () => {
-    it('admin can only be seeded via SQL/editor', () => {
-      // Admin seeding requires direct SQL: UPDATE profiles SET role = 'admin' WHERE email = '...'
-      // This cannot be done through the client app
-      const ADMIN_SEED_METHOD = 'sql_editor_or_service_role'
-      expect(ADMIN_SEED_METHOD).not.toBe('client_app')
-    })
-
-    it('password minimum length is enforced', () => {
-      const MIN_PASSWORD_LENGTH = 6
-      expect(MIN_PASSWORD_LENGTH).toBeGreaterThanOrEqual(6)
-    })
-
-    it('email validation regex is correct', () => {
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-      expect(emailRegex.test('valid@email.com')).toBe(true)
-      expect(emailRegex.test('invalid')).toBe(false)
-      expect(emailRegex.test('@no-user.com')).toBe(false)
-      expect(emailRegex.test('spaces in@email.com')).toBe(false)
-    })
+  it('admin creation does not use client signUp (would swap admin session)', () => {
+    const adminSrc = readSource('../pages/AdminDoctors.jsx')
+    expect(adminSrc).toContain('admin-create-doctor')
+    expect(adminSrc).not.toContain('supabase.auth.signUp')
   })
 
-  describe('RLS policy security', () => {
-    it('own profile policy uses auth.uid()', () => {
-      // The RLS policy must check: auth.uid() = id
-      // This ensures users can only access their own profile
-      const POLICY_CONDITION = 'auth.uid() = id'
-      expect(POLICY_CONDITION).toContain('auth.uid()')
-    })
-
-    it('admin policy checks admin role via subquery', () => {
-      // Admin RLS policy must verify the requesting user has admin role
-      // by checking their own profile: exists(select 1 from profiles where id = auth.uid() and role = 'admin')
-      const ADMIN_POLICY = 'exists(select 1 from profiles where id = auth.uid() and role = \'admin\')'
-      expect(ADMIN_POLICY).toContain('role')
-      expect(ADMIN_POLICY).toContain('admin')
-      expect(ADMIN_POLICY).toContain('auth.uid()')
-    })
-
-    it('no policy allows anonymous access', () => {
-      // All important policies should be scoped to 'authenticated' role
-      const ANON_ACCESS_ALLOWED = false
-      expect(ANON_ACCESS_ALLOWED).toBe(false)
-    })
+  it('missing profile defaults to patient (no privilege escalation)', () => {
+    const user = toUserFromProfile(
+      { id: 'u1', email: 'attacker@test.com' },
+      null,
+    )
+    expect(user.role).toBe('patient')
+    expect(user.role).not.toBe('admin')
+    expect(user.role).not.toBe('doctor')
   })
 
-  describe('Data isolation', () => {
-    it('doctors have unique IDs', () => {
-      const doctorsData = {
-        doctors: [
-          { id: 'doc-001' },
-          { id: 'doc-002' },
-          { id: 'doc-003' },
-        ],
-      }
-      const ids = doctorsData.doctors.map((d) => d.id)
-      expect(new Set(ids).size).toBe(ids.length)
-    })
+  it('patient signup cannot inject admin role via validation helpers', () => {
+    expect(validateEmail('patient@test.com')).toBe(true)
+    // Role assignment is server-side (trigger defaults to patient);
+    // the client never sends a role field for patient signup.
+    const patientSignupSrc = readSource('../context/AuthContext.jsx')
+    const signupSection = patientSignupSrc.slice(
+      patientSignupSrc.indexOf('const signupPatient'),
+      patientSignupSrc.indexOf('const logout'),
+    )
+    expect(signupSection).not.toMatch(/role:\s*['"]admin['"]/)
+    expect(signupSection).not.toMatch(/role:\s*['"]doctor['"]/)
+  })
 
-    it('doctor IDs match expected format', () => {
-      const doctorId = 'doc-001'
-      expect(doctorId).toMatch(/^doc-\d+$/)
-    })
+  it('RLS hardening migration blocks self role escalation', () => {
+    const migration = readSource(
+      '../../supabase/migrations/008_harden_roles.sql',
+    )
+    expect(migration).toContain('prevent_role_escalation')
+    expect(migration).toContain('Only admins can change roles')
+    expect(migration).toContain("role in ('patient', 'doctor')")
+  })
+
+  it('appointments migration enforces ownership + no double booking', () => {
+    const migration = readSource(
+      '../../supabase/migrations/007_appointments.sql',
+    )
+    expect(migration).toContain('auth.uid() = patient_id')
+    expect(migration).toContain('appointments_no_double_booking')
+    expect(migration).toContain('public.is_admin()')
+  })
+
+  it('cloud adapt migration matches the uuid catalog and guards wrong types', () => {
+    const migration = readSource(
+      '../../supabase/migrations/009_cloud_adapt.sql',
+    )
+    expect(migration).toContain('doctor_id uuid references public.doctors(id)')
+    expect(migration).toContain('prevent_role_escalation')
+    expect(migration).toContain('appointments_no_double_booking')
+    expect(migration).toContain('wrong type')
+    // Must never attempt to recreate the existing doctors table/data
+    // (FK references to public.doctors are expected and fine).
+    expect(migration).not.toMatch(
+      /create\s+table\s+(if\s+not\s+exists\s+)?public\.doctors\s*\(/i,
+    )
+    // Must never seed/overwrite the existing doctors data (the filename may
+    // appear in the DO-NOT-RUN warning comment — only DML matters).
+    expect(migration).not.toMatch(/insert\s+into\s+public\.doctors/i)
+  })
+
+  it('doctor data isolation holds in filter helper', () => {
+    const doctors = [
+      {
+        id: 'doc-001',
+        name: 'A',
+        specialty: 'Cardio',
+        location: { city: 'X' },
+        rating: 5,
+      },
+      {
+        id: 'doc-002',
+        name: 'B',
+        specialty: 'Derm',
+        location: { city: 'Y' },
+        rating: 4,
+      },
+    ]
+    expect(filterDoctors(doctors, { search: '' }).length).toBe(2)
+    expect(filterDoctors(doctors, { search: 'A' }).map((d) => d.id)).toEqual([
+      'doc-001',
+    ])
+  })
+
+  it('Supabase URL validator rejects example placeholders', () => {
+    expect(isValidSupabaseUrl('https://your-project.supabase.co')).toBe(false)
+  })
+
+  it('escalation guard keeps a server-side bootstrap path (no lockout)', () => {
+    // Regression: the trigger must still let postgres (SQL Editor) and the
+    // service_role key (Edge Functions) through, or the first admin could
+    // never be created and admin-create-doctor would always fail.
+    for (const f of [
+      '../../supabase/migrations/008_harden_roles.sql',
+      '../../supabase/migrations/010_fix_server_side_admin.sql',
+    ]) {
+      const migration = readSource(f)
+      expect(migration).toContain("coalesce(auth.role(), '') = 'service_role'")
+      expect(migration).toContain("current_user = 'postgres'")
+    }
   })
 })

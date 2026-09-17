@@ -4,7 +4,7 @@ import '../../styles/spinner.css'
 
 const AUTH_ROUTES = ['/login']
 
-export default function NavigationLoader() {
+export default function Spinner() {
   const location = useLocation()
 
   const previousPathRef = useRef(location.pathname)
