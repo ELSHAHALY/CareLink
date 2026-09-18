@@ -2,7 +2,7 @@ import { useMemo } from 'react'
 import { Link } from 'react-router-dom'
 import { FiCalendar, FiClock } from 'react-icons/fi'
 import { useAppointments } from '../../hooks/useAppointments'
-import doctorsData from '../../data/doctors.json'
+import { useDoctorsCatalog } from '../../hooks/useDoctorsCatalog'
 import Badge from '../common/Badge'
 import EmptyState from '../common/EmptyState'
 import styles from './UpcomingAppointments.module.css'
@@ -18,6 +18,7 @@ function formatDate(dateStr) {
 
 export default function UpcomingAppointments() {
   const { appointments } = useAppointments()
+  const { doctorMap } = useDoctorsCatalog()
 
   const upcoming = useMemo(() => {
     const today = new Date().toISOString().slice(0, 10)
@@ -28,14 +29,6 @@ export default function UpcomingAppointments() {
       )
       .slice(0, 3)
   }, [appointments])
-
-  const doctorMap = useMemo(() => {
-    const map = {}
-    doctorsData.doctors.forEach((doc) => {
-      map[doc.id] = doc
-    })
-    return map
-  }, [])
 
   if (upcoming.length === 0) {
     return (

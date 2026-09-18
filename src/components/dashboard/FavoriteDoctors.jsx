@@ -2,22 +2,24 @@ import { useMemo } from 'react'
 import { Link } from 'react-router-dom'
 import { FiStar, FiHeart, FiBookmark } from 'react-icons/fi'
 import { useFavorites } from '../../hooks/useFavorites'
-import doctorsData from '../../data/doctors.json'
+import { useDoctorsCatalog } from '../../hooks/useDoctorsCatalog'
 import ratingsData from '../../data/ratings.json'
 import appointmentsData from '../../data/appointments.json'
 import { calculateRatings } from '../doctors/StarRating'
+import { resolveDoctorImage } from '../../utils/doctors'
 import EmptyState from '../common/EmptyState'
 import styles from './FavoriteDoctors.module.css'
 
 export default function FavoriteDoctors() {
   const { favorites, toggleFavorite, isFavorite } = useFavorites()
+  const { doctorMap } = useDoctorsCatalog()
 
   const favoriteDoctors = useMemo(() => {
     return favorites
-      .map((id) => doctorsData.doctors.find((d) => d.id === id))
+      .map((id) => doctorMap[id])
       .filter(Boolean)
       .slice(0, 3)
-  }, [favorites])
+  }, [favorites, doctorMap])
 
   function getDoctorRating(doctorId) {
     const doctorRatings = ratingsData.ratings.filter(
@@ -70,6 +72,11 @@ export default function FavoriteDoctors() {
           const favorited = isFavorite(doctor.id)
           return (
             <div key={doctor.id} className={styles.card}>
+              <img
+                src={resolveDoctorImage(doctor.image)}
+                alt={doctor.name}
+                className={styles.image}
+              />
               <div className={styles.imageWrapper}>
                 <img
                   src={`/${doctor.image}`}

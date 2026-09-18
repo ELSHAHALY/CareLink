@@ -161,7 +161,49 @@
   white-space: nowrap;
 }
 
+<<<<<<< HEAD
 @media (max-width: 768px) {
+=======
+.completeBtn,
+.cancelBtn {
+  padding: 0.375rem 0.75rem;
+  border-radius: 6px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+
+.completeBtn {
+  border: 1px solid #00a676;
+  background: #fff;
+  color: #00a676;
+}
+
+.completeBtn:hover:not(:disabled) {
+  background: #00a676;
+  color: #fff;
+}
+
+.cancelBtn {
+  border: 1px solid #dc3545;
+  background: #fff;
+  color: #dc3545;
+}
+
+.cancelBtn:hover:not(:disabled) {
+  background: #dc3545;
+  color: #fff;
+}
+
+.completeBtn:disabled,
+.cancelBtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+@media (max-width: 480px) {
+>>>>>>> ef1d91dc3df2459ca1fae9b1f6f134504a780871
   .card {
     flex-direction: column;
     align-items: flex-start;
