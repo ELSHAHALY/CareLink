@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import '../../styles/footer.css'
 
 export default function Footer() {
@@ -58,7 +59,9 @@ export default function Footer() {
 
         {/* Contact */}
         <div className='footer__section footer__contact'>
-          <h3>Contact Us</h3>
+          <h3>
+            <Link to='/contact'>Contact Us</Link>
+          </h3>
 
           <p>hello@carelink.com</p>
           <p>+20 100 000 0000</p>

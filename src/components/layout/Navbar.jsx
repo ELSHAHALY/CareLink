@@ -8,6 +8,7 @@ const NAV_LINKS = [
   { to: '/', label: 'Home', end: true },
   { to: '/doctors', label: 'Find a Doctor' },
   { to: '/appointments', label: 'My Appointments' },
+  { to: '/contact', label: 'Contact Us' },
 ]
 
 export default function Navbar() {
@@ -71,8 +72,8 @@ export default function Navbar() {
                   user.role === 'admin'
                     ? '/admin/doctors'
                     : user.role === 'doctor'
-                      ? '/doctor/dashboard'
-                      : '/dashboard'
+                    ? '/doctor/dashboard'
+                    : '/dashboard'
                 }
                 className='navbar__user'
               >
@@ -139,8 +140,8 @@ export default function Navbar() {
                   user.role === 'admin'
                     ? '/admin/doctors'
                     : user.role === 'doctor'
-                      ? '/doctor/dashboard'
-                      : '/dashboard'
+                    ? '/doctor/dashboard'
+                    : '/dashboard'
                 }
                 className='navbar__btn navbar__btn--ghost'
                 onClick={handleLinkClick}
