@@ -1,15 +1,16 @@
-# fly.toml app configuration file for carelink-1dpvtq
+# fly.toml app configuration file generated for carelink-1dpvtq on 2026-09-17T19:22:50Z
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
 
 app = 'carelink-1dpvtq'
-primary_region = 'iad'
+primary_region = 'ams'
 
 [build]
   dockerfile = 'Dockerfile'
 
 [http_service]
+  # Nginx listens on port 80 in the production image.
   internal_port = 80
   force_https = true
   auto_stop_machines = 'stop'
