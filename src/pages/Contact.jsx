@@ -91,9 +91,11 @@ export default function Contact() {
   const abortControllerRef = useRef(null)
   const isMountedRef = useRef(true)
   const wasShowingSuccessRef = useRef(false)
+  const submissionLockRef = useRef(false)
 
   useEffect(() => {
     isMountedRef.current = true
+
     return () => {
       isMountedRef.current = false
       abortControllerRef.current?.abort()
@@ -134,7 +136,7 @@ export default function Contact() {
 
   const handleSubmit = async (event) => {
     event.preventDefault()
-    if (isSubmitting) return
+    if (isSubmitting || submissionLockRef.current) return
 
     const validationErrors = validateAll(values)
     if (Object.keys(validationErrors).length > 0) {
@@ -145,6 +147,7 @@ export default function Contact() {
 
     setFieldErrors({})
     setSubmissionError(null)
+    submissionLockRef.current = true
     setIsSubmitting(true)
 
     const controller = new AbortController()
@@ -160,15 +163,23 @@ export default function Contact() {
       })
       if (!isMountedRef.current) return
       setSuccessMessage(result.detail)
-      setIsSubmitting(false)
     } catch (err) {
       if (err?.name === 'AbortError') {
         return
       }
       if (!isMountedRef.current) return
-      setSubmissionError(err.message)
-      setIsSubmitting(false)
+      setSubmissionError(
+        err instanceof Error
+          ? err.message
+          : 'Unable to send your message. Please try again.',
+      )
     } finally {
+      submissionLockRef.current = false
+
+      if (isMountedRef.current) {
+        setIsSubmitting(false)
+      }
+
       if (abortControllerRef.current === controller) {
         abortControllerRef.current = null
       }
