@@ -2,6 +2,7 @@ import { useRef } from 'react'
 import { Outlet } from 'react-router-dom'
 import Navbar from './Navbar'
 import Footer from './Footer'
+import AIChatbot from './AIChatbot'
 import styles from './MainLayout.module.css'
 
 export default function MainLayout() {
@@ -13,7 +14,8 @@ export default function MainLayout() {
       <main className={styles.mainLayoutContent}>
         <Outlet />
       </main>
-      <Footer />
+      <Footer onHelpCenterClick={() => chatbotOpenRef.current?.()} />
+      <AIChatbot onRegisterOpen={(fn) => { chatbotOpenRef.current = fn }} />
     </div>
   )
 }

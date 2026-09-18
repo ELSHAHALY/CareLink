@@ -1,11 +1,3 @@
-/* ============================================================
-   CareLink AI Help Center — Chatbot Widget Styles
-   ============================================================
-   Uses the project's CSS custom properties from global.css
-   and follows the BEM-like naming convention used in
-   navbar.css, footer.css, etc.
-   ============================================================ */
-
 /* ── Floating trigger button (closed state) ────────────────── */
 
 .chatbot__trigger {
