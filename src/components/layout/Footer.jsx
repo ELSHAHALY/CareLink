@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom'
 import { FaEnvelope, FaPhone, FaMapMarkerAlt } from 'react-icons/fa'
 import styles from './Footer.module.css'
 
-export default function Footer() {
+export default function Footer({ onHelpCenterClick }) {
   return (
     <footer className={styles.footer}>
       <div className={styles.footerContainer}>
@@ -50,8 +50,15 @@ export default function Footer() {
               <Link to='/health-tips'>Health Tips</Link>
             </li>
             <li>
-              <Link to='/help'>Help Center</Link>
+              <button
+                type='button'
+                className='footer__link-button'
+                onClick={onHelpCenterClick}
+              >
+                Help Center
+              </button>
             </li>
+          
           </ul>
         </div>
 
