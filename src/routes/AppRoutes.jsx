@@ -4,6 +4,7 @@ import Home from '../pages/Home'
 import DoctorsList from '../pages/DoctorsList'
 import DoctorDetailPage from '../pages/DoctorProfile'
 import BookAppointment from '../pages/BookAppointment'
+import Contact from '../pages/Contact'
 import Dashboard from '../pages/Dashboard'
 import DoctorDashboard from '../pages/DoctorDashboard'
 import DoctorAppointments from '../pages/DoctorAppointments'
@@ -31,6 +32,7 @@ export default function AppRoutes() {
         <Route path='/doctors' element={<DoctorsList />} />
         <Route path='/doctors/:doctorId' element={<DoctorDetailPage />} />
         <Route path='/book-appointment' element={<BookAppointment />} />
+        <Route path='/contact' element={<Contact />} />
         <Route
           path='/appointments'
           element={

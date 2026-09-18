@@ -8,6 +8,7 @@ const NAV_LINKS = [
   { to: '/', label: 'Home', end: true },
   { to: '/doctors', label: 'Find a Doctor' },
   { to: '/appointments', label: 'My Appointments' },
+  { to: '/contact', label: 'Contact Us' },
 ]
 
 export default function Navbar() {
