@@ -6,3 +6,4 @@ others/
 .env
 .env.local
 .env.*.local
+lambda/
