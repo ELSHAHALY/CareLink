@@ -219,7 +219,7 @@ export default function Navbar() {
             <>
               <div className={styles.mobileDivider}></div>
               <NavLink
-                to='/my-appointments'
+                to='/appointments'
                 onClick={handleLinkClick}
                 className={({ isActive }) =>
                   styles.mobileLink +
