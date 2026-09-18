@@ -8,6 +8,10 @@ import EmptyState from '../components/common/EmptyState'
 import Loader from '../components/common/Loader'
 import styles from './DoctorAppointments.module.css'
 
+function getTodayString() {
+  return new Date().toISOString().slice(0, 10)
+}
+
 const TABS = [
   { key: 'scheduled', label: 'Upcoming' },
   { key: 'completed', label: 'Completed' },
@@ -22,8 +26,22 @@ function compareAppointments(a, b) {
 
 export default function DoctorAppointments() {
   const { user, loading } = useAuth()
-  const { appointments, isLoading, error } = useAppointments()
+  const { appointments, isLoading, error, updateAppointment } = useAppointments()
   const [activeTab, setActiveTab] = useState('scheduled')
+  const [actingId, setActingId] = useState(null)
+
+  async function handleComplete(appointmentId) {
+    setActingId(appointmentId)
+    await updateAppointment(appointmentId, { status: 'completed' })
+    setActingId(null)
+  }
+
+  async function handleCancel(appointmentId) {
+    if (!window.confirm('Cancel this appointment?')) return
+    setActingId(appointmentId)
+    await updateAppointment(appointmentId, { status: 'cancelled' })
+    setActingId(null)
+  }
 
   const doctorAppointments = useMemo(() => {
     if (!user?.doctorId) return []
@@ -93,18 +111,40 @@ export default function DoctorAppointments() {
           <div className={styles.list}>
             {filtered.map((apt) => (
               <div key={apt.appointmentId} className={styles.card}>
-                <div className={styles.cardMain}>
-                  <span className={styles.time}>{apt.time}</span>
-                  <div className={styles.cardInfo}>
-                    <p className={styles.patient}>{apt.patientId}</p>
-                    <p className={styles.type}>{apt.type}</p>
-                  </div>
-                </div>
-                <div className={styles.cardMeta}>
-                  <span className={styles.date}>{apt.date}</span>
-                  <Badge status={apt.status} />
+              <div className={styles.cardMain}>
+                <span className={styles.time}>{apt.time}</span>
+                <div className={styles.cardInfo}>
+                  <p className={styles.patient}>
+                    {apt.patientName || 'Unknown Patient'}
+                  </p>
+                  <p className={styles.type}>{apt.type}</p>
                 </div>
               </div>
+              <div className={styles.cardMeta}>
+                <span className={styles.date}>{apt.date}</span>
+                <Badge status={apt.status} />
+                {apt.status === 'scheduled' && (
+                  <>
+                    <button
+                      type='button'
+                      className={styles.completeBtn}
+                      onClick={() => handleComplete(apt.appointmentId)}
+                      disabled={actingId === apt.appointmentId}
+                    >
+                      {actingId === apt.appointmentId ? '…' : 'Complete'}
+                    </button>
+                    <button
+                      type='button'
+                      className={styles.cancelBtn}
+                      onClick={() => handleCancel(apt.appointmentId)}
+                      disabled={actingId === apt.appointmentId}
+                    >
+                      {actingId === apt.appointmentId ? '…' : 'Cancel'}
+                    </button>
+                  </>
+                )}
+              </div>
+            </div>
             ))}
           </div>
         )}

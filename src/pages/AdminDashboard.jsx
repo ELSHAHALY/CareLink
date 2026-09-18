@@ -53,37 +53,55 @@ export default function AdminDashboard() {
         return
       }
       try {
-        const [{ data: doctors }, { count: patientCount }, { data: apts }] =
-          await Promise.all([
-            supabase
-              .from('doctors')
-              .select('id, status, name_en, name_ar, specialty_en, image')
-              .order('created_at', { ascending: false })
-              .limit(6),
-            supabase
-              .from('profiles')
-              .select('*', { count: 'exact', head: true })
-              .eq('role', 'patient'),
-            supabase
-              .from('appointments')
-              .select('id', { count: 'exact', head: true })
-              .gte('date', new Date().toISOString().slice(0, 10))
-              .eq('status', 'scheduled'),
-          ])
+        const today = new Date().toISOString().slice(0, 10)
+        const [
+          { data: recent, error: recentErr },
+          { count: publishedCount, error: publishedErr },
+          { count: draftCount, error: draftErr },
+          { count: patientCount, error: patientErr },
+          { count: upcomingCount, error: upcomingErr },
+        ] = await Promise.all([
+          supabase
+            .from('doctors')
+            .select('id, status, name_en, name_ar, specialty_en, image, created_at')
+            .order('created_at', { ascending: false })
+            .limit(6),
+          supabase
+            .from('doctors')
+            .select('*', { count: 'exact', head: true })
+            .or('status.is.null,status.eq.published'),
+          supabase
+            .from('doctors')
+            .select('*', { count: 'exact', head: true })
+            .eq('status', 'draft'),
+          supabase
+            .from('profiles')
+            .select('*', { count: 'exact', head: true })
+            .eq('role', 'patient'),
+          supabase
+            .from('appointments')
+            .select('*', { count: 'exact', head: true })
+            .gte('date', today)
+            .eq('status', 'scheduled'),
+        ])
         if (cancelled) return
-        const published = (doctors || []).filter(
-          (d) => !d.status || d.status === 'published',
-        ).length
-        const draft = (doctors || []).length - published
+        if (recentErr) throw recentErr
+        if (publishedErr) throw publishedErr
+        if (draftErr) throw draftErr
+        if (patientErr) throw patientErr
+        if (upcomingErr) throw upcomingErr
         setStats({
-          publishedDoctors: published,
-          draftDoctors: draft,
+          publishedDoctors: publishedCount || 0,
+          draftDoctors: draftCount || 0,
           totalPatients: patientCount || 0,
-          upcomingAppointments: apts?.length ?? 0,
+          upcomingAppointments: upcomingCount || 0,
         })
-        setRecentDoctors((doctors || []).slice(0, 5))
-      } catch {
-        // ignore
+        setRecentDoctors((recent || []).slice(0, 5))
+      } catch (err) {
+        if (!cancelled) {
+          // Surface error via console; UI keeps previous zeros.
+          console.error('Failed to load admin dashboard stats:', err)
+        }
       } finally {
         if (!cancelled) setLoading(false)
       }

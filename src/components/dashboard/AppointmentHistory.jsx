@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 import { Link } from 'react-router-dom'
 import { useAppointments } from '../../hooks/useAppointments'
-import doctorsData from '../../data/doctors.json'
+import { useDoctorsCatalog } from '../../hooks/useDoctorsCatalog'
 import Badge from '../common/Badge'
 import EmptyState from '../common/EmptyState'
 import styles from './AppointmentHistory.module.css'
@@ -17,14 +17,7 @@ function formatDate(dateStr) {
 
 export default function AppointmentHistory() {
   const { appointments } = useAppointments()
-
-  const doctorMap = useMemo(() => {
-    const map = {}
-    doctorsData.doctors.forEach((doc) => {
-      map[doc.id] = doc
-    })
-    return map
-  }, [])
+  const { doctorMap } = useDoctorsCatalog()
 
   const recentCompleted = useMemo(() => {
     return appointments
