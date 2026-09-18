@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 import { Navigate, Link } from 'react-router-dom'
 import useAuth from '../hooks/useAuth'
 import { useAppointments } from '../hooks/useAppointments'
@@ -20,7 +20,7 @@ function compareAppointments(a, b) {
 
 export default function DoctorDashboard() {
   const { user, loading } = useAuth()
-  const { appointments, isLoading, error } = useAppointments()
+  const { appointments, isLoading, error, updateAppointment } = useAppointments()
 
   if (loading) {
     return (
@@ -40,17 +40,38 @@ export default function DoctorDashboard() {
   }
 
   return (
-    <DoctorDashboardContent
-      user={user}
-      appointments={appointments}
-      isLoading={isLoading}
-      error={error}
-    />
+      <DoctorDashboardContent
+        user={user}
+        appointments={appointments}
+        isLoading={isLoading}
+        error={error}
+        updateAppointment={updateAppointment}
+      />
   )
 }
 
-function DoctorDashboardContent({ user, appointments, isLoading, error }) {
+function DoctorDashboardContent({
+  user,
+  appointments,
+  isLoading,
+  error,
+  updateAppointment,
+}) {
   const doctorId = user.doctorId
+  const [actingId, setActingId] = useState(null)
+
+  async function handleComplete(appointmentId) {
+    setActingId(appointmentId)
+    await updateAppointment(appointmentId, { status: 'completed' })
+    setActingId(null)
+  }
+
+  async function handleCancel(appointmentId) {
+    if (!window.confirm('Cancel this appointment?')) return
+    setActingId(appointmentId)
+    await updateAppointment(appointmentId, { status: 'cancelled' })
+    setActingId(null)
+  }
 
   const doctorAppointments = useMemo(
     () => appointments.filter((a) => a.doctorId === doctorId),
@@ -141,6 +162,9 @@ function DoctorDashboardContent({ user, appointments, isLoading, error }) {
                 <DoctorAppointmentRow
                   key={apt.appointmentId}
                   appointment={apt}
+                  onComplete={handleComplete}
+                  onCancel={handleCancel}
+                  actingId={actingId}
                 />
               ))}
             </div>
@@ -162,6 +186,9 @@ function DoctorDashboardContent({ user, appointments, isLoading, error }) {
                 <DoctorAppointmentRow
                   key={apt.appointmentId}
                   appointment={apt}
+                  onComplete={handleComplete}
+                  onCancel={handleCancel}
+                  actingId={actingId}
                 />
               ))}
             </div>
@@ -172,19 +199,48 @@ function DoctorDashboardContent({ user, appointments, isLoading, error }) {
   )
 }
 
-function DoctorAppointmentRow({ appointment }) {
+function DoctorAppointmentRow({
+  appointment,
+  onComplete,
+  onCancel,
+  actingId,
+}) {
+  const isScheduled = appointment.status === 'scheduled'
+  const isActing = actingId === appointment.appointmentId
   return (
     <div className={styles.row}>
       <div className={styles.rowMain}>
         <span className={styles.rowTime}>{appointment.time}</span>
         <div className={styles.rowInfo}>
-          <p className={styles.patientName}>{appointment.patientId}</p>
+          <p className={styles.patientName}>
+            {appointment.patientName || 'Unknown Patient'}
+          </p>
           <p className={styles.appointmentType}>{appointment.type}</p>
         </div>
       </div>
       <div className={styles.rowMeta}>
         <span className={styles.rowDate}>{appointment.date}</span>
         <Badge status={appointment.status} />
+        {isScheduled && (
+          <>
+            <button
+              type='button'
+              className={styles.completeBtn}
+              onClick={() => onComplete(appointment.appointmentId)}
+              disabled={isActing}
+            >
+              {isActing ? '…' : 'Complete'}
+            </button>
+            <button
+              type='button'
+              className={styles.cancelBtn}
+              onClick={() => onCancel(appointment.appointmentId)}
+              disabled={isActing}
+            >
+              {isActing ? '…' : 'Cancel'}
+            </button>
+          </>
+        )}
       </div>
     </div>
   )
