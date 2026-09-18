@@ -3,13 +3,10 @@ import { Navigate } from 'react-router-dom'
 import { FaRegCalendarAlt, FaRegClipboard } from 'react-icons/fa'
 import useAuth from '../hooks/useAuth'
 import { useAppointments } from '../hooks/useAppointments'
-<<<<<<< HEAD
-// تم إزالة استيراد DashboardLayout
-=======
+
 import { useDoctorsCatalog } from '../hooks/useDoctorsCatalog'
 import { resolveDoctorImage } from '../utils/doctors'
-import DashboardLayout from '../components/layout/DashboardLayout'
->>>>>>> ef1d91dc3df2459ca1fae9b1f6f134504a780871
+
 import Badge from '../components/common/Badge'
 import EmptyState from '../components/common/EmptyState'
 import Loader from '../components/common/Loader'

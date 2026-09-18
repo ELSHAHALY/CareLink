@@ -1,194 +1,130 @@
-# CareLink — Healthcare Appointment Platform
+# CareLink
 
-> **What is CareLink?** A simple website where patients find doctors and book appointments, and doctors manage their own appointments. Made with React.
+موقع بسيط يربط المرضى بالأطباء.
 
-> **ما هو CareLink؟** موقع بسيط يربط المرضى بالأطباء: المريض يبحث عن طبيب ويحجز موعد، والطبيب يشوف مواعيده ويديرها. معمول بـ React.
+المريض يلاقي طبيب ويحجز موعد. الطبيب يشوف مواعيده ويكملها أو يلغيها. الأدمن يدير الكتالوج والحسابات.
 
----
-
-
-
-### What does the app do?
-
-- **Patient:** Browse doctors, see doctor details, pick a date and time, and book an appointment. See upcoming and past appointments in a dashboard.
-- **Doctor:** Log in with doctor email, see today's appointments, upcoming ones, and completed ones. See own profile and appointment list.
-- **Anyone:** Responsive on phone, tablet, and desktop. Works even without backend — uses local mock data.
-
-### How to use it?
-
-1. Open the app (after `npm run dev`, link is usually `http://localhost:5173`)
-2. **As Patient:** Go to Login → enter any email (like `patient@test.com`) + password 6+ chars → you go to `/dashboard`
-3. **As Doctor:** Go to Login → click **"Continue as Doctor (Demo)"** or enter `j.mitchell@carelink.com` / `s.chen@carelink.com` / `r.kim@carelink.com` + `123456` → you go to `/doctor/dashboard`
-
-### Colors & Design
-
-- Blue `#007bff` for main actions, Teal `#00a676` for highlights, Light gray `#f8f9fa` for backgrounds. Simple and clean, same style everywhere.
+A simple healthcare site: patients book doctors, doctors manage appointments, admins run the catalog.
 
 ---
 
-## Roadmap & Current Status
+## للجمهور — in one minute
 
-### Roadmap (خريطة الطريق)
+CareLink is a clinic booking website.
 
-```
-Phase 1 — Foundation ✅ Done
-  ├─ Project setup (React + Vite + React Router)
-  ├─ Mock data (doctors, appointments, ratings)
-  ├─ Search & filter doctors
-  ├─ Doctor profile with reviews
-  ├─ Booking: date + time slot picker
-  └─ Code quality: ESLint + Prettier, build passes
+| Who | What they can do |
+|-----|------------------|
+| **Patient** | Search doctors, open a profile, book a slot, see upcoming visits, cancel if needed |
+| **Doctor** | See today’s list, mark visits complete or cancelled, edit their bio |
+| **Admin** | Add doctors with a photo and login, archive/restore, watch live counts |
 
-Phase 2 — Patient Experience ✅ Done
-  ├─ Login with validation
-  ├─ Patient Dashboard: welcome + upcoming + quick actions + favorites + history
-  ├─ Sidebar + responsive layout
-  └─ Role detection (patient vs doctor by email)
+No downloads. Open the site, sign in, done.
 
-Phase 3 — Doctor Portal ✅ Done
-  ├─ Doctor Dashboard: welcome + summary (Today / Upcoming / Completed) + today's list + upcoming list
-  ├─ Doctor Appointments page with tabs (Upcoming / Completed / Cancelled)
-  ├─ Doctor Profile (read-only from doctors.json)
-  └─ Doctor sees ONLY own appointments (filter by doctorId)
+### How a visit happens
 
-Phase 4 — Next Steps 🔜 Planned
-  ├─ Real booking form (patient name, phone, notes) + save to localStorage
-  ├─ My Appointments page for patients (cancel / reschedule)
-  ├─ Profile editing
-  ├─ Home page polish (hero, stats, specialties)
-  └─ Optional: API / backend integration (replace mock data)
+1. Patient finds a doctor.
+2. Picks a date and time.
+3. Fills name, email, phone.
+4. The doctor sees it on their dashboard.
+5. Doctor marks it **Complete** or **Cancel**. Patient can cancel upcoming visits too.
 
-Phase 5 — Future Ideas 💡
-  ├─ Notifications, messaging
-  ├─ Real authentication (not mock)
-  ├─ Payments, prescriptions, medical records
-  └─ Admin panel
+That’s the whole product.
+
+---
+
+## للمطورين — without the noise
+
+**Stack:** React 19 · Vite 8 · React Router 7 · Supabase (Auth + Postgres + Storage + one Edge Function) · CSS Modules · Vitest
+
+**Auth is real.** Roles live in `profiles.role`: `patient` | `doctor` | `admin`.
+
+**Doctors live in the database**, not in JSON. The UI still falls back to `src/data/doctors.json` if Supabase is down.
+
+### Run it
+
+```bash
+cp .env.example .env   # then paste your Supabase URL + anon key
+npm install
+npm run dev            # http://localhost:5173
 ```
 
-### Current Status (الحالة الحالية)
+Useful commands:
 
-| Area | Status | Notes |
-|------|--------|-------|
-| **Pages — Public** | ✅ Working | `/`, `/doctors`, `/doctors/:id`, `/book-appointment` |
-| **Login** | ✅ Working | Any valid email + 6-char password; doctor emails auto-detect role |
-| **Patient Dashboard** | ✅ Working | `/dashboard` — auth guard, welcome, upcoming (3), quick actions, favorites (3), history (5) |
-| **Doctor Dashboard** | ✅ Working | `/doctor/dashboard` — summary cards, today's list, upcoming (5) |
-| **Doctor Appointments** | ✅ Working | `/doctor/appointments` — tabs by status, same data source |
-| **Doctor Profile** | ✅ Working | `/doctor/profile` — read-only from `doctors.json` |
-| **Patient Appointments / Profile** | 🚧 Placeholder | `/appointments`, `/profile` show "coming soon" |
-| **Build & Lint** | ✅ Passing | `npm run lint` 0 errors, `npm run build` 83 modules |
+```bash
+npm test               # 95 tests
+npm run lint
+npm run build
+```
 
----
+Need Node **20.19+**.
 
-## For Developers (للمطورين)
+### Who goes where after login
 
-### Tech Stack
+| Role | Lands on |
+|------|----------|
+| Patient | `/dashboard` |
+| Doctor | `/doctor/dashboard` |
+| Admin | `/admin` then `/admin/doctors` |
 
-- **React 19**, **Vite 8**, **React Router 7**, plain **CSS** + CSS Modules, no UI framework, no state library.
+Public pages (`/`, `/doctors`, `/contact`) stay open. Dashboards need a session.
 
-### Project Structure
+### Folder map
 
 ```
 src/
-├── pages/                  # Route pages
-│   ├── Login.jsx           # Login + "Continue as Doctor" demo button
-│   ├── Dashboard.jsx       # Patient dashboard (role guard)
-│   ├── DoctorDashboard.jsx # Doctor dashboard
-│   ├── DoctorAppointments.jsx
-│   ├── DoctorProfilePage.jsx
-│   ├── DoctorProfile.jsx   # Public doctor detail page (with reviews)
-│   ├── DoctorsList.jsx, Home.jsx, BookAppointment.jsx, ...
-│   └── *.module.css
-├── components/
-│   ├── layout/             # MainLayout, DashboardLayout, Sidebar, Navbar, Footer
-│   ├── dashboard/          # UpcomingAppointments, FavoriteDoctors, AppointmentHistory
-│   ├── doctors/            # DoctorCard, DoctorFilterBar, DoctorList, StarRating
-│   ├── appointments/       # TimeSlotPicker, AppointmentCard, AppointmentForm
-│   └── common/             # Button, Badge, Loader, EmptyState, Modal
-├── context/                # AuthContext (role + doctorId), AppointmentContext
-├── hooks/                  # useAuth, useAppointments, useFavorites
-├── data/                   # doctors.json, appointments.json, ratings.json
-├── services/localStore.js  # localStorage for appointments
-├── styles/                 # global.css (design tokens), navbar.css, etc.
-└── assets/                 # logo-icon.png
+  pages/          one file per screen
+  components/     layout, doctors, appointments, admin, dashboard widgets
+  context/        AuthContext, AppointmentContext
+  hooks/          useAuth, useAppointments, useDoctors, useDoctorsCatalog
+  utils/          mapping + validation (doctors, appointments)
+  services/       supabase client, image upload
+  data/           static fallback only
+supabase/
+  migrations/     001 → 013
+  functions/      admin-create-doctor   (creates a doctor login without stealing the admin session)
 ```
 
-### Key Design Decisions
+### How data is shaped
 
-- **One appointment source:** `src/data/appointments.json` + `AppointmentContext` — both patient and doctor filter the same array (`appointment.doctorId === user.doctorId` for doctors).
-- **Role by email:** `AuthContext` checks login email against `doctors.json` → `role: 'doctor' | 'patient'` and `doctorId`. No separate auth system, no hardcoded IDs.
-- **Routing:** Standalone dashboards (`/dashboard`, `/doctor/*`) outside `MainLayout`; public pages inside `MainLayout` (Navbar + Footer). See `src/routes/AppRoutes.jsx`.
-- **Styling:** Reuse `global.css` tokens (`--color-primary`, `--color-accent`, `--color-bg-soft`, etc.). No Tailwind/Bootstrap.
+- `doctors` — catalog. `id` is text (legacy `doc-001` or a UUID). New rows get `gen_random_uuid()::text`. Bilingual columns: `name_en` / `name_ar`, same for specialty and bio.
+- `profiles` — one row per auth user. `doctor_id` links a doctor account to a catalog row.
+- `appointments` — `doctor_id` + `patient_id` + date/time. Status: `scheduled` · `completed` · `cancelled`.
+- Photos go to the public `ccc-images` bucket.
 
-### Getting Started
+The UI talks camelCase (`doctorId`). The database talks snake_case (`doctor_id`). Mapping lives in `src/utils/appointments.js` and `src/utils/doctors.js`.
+
+### Deploy
+
+Static Vite build on Fly.io. Anon key is a **build arg**, not a runtime secret. Never put the service-role key in the frontend.
 
 ```bash
-npm install
-npm run dev      # start at http://localhost:5173
-npm run lint     # check code
-npm run format   # auto-fix formatting
-npm run build    # production build
+fly deploy \
+  --build-arg VITE_SUPABASE_URL=https://YOUR_PROJECT.supabase.co \
+  --build-arg VITE_SUPABASE_ANON_KEY=YOUR_ANON_KEY
 ```
 
-### Deploy to Fly.io
+GitHub Action on `main` does the same if these secrets exist: `FLY_API_TOKEN`, `VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY`.
 
-This project includes a production `Dockerfile`, Nginx SPA fallback, and `fly.toml`.
-
-1. Install and authenticate the Fly CLI, then make sure Docker is running:
-
-```bash
-fly auth login
-```
-
-2. Change the `app` value in `fly.toml` to a globally unique Fly app name, then create it:
-
-```bash
-fly apps create YOUR_UNIQUE_APP_NAME
-```
-
-3. Deploy with the Supabase values used by the production Vite build:
-
-```bash
-fly deploy --build-arg VITE_SUPABASE_URL=https://YOUR_PROJECT.supabase.co --build-arg VITE_SUPABASE_ANON_KEY=YOUR_SUPABASE_ANON_KEY
-```
-
-The anon key is intended for browser use, but do not use a Supabase service-role key here. After deployment, open the URL shown by `fly status` or run `fly open`.
-
-Because this is a static Vite build, changing Supabase values requires another `fly deploy` with the new build arguments.
-
-#### GitHub Actions deployment
-
-The included `.github/workflows/fly-deploy.yml` deploys automatically when code is pushed to `main`. Add these repository secrets in GitHub under **Settings → Secrets and variables → Actions**:
-
-- `FLY_API_TOKEN`: create with `fly tokens create deploy`
-- `VITE_SUPABASE_URL`: your Supabase project URL
-- `VITE_SUPABASE_ANON_KEY`: your Supabase public anon key
-
-Update `app` in `fly.toml` before pushing. The Fly app must already exist with that exact name.
-
-### Demo Accounts
-
-| Role | Email | Password | Redirect |
-|------|-------|----------|----------|
-| Doctor | `j.mitchell@carelink.com` | `123456` | `/doctor/dashboard` |
-| Doctor | `s.chen@carelink.com` | `123456` | `/doctor/dashboard` |
-| Doctor | `r.kim@carelink.com` | `123456` | `/doctor/dashboard` |
-| Patient | any email (e.g. `ali@test.com`) | any 6+ chars | `/dashboard` |
-
-Or just click **"Continue as Doctor (Demo)"** on the login page.
-
-### Known Limitations (MVP)
-
-- Auth is mock (no real backend, password not verified).
-- Today's appointments depend on mock dates (`2026-xx-xx`) — may show empty if not matching current date.
-- Patient `/appointments` and `/profile` are placeholders.
-- Doctor cannot change appointment status from UI yet (logic exists in `AppointmentContext`).
+The Edge Function `admin-create-doctor` must be deployed on the same Supabase project (`supabase functions deploy admin-create-doctor`).
 
 ---
 
-## Quick Links
+## What’s solid vs what’s next
 
-- Routes: `src/routes/AppRoutes.jsx`
-- Auth logic: `src/context/AuthContext.jsx`
-- Appointments: `src/context/AppointmentContext.jsx` + `src/data/appointments.json`
-- Design tokens: `src/styles/global.css`
+**Solid today**
+
+- Real login, roles, RLS
+- Doctor catalog with photos
+- Booking + cancel / complete from the dashboards
+- Admin create-doctor flow (photo → catalog → login)
+- Admin numbers come from real `count` queries, not a 6-row sample
+
+**Later, if we want it professional**
+
+- Admin users page and appointments page
+- Doctor calendar + working hours
+- Toasts instead of `window.confirm`
+- Arabic / English UI
+- Favorites saved on the account, not only in `localStorage`
+
+That’s it. If something’s unclear, the code is small — start at `src/routes/AppRoutes.jsx`.
