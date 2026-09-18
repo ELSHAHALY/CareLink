@@ -10,6 +10,9 @@ jobs:
   deploy:
     name: Deploy application
     runs-on: ubuntu-latest
+    concurrency:
+      group: fly-deploy
+      cancel-in-progress: false
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
