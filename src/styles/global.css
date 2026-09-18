@@ -1,3 +1,15 @@
+/* CareLink brand tokens (see CareLink_Branding_and_UI_Overview) */
+:root {
+  --color-primary: #007bff; /* Deep Sky Blue - trust, calm, primary actions */
+  --color-primary-hover: #0069d9;
+  --color-accent: #00a676; /* Teal Green - healing, availability, highlights */
+  --color-accent-hover: #00905f;
+  --color-bg-soft: #f8f9fa; /* Soft Grey - section backgrounds */
+  --color-text: #343a40; /* Dark Slate - readable, professional */
+  --color-text-muted: #6c757d;
+  --color-border: #dee2e6;
+}
+
 *,
 *::before,
 *::after {
@@ -8,6 +20,17 @@ html,
 body {
   margin: 0;
   padding: 0;
+}
+
+/* Reserve space for the vertical scrollbar at all times. Without this,
+   navigating between a tall page (needs a scrollbar) and a short one
+   (doesn't), or resizing the window across a breakpoint that changes the
+   page's height, makes the whole layout jump sideways by the scrollbar's
+   width on browsers with classic (non-overlay) scrollbars, e.g. Windows
+   Chrome/Edge. */
+html {
+  scrollbar-gutter: stable;
+  overflow-y: scroll;
 }
 
 body {

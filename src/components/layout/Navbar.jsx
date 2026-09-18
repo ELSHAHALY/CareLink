@@ -1,12 +1,14 @@
 import { useState, useEffect } from 'react'
 import { NavLink, Link, useNavigate } from 'react-router-dom'
 import useAuth from '../../hooks/useAuth'
+import logoIcon from '../../assets/logo-icon.png'
 import '../../styles/navbar.css'
 
 const NAV_LINKS = [
   { to: '/', label: 'Home', end: true },
   { to: '/doctors', label: 'Find a Doctor' },
   { to: '/appointments', label: 'My Appointments' },
+  { to: '/contact', label: 'Contact Us' },
 ]
 
 export default function Navbar() {
@@ -37,6 +39,11 @@ export default function Navbar() {
     <header className='navbar'>
       <div className='navbar__container'>
         <Link to='/' className='navbar__logo' onClick={handleLinkClick}>
+          <img
+            src={logoIcon}
+            alt='CareLink logo'
+            className='navbar__logo-icon'
+          />
           Care<span>Link</span>
         </Link>
 
@@ -60,7 +67,16 @@ export default function Navbar() {
         <div className='navbar__actions'>
           {user ? (
             <>
-              <Link to='/dashboard' className='navbar__user'>
+              <Link
+                to={
+                  user.role === 'admin'
+                    ? '/admin/doctors'
+                    : user.role === 'doctor'
+                    ? '/doctor/dashboard'
+                    : '/dashboard'
+                }
+                className='navbar__user'
+              >
                 Hi, {user.name}
               </Link>
               <button
@@ -120,7 +136,13 @@ export default function Navbar() {
           {user ? (
             <>
               <Link
-                to='/dashboard'
+                to={
+                  user.role === 'admin'
+                    ? '/admin/doctors'
+                    : user.role === 'doctor'
+                    ? '/doctor/dashboard'
+                    : '/dashboard'
+                }
                 className='navbar__btn navbar__btn--ghost'
                 onClick={handleLinkClick}
               >

@@ -1,14 +1,17 @@
 import React from 'react'
+import styles from './EmptyState.module.css'
 
 const EmptyState = ({
   icon,
-  title = 'No Data Available',
-  description = 'There are no items to display at this time.',
+  title,
+  message,
+  description,
   action,
+  actionLabel,
+  onAction,
   size = 'md',
   className = '',
 }) => {
-  // Size configurations
   const sizes = {
     sm: {
       container: 'p-6',
@@ -32,7 +35,7 @@ const EmptyState = ({
 
   const DefaultIcon = (
     <svg
-      className='w-8 h-8 text-[#007BPF]'
+      className='w-8 h-8 text-[#007BFF]'
       fill='none'
       viewBox='0 0 24 24'
       stroke='currentColor'
@@ -46,30 +49,44 @@ const EmptyState = ({
     </svg>
   )
 
+  const displayTitle = title || (!message ? 'No Data Available' : null)
+  const displayDescription = description ?? message
+
   return (
     <div
-      className={`flex flex-col items-center justify-center text-center bg-[#F8F9FA]/60 border border-dashed border-gray-200 rounded-2xl ${sizes[size].container} ${className}`}
+      className={`${styles.wrapper} flex flex-col items-center justify-center text-center bg-[#F8F9FA]/60 border border-dashed border-gray-200 rounded-2xl ${sizes[size].container} ${className}`}
     >
-      {/* Icon Wrapper */}
       <div
         className={`flex items-center justify-center rounded-full bg-white shadow-sm border border-gray-100 mb-4 ${sizes[size].iconWrapper}`}
       >
         {icon || DefaultIcon}
       </div>
 
-      {/* Title */}
-      <h3 className={`font-semibold text-[#343A40] ${sizes[size].title}`}>
-        {title}
-      </h3>
+      {displayTitle && (
+        <h3 className={`font-semibold text-[#343A40] ${sizes[size].title}`}>
+          {displayTitle}
+        </h3>
+      )}
 
-      {/* Description */}
-      {description && (
-        <p className={`mt-1 text-gray-500 max-w-sm ${sizes[size].description}`}>
-          {description}
+      {displayDescription && (
+        <p
+          className={`mt-1 text-gray-500 max-w-sm ${sizes[size].description} ${
+            styles.message || ''
+          }`}
+        >
+          {displayDescription}
         </p>
       )}
 
       {action && <div className='mt-6'>{action}</div>}
+
+      {actionLabel && onAction && (
+        <div className='mt-6'>
+          <button type='button' className={styles.button} onClick={onAction}>
+            {actionLabel}
+          </button>
+        </div>
+      )}
     </div>
   )
 }

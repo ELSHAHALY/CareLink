@@ -21,9 +21,9 @@ import {
   Search,
   Trash2,
 } from 'lucide-react'
-import doctor1 from '../assets/doctor-1.jpg'
-import doctor2 from '../assets/doctor-2.jpg'
-import doctor3 from '../assets/doctor-3.jpg'
+import doctor1 from '/doctor-1.jpg'
+import doctor2 from '/doctor-2.jpg'
+import doctor3 from '/doctor-3.jpg'
 
 import doctorsData from '../data/doctors.json'
 import appointmentsData from '../data/appointments.json'

@@ -87,6 +87,258 @@
       ],
       "languages": ["English", "Korean", "Japanese"],
       "availableDays": ["Tuesday", "Wednesday", "Thursday"]
+    },
+    {
+      "id": "doc-004",
+      "name": "Dr. Emily Carter",
+      "specialty": "Pediatrician",
+      "image": "doctor-4.png",
+      "yearsOfExperience": 10,
+      "location": {
+        "address": "125 Children's Medical Center",
+        "city": "Boston",
+        "state": "MA",
+        "zip": "02115"
+      },
+      "phone": "+1 (617) 555-0412",
+      "email": "e.carter@carelink.com",
+      "bio": "Experienced pediatrician focused on preventive care, childhood development, and the treatment of common pediatric conditions.",
+      "education": [
+        "MD — Boston University School of Medicine",
+        "Residency — Boston Children's Hospital"
+      ],
+      "specializations": [
+        "Childhood Development",
+        "Preventive Care",
+        "Pediatric Nutrition",
+        "Vaccination"
+      ],
+      "languages": ["English", "French"],
+      "availableDays": ["Monday", "Tuesday", "Thursday"]
+    },
+    {
+      "id": "doc-005",
+      "name": "Dr. Michael Anderson",
+      "specialty": "Orthopedic Surgeon",
+      "image": "doctor-5.jpg",
+      "yearsOfExperience": 15,
+      "location": {
+        "address": "310 Bone & Joint Center",
+        "city": "New York",
+        "state": "NY",
+        "zip": "10021"
+      },
+      "phone": "+1 (212) 555-0521",
+      "email": "m.anderson@carelink.com",
+      "bio": "Orthopedic surgeon specializing in sports injuries, joint replacement, and minimally invasive orthopedic procedures.",
+      "education": [
+        "MD — Columbia University Vagelos College",
+        "Residency — Hospital for Special Surgery"
+      ],
+      "specializations": [
+        "Sports Injuries",
+        "Joint Replacement",
+        "Arthroscopy",
+        "Fracture Treatment"
+      ],
+      "languages": ["English"],
+      "availableDays": ["Monday", "Wednesday", "Friday"]
+    },
+    {
+      "id": "doc-006",
+      "name": "Dr. Olivia Brown",
+      "specialty": "Gynecologist",
+      "image": "doctor-6.jpg",
+      "yearsOfExperience": 11,
+      "location": {
+        "address": "95 Women's Health Center",
+        "city": "Chicago",
+        "state": "IL",
+        "zip": "60611"
+      },
+      "phone": "+1 (312) 555-0634",
+      "email": "o.brown@carelink.com",
+      "bio": "Gynecologist providing comprehensive women's healthcare, preventive screenings, and reproductive health services.",
+      "education": [
+        "MD — Northwestern University Feinberg School of Medicine",
+        "Residency — Northwestern Memorial Hospital"
+      ],
+      "specializations": [
+        "Women's Health",
+        "Preventive Screening",
+        "Reproductive Health",
+        "Prenatal Care"
+      ],
+      "languages": ["English", "Spanish"],
+      "availableDays": ["Tuesday", "Wednesday", "Friday"]
+    },
+    {
+      "id": "doc-007",
+      "name": "Dr. Daniel Wilson",
+      "specialty": "Cardiologist",
+      "image": "doctor-7.jpg",
+      "yearsOfExperience": 9,
+      "location": {
+        "address": "610 Cardiac Care Avenue",
+        "city": "Boston",
+        "state": "MA",
+        "zip": "02114"
+      },
+      "phone": "+1 (617) 555-0745",
+      "email": "d.wilson@carelink.com",
+      "bio": "Cardiologist specializing in preventive cardiology, hypertension management, and heart disease risk assessment.",
+      "education": [
+        "MD — Tufts University School of Medicine",
+        "Residency — Beth Israel Deaconess Medical Center"
+      ],
+      "specializations": [
+        "Preventive Cardiology",
+        "Hypertension",
+        "Heart Disease Prevention",
+        "Cardiac Imaging"
+      ],
+      "languages": ["English"],
+      "availableDays": ["Monday", "Tuesday", "Thursday"]
+    },
+    {
+      "id": "doc-008",
+      "name": "Dr. Sophia Martinez",
+      "specialty": "Dermatologist",
+      "image": "doctor-8.jpg",
+      "yearsOfExperience": 7,
+      "location": {
+        "address": "180 Dermatology Plaza",
+        "city": "Los Angeles",
+        "state": "CA",
+        "zip": "90024"
+      },
+      "phone": "+1 (310) 555-0856",
+      "email": "s.martinez@carelink.com",
+      "bio": "Dermatologist focused on acne treatment, cosmetic procedures, and comprehensive skin health.",
+      "education": [
+        "MD — UCLA David Geffen School of Medicine",
+        "Residency — UCLA Medical Center"
+      ],
+      "specializations": [
+        "Acne Treatment",
+        "Cosmetic Dermatology",
+        "Skin Health",
+        "Laser Therapy"
+      ],
+      "languages": ["English", "Spanish"],
+      "availableDays": ["Monday", "Wednesday", "Friday"]
+    },
+    {
+      "id": "doc-009",
+      "name": "Dr. William Taylor",
+      "specialty": "Neurologist",
+      "image": "doctor-9.jpg",
+      "yearsOfExperience": 14,
+      "location": {
+        "address": "420 Neurology Institute",
+        "city": "Seattle",
+        "state": "WA",
+        "zip": "98101"
+      },
+      "phone": "+1 (206) 555-0967",
+      "email": "w.taylor@carelink.com",
+      "bio": "Neurologist specializing in migraine treatment, epilepsy care, and neurological diagnostics.",
+      "education": [
+        "MD — University of Washington School of Medicine",
+        "Residency — University of Washington Medical Center"
+      ],
+      "specializations": [
+        "Migraine Treatment",
+        "Epilepsy",
+        "Neurological Diagnostics",
+        "Sleep Disorders"
+      ],
+      "languages": ["English"],
+      "availableDays": ["Tuesday", "Thursday", "Friday"]
+    },
+    {
+      "id": "doc-010",
+      "name": "Dr. Emma Davis",
+      "specialty": "Pediatrician",
+      "image": "doctor-10.png",
+      "yearsOfExperience": 6,
+      "location": {
+        "address": "75 Pediatric Health Center",
+        "city": "San Francisco",
+        "state": "CA",
+        "zip": "94103"
+      },
+      "phone": "+1 (415) 555-1078",
+      "email": "e.davis@carelink.com",
+      "bio": "Pediatrician dedicated to providing compassionate healthcare for children and supporting healthy development.",
+      "education": [
+        "MD — UCSF School of Medicine",
+        "Residency — UCSF Benioff Children's Hospital"
+      ],
+      "specializations": [
+        "Child Development",
+        "Pediatric Care",
+        "Preventive Care",
+        "Child Nutrition"
+      ],
+      "languages": ["English", "Spanish"],
+      "availableDays": ["Monday", "Tuesday", "Friday"]
+    },
+    {
+      "id": "doc-011",
+      "name": "Dr. Christopher Lee",
+      "specialty": "Orthopedic Surgeon",
+      "image": "doctor-11.jpg",
+      "yearsOfExperience": 18,
+      "location": {
+        "address": "540 Orthopedic Institute",
+        "city": "Chicago",
+        "state": "IL",
+        "zip": "60612"
+      },
+      "phone": "+1 (312) 555-1189",
+      "email": "c.lee@carelink.com",
+      "bio": "Orthopedic surgeon specializing in joint reconstruction, sports medicine, and complex orthopedic procedures.",
+      "education": [
+        "MD — University of Chicago Pritzker School of Medicine",
+        "Residency — Rush University Medical Center"
+      ],
+      "specializations": [
+        "Joint Reconstruction",
+        "Sports Medicine",
+        "Arthroscopy",
+        "Orthopedic Surgery"
+      ],
+      "languages": ["English", "Korean"],
+      "availableDays": ["Tuesday", "Wednesday", "Thursday"]
+    },
+    {
+      "id": "doc-012",
+      "name": "Dr. Rachel Thompson",
+      "specialty": "Gynecologist",
+      "image": "doctor-12.jpg",
+      "yearsOfExperience": 13,
+      "location": {
+        "address": "260 Women's Wellness Center",
+        "city": "New York",
+        "state": "NY",
+        "zip": "10018"
+      },
+      "phone": "+1 (212) 555-1290",
+      "email": "r.thompson@carelink.com",
+      "bio": "Gynecologist providing personalized care in women's health, reproductive medicine, and preventive healthcare.",
+      "education": [
+        "MD — NYU Grossman School of Medicine",
+        "Residency — NYU Langone Health"
+      ],
+      "specializations": [
+        "Women's Health",
+        "Reproductive Medicine",
+        "Preventive Care",
+        "Prenatal Care"
+      ],
+      "languages": ["English", "French"],
+      "availableDays": ["Monday", "Wednesday", "Thursday"]
     }
   ]
 }

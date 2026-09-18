@@ -27,13 +27,17 @@ const STEPS = [
   },
 ]
 
+// `value` matches the specialty option values in DoctorFilterBar so picking
+// a specialty here pre-filters the Doctors page. Specialties with no
+// matching filter option yet (Pediatrics, Orthopedics) just link through
+// unfiltered until that option is added.
 const SPECIALTIES = [
-  { name: 'Cardiology', icon: '❤️' },
-  { name: 'Dermatology', icon: '🩹' },
-  { name: 'Neurology', icon: '🧠' },
-  { name: 'Dentistry', icon: '🦷' },
-  { name: 'Pediatrics', icon: '🧒' },
-  { name: 'Orthopedics', icon: '🦴' },
+  { name: 'Cardiology', icon: '❤️', value: 'Cardiologist' },
+  { name: 'Dermatology', icon: '🩹', value: 'Dermatologist' },
+  { name: 'Neurology', icon: '🧠', value: 'Neurologist' },
+  { name: 'Dentistry', icon: '🦷', value: 'Dentist' },
+  { name: 'Pediatrics', icon: '🧒', value: '' },
+  { name: 'Orthopedics', icon: '🦴', value: '' },
 ]
 
 export default function Home() {
@@ -128,7 +132,13 @@ export default function Home() {
           <div className='home-specialties'>
             {SPECIALTIES.map((specialty) => (
               <Link
-                to='/doctors'
+                to={
+                  specialty.value
+                    ? `/doctors?specialty=${encodeURIComponent(
+                        specialty.value,
+                      )}`
+                    : '/doctors'
+                }
                 className='home-specialty-card'
                 key={specialty.name}
               >

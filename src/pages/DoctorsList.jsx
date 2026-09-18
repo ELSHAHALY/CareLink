@@ -1,77 +1,56 @@
-import { useState } from 'react'
+import { useState, useContext } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import DoctorFilterBar from '../components/doctors/DoctorFilterBar'
 import DoctorList from '../components/doctors/DoctorList'
+import DoctorSkeleton from '../components/doctors/DoctorSkeleton'
+import useDoctors from '../hooks/useDoctors'
+import { AppointmentContext } from '../context/AppointmentContext'
 import '../styles/doctors.css'
-
-const doctors = [
-  {
-    id: 1,
-    name: 'Dr. Sarah Ahmed',
-    specialty: 'Cardiologist',
-    rating: 4.8,
-    reviews: 124,
-    location: 'Cairo',
-    available: true,
-    image:
-      'https://images.ctfassets.net/h8qzhh7m9m8u/5459snTalzWRmionEbuZYo/d50b7e5b7f65f70bb37e127c7e73b79e/Doctors_green.png',
-  },
-  {
-    id: 2,
-    name: 'Dr. Mohamed Ali',
-    specialty: 'Neurologist',
-    rating: 4.7,
-    reviews: 98,
-    location: 'Giza',
-    available: true,
-    image:
-      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQdz09CN2D46oaGOY8NcOrNrob29wikoIV1XMdEbpxAzA&s',
-  },
-  {
-    id: 3,
-    name: 'Dr. Nour Hassan',
-    specialty: 'Dermatologist',
-    rating: 4.9,
-    reviews: 156,
-    location: 'Cairo',
-    available: false,
-    image:
-      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTA0x4asa93thFA0811vVYQ3ppQ5L7hx9IhzeQAnxIJAT3iQhajBs6U9tQ&s=10',
-  },
-  {
-    id: 4,
-    name: 'Dr. Ahmed Samir',
-    specialty: 'Dentist',
-    rating: 4.6,
-    reviews: 87,
-    location: 'Alexandria',
-    available: true,
-    image:
-      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT7kKcrwHQWdgIpPtyr-uQ3DlRRM9GEDt8dwb1_fV3XjQ&s=10',
-  },
-]
+import Pagination from '../components/doctors/Pagination'
+import ratingsData from '../data/ratings.json'
 
 export default function DoctorsList() {
+  const [searchParams] = useSearchParams()
+  const { appointments } = useContext(AppointmentContext)
+
   const [filters, setFilters] = useState({
-    search: '',
-    specialty: '',
-    availability: '',
+    search: searchParams.get('search') || '',
+    specialty: searchParams.get('specialty') || '',
+    city: '',
     rating: '',
   })
+
+  const { doctors: filteredDoctors, loading, error } = useDoctors(filters)
+
+  const [currentPage, setCurrentPage] = useState(1)
+  const doctorsPerPage = 6
+
+  const totalPages = Math.ceil(filteredDoctors.length / doctorsPerPage)
+
+  const startIndex = (currentPage - 1) * doctorsPerPage
+
+  const paginatedDoctors = filteredDoctors.slice(
+    startIndex,
+    startIndex + doctorsPerPage,
+  )
 
   const handleFilterChange = (name, value) => {
     setFilters((prev) => ({
       ...prev,
       [name]: value,
     }))
+
+    setCurrentPage(1)
   }
 
   const handleClearFilters = () => {
     setFilters({
       search: '',
       specialty: '',
-      availability: '',
+      city: '',
       rating: '',
     })
+    setCurrentPage(1)
   }
 
   return (
@@ -93,10 +72,34 @@ export default function DoctorsList() {
 
         <div className='doctors-results-header'>
           <h2>Our Doctors</h2>
-          <span>{doctors.length} Doctors</span>
+          <span>{filteredDoctors.length} Doctors</span>
         </div>
 
-        <DoctorList doctors={doctors} />
+        {loading && <DoctorSkeleton />}
+
+        {error && <p className='error-message'>{error}</p>}
+
+        {!loading && !error && filteredDoctors.length === 0 && (
+          <p>No Doctors Found.</p>
+        )}
+
+        {!loading && !error && filteredDoctors.length > 0 && (
+          <>
+            <DoctorList
+              doctors={paginatedDoctors}
+              ratings={ratingsData.ratings}
+              appointments={appointments}
+            />
+
+            {totalPages > 1 && (
+              <Pagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                onPageChange={setCurrentPage}
+              />
+            )}
+          </>
+        )}
       </div>
     </main>
   )

@@ -2,4 +2,7 @@ node_modules/
 dist/
 *.ps1
 others/
-dockerfile
+*.cjs
+.env
+.env.local
+.env.*.local

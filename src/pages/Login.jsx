@@ -1,6 +1,8 @@
-import { useState } from 'react'
-import { useNavigate, Link } from 'react-router-dom'
+import { useState, useEffect } from 'react'
+import { useNavigate, Link, Navigate, useLocation } from 'react-router-dom'
 import useAuth from '../hooks/useAuth'
+import { validateEmail, validatePassword } from '../utils/validation'
+import { getRoleRedirect } from '../context/AuthContext'
 import styles from './Login.module.css'
 
 export default function Login() {
@@ -8,16 +10,33 @@ export default function Login() {
   const [password, setPassword] = useState('')
   const [errors, setErrors] = useState({})
   const [serverError, setServerError] = useState('')
+  const [successMessage, setSuccessMessage] = useState('')
 
-  const { login, loading } = useAuth()
+  const { user, authLoading, login, loading, configError, isMockAuthAllowed } =
+    useAuth()
   const navigate = useNavigate()
+  const location = useLocation()
+
+  useEffect(() => {
+    if (location.state?.message) {
+      setSuccessMessage(location.state.message)
+      window.history.replaceState({}, '')
+    }
+  }, [location.state])
+
+  if (!authLoading && user) {
+    if (user.role === 'doctor')
+      return <Navigate to='/doctor/dashboard' replace />
+    if (user.role === 'admin') return <Navigate to='/admin/doctors' replace />
+    return <Navigate to='/dashboard' replace />
+  }
 
   function validate() {
     const next = {}
-    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    if (!validateEmail(email)) {
       next.email = 'Please enter a valid email address'
     }
-    if (!password || password.length < 6) {
+    if (!validatePassword(password)) {
       next.password = 'Password must be at least 6 characters'
     }
     setErrors(next)
@@ -31,7 +50,7 @@ export default function Login() {
 
     const result = await login(email, password)
     if (result.success) {
-      navigate('/dashboard')
+      navigate(getRoleRedirect(result.role))
     } else {
       setServerError(result.error)
     }
@@ -43,9 +62,30 @@ export default function Login() {
         <h1 className={styles.title}>Welcome back</h1>
         <p className={styles.subtitle}>Sign in to your CareLink account</p>
 
+        {configError && !isMockAuthAllowed && (
+          <div className={styles.globalError}>
+            <p className={styles.errorText}>{configError}</p>
+          </div>
+        )}
+
+        {isMockAuthAllowed && (
+          <div className={styles.globalError}>
+            <p className={styles.errorText}>
+              Dev mode: Supabase not configured, using mock auth. Set .env for
+              real authentication.
+            </p>
+          </div>
+        )}
+
         {serverError && (
           <div className={styles.globalError}>
             <p className={styles.errorText}>{serverError}</p>
+          </div>
+        )}
+
+        {successMessage && (
+          <div className={styles.successText}>
+            <p>{successMessage}</p>
           </div>
         )}
 
@@ -92,6 +132,10 @@ export default function Login() {
             {loading ? 'Signing in...' : 'Sign in'}
           </button>
         </form>
+
+        <p className={styles.forgotLink}>
+          <Link to='/forgot-password'>Forgot password?</Link>
+        </p>
 
         <p className={styles.footer}>
           Don&apos;t have an account?{' '}

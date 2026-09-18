@@ -1,6 +1,4 @@
-import { useState } from 'react'
-import doctorsData from '../../data/doctors.json'
-import appointmentsData from '../../data/appointments.json'
+import { getDoctorTimezone, convertTimeToLocal } from '../../utils/timezone'
 
 const START_HOUR = 9
 const END_HOUR = 17
@@ -29,13 +27,15 @@ function getWeekdayName(dateString) {
 }
 
 export default function TimeSlotPicker({
-  doctorId,
+  doctor,
   selectedDate,
+  selectedTime,
+  appointments,
   onSelectTime,
 }) {
-  const [activeTime, setActiveTime] = useState('')
+  const safeAppointments = Array.isArray(appointments) ? appointments : []
 
-  if (!doctorId) {
+  if (!doctor) {
     return (
       <p className='placeholder-text'>
         A doctor must be selected before choosing a time.
@@ -51,13 +51,9 @@ export default function TimeSlotPicker({
     )
   }
 
-  const doctor = doctorsData.doctors.find((d) => d.id === doctorId)
-
-  if (!doctor) {
-    return (
-      <p className='placeholder-text'>Doctor information is unavailable.</p>
-    )
-  }
+  const doctorTimezone = getDoctorTimezone(doctor)
+  const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone
+  const showTimezone = doctorTimezone !== userTimezone
 
   const weekday = getWeekdayName(selectedDate)
   const isWorkingDay = doctor.availableDays?.includes(weekday) ?? false
@@ -70,18 +66,19 @@ export default function TimeSlotPicker({
     )
   }
 
-  const bookedTimes = appointmentsData.appointments
+  const bookedTimes = safeAppointments
     .filter(
-      (apt) =>
-        apt.doctorId === doctorId &&
-        apt.date === selectedDate &&
-        apt.status === 'scheduled',
+      (appointment) =>
+        appointment.doctorId === doctor.id &&
+        appointment.date === selectedDate &&
+        appointment.status === 'scheduled',
     )
-    .map((apt) => apt.time)
+    .map((appointment) => appointment.time)
 
   const handleSelect = (time) => {
-    setActiveTime(time)
-    onSelectTime(time)
+    if (typeof onSelectTime === 'function') {
+      onSelectTime(time)
+    }
   }
 
   return (
@@ -90,6 +87,12 @@ export default function TimeSlotPicker({
       role='group'
       aria-label='Available time slots'
     >
+      {showTimezone && (
+        <p className='timezone-notice'>
+          Times shown in your local timezone (doctor is in{' '}
+          {doctor.location?.state || 'unknown timezone'})
+        </p>
+      )}
       <style>{`
         .time-slot-grid {
           display: grid;
@@ -120,10 +123,18 @@ export default function TimeSlotPicker({
           border-color: #00A676;
           color: #fff;
         }
+        .timezone-notice {
+          font-size: 0.75rem;
+          color: #6c757d;
+          margin-bottom: 0.5rem;
+        }
       `}</style>
       {DAILY_SLOTS.map((time) => {
         const isBooked = bookedTimes.includes(time)
-        const isSelected = time === activeTime
+        const isSelected = time === selectedTime
+        const displayTime = showTimezone
+          ? convertTimeToLocal(time, getDoctorTimezone(doctor))
+          : time
         return (
           <button
             key={time}
@@ -132,8 +143,9 @@ export default function TimeSlotPicker({
             disabled={isBooked}
             aria-pressed={isSelected}
             onClick={() => handleSelect(time)}
+            title={showTimezone ? `${time} (doctor's local)` : ''}
           >
-            {time}
+            {displayTime}
           </button>
         )
       })}

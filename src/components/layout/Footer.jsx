@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import '../../styles/footer.css'
 
 export default function Footer() {
@@ -9,7 +10,6 @@ export default function Footer() {
           <a href='/' className='footer__logo'>
             Care<span>Link</span>
           </a>
-
           <p className='footer__description'>
             Connecting you with trusted healthcare professionals, whenever you
             need them.
@@ -19,7 +19,6 @@ export default function Footer() {
         {/* Quick Links */}
         <div className='footer__section'>
           <h3>Quick Links</h3>
-
           <ul>
             <li>
               <a href='/'>Home</a>
@@ -39,7 +38,6 @@ export default function Footer() {
         {/* For Patients */}
         <div className='footer__section'>
           <h3>For Patients</h3>
-
           <ul>
             <li>
               <a href='/doctors'>Find a Doctor</a>
@@ -58,8 +56,9 @@ export default function Footer() {
 
         {/* Contact */}
         <div className='footer__section footer__contact'>
-          <h3>Contact Us</h3>
-
+          <h3>
+            <Link to='/contact'>Contact Us</Link>
+          </h3>
           <p>hello@carelink.com</p>
           <p>+20 100 000 0000</p>
           <p>Cairo, Egypt</p>
@@ -69,7 +68,6 @@ export default function Footer() {
       {/* Bottom */}
       <div className='footer__bottom'>
         <p>© 2026 CareLink. All rights reserved.</p>
-
         <div className='footer__legal'>
           <a href='/privacy'>Privacy Policy</a>
           <a href='/terms'>Terms of Service</a>
