@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom'
 import '../../styles/footer.css'
 
-export default function Footer() {
+export default function Footer({ onHelpCenterClick }) {
   return (
     <footer className='footer'>
       <div className='footer__container'>
@@ -52,7 +52,13 @@ export default function Footer() {
               <a href='/health-tips'>Health Tips</a>
             </li>
             <li>
-              <a href='/help'>Help Center</a>
+              <button
+                type='button'
+                className='footer__link-button'
+                onClick={onHelpCenterClick}
+              >
+                Help Center
+              </button>
             </li>
           </ul>
         </div>
