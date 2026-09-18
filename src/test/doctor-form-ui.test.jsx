@@ -4,8 +4,8 @@ import DoctorForm from '../components/admin/DoctorForm'
 
 // jsdom has no URL.createObjectURL — stub it for the photo preview path.
 beforeEach(() => {
-  global.URL.createObjectURL = vi.fn(() => 'blob:mock-preview')
-  global.URL.revokeObjectURL = vi.fn()
+  globalThis.URL.createObjectURL = vi.fn(() => 'blob:mock-preview')
+  globalThis.URL.revokeObjectURL = vi.fn()
 })
 
 const CATALOG = [
@@ -23,17 +23,24 @@ function fillNewProfile() {
   fireEvent.change(screen.getByPlaceholderText('Login email *'), {
     target: { value: 'OMAR.TEST@Example.COM' },
   })
-  fireEvent.change(screen.getByPlaceholderText('Password (min. 6 characters) *'), {
-    target: { value: 'secret123' },
-  })
+  fireEvent.change(
+    screen.getByPlaceholderText('Password (min. 6 characters) *'),
+    {
+      target: { value: 'secret123' },
+    },
+  )
 }
 
 describe('DoctorForm — smart admin creation (5 cases)', () => {
   it('1. renders new-profile mode with photo upload and bilingual fields', () => {
-    render(<DoctorForm catalog={CATALOG} submitting={false} onSubmit={() => {}} />)
+    render(
+      <DoctorForm catalog={CATALOG} submitting={false} onSubmit={() => {}} />,
+    )
     expect(screen.getByPlaceholderText('Name (English) *')).toBeInTheDocument()
     expect(screen.getByPlaceholderText('Name (Arabic)')).toBeInTheDocument()
-    expect(screen.getByPlaceholderText('Specialty (English) *')).toBeInTheDocument()
+    expect(
+      screen.getByPlaceholderText('Specialty (English) *'),
+    ).toBeInTheDocument()
     expect(screen.getByPlaceholderText('Bio (Arabic)')).toBeInTheDocument()
     expect(screen.getByText('Upload photo')).toBeInTheDocument()
     expect(
@@ -54,17 +61,25 @@ describe('DoctorForm — smart admin creation (5 cases)', () => {
   })
 
   it('3. switches to link-existing mode with the real catalog dropdown', () => {
-    render(<DoctorForm catalog={CATALOG} submitting={false} onSubmit={() => {}} />)
+    render(
+      <DoctorForm catalog={CATALOG} submitting={false} onSubmit={() => {}} />,
+    )
     fireEvent.click(screen.getByRole('tab', { name: 'Link existing' }))
     const select = screen.getByLabelText('Doctor profile')
     expect(select).toBeInTheDocument()
-    expect(screen.getByRole('option', { name: 'Prof. Example — Oncology' })).toBeInTheDocument()
+    expect(
+      screen.getByRole('option', { name: 'Prof. Example — Oncology' }),
+    ).toBeInTheDocument()
     // new-profile-only fields disappear
-    expect(screen.queryByPlaceholderText('Name (English) *')).not.toBeInTheDocument()
+    expect(
+      screen.queryByPlaceholderText('Name (English) *'),
+    ).not.toBeInTheDocument()
   })
 
   it('4. auto-generates the URL slug from the English name', () => {
-    render(<DoctorForm catalog={CATALOG} submitting={false} onSubmit={() => {}} />)
+    render(
+      <DoctorForm catalog={CATALOG} submitting={false} onSubmit={() => {}} />,
+    )
     fireEvent.change(screen.getByPlaceholderText('Name (English) *'), {
       target: { value: 'Dr. Sarah Chen' },
     })
@@ -79,9 +94,12 @@ describe('DoctorForm — smart admin creation (5 cases)', () => {
       <DoctorForm catalog={CATALOG} submitting={false} onSubmit={onSubmit} />,
     )
     fillNewProfile()
-    fireEvent.change(screen.getByPlaceholderText('Services (comma separated)'), {
-      target: { value: 'clinic, surgery , ,x-ray' },
-    })
+    fireEvent.change(
+      screen.getByPlaceholderText('Services (comma separated)'),
+      {
+        target: { value: 'clinic, surgery , ,x-ray' },
+      },
+    )
     fireEvent.submit(container.querySelector('form'))
     expect(onSubmit).toHaveBeenCalledTimes(1)
     const payload = onSubmit.mock.calls[0][0]

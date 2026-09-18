@@ -8,6 +8,12 @@ const anonKey = typeof rawAnonKey === 'string' ? rawAnonKey.trim() : ''
 
 export const isProduction = Boolean(import.meta.env.PROD)
 
+// Mock authentication is opt-in via VITE_ALLOW_MOCK_AUTH=true.
+// Never silently falls back to mock auth. Production builds (vite build)
+// always override to false via isProduction check in AuthContext.
+export const allowMockAuth =
+  String(import.meta.env.VITE_ALLOW_MOCK_AUTH) === 'true'
+
 const PLACEHOLDER_PATTERNS = [
   'placeholder',
   'your-project',

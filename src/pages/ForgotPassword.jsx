@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import useAuth from '../hooks/useAuth'
-import { validateEmail } from '../context/AuthContext'
+import { validateEmail } from '../utils/validation'
 import styles from './Login.module.css'
 
 export default function ForgotPassword() {

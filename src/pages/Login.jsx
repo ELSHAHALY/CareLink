@@ -1,11 +1,8 @@
 import { useState, useEffect } from 'react'
 import { useNavigate, Link, Navigate, useLocation } from 'react-router-dom'
 import useAuth from '../hooks/useAuth'
-import {
-  validateEmail,
-  validatePassword,
-  getRoleRedirect,
-} from '../context/AuthContext'
+import { validateEmail, validatePassword } from '../utils/validation'
+import { getRoleRedirect } from '../context/AuthContext'
 import styles from './Login.module.css'
 
 export default function Login() {

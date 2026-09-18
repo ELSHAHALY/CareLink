@@ -12,8 +12,11 @@ export const EMPTY_LOCATION = Object.freeze({
   zip: '',
 })
 
+const DEFAULT_AVATAR_SVG =
+  "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%23e9ecef'/%3E%3Ccircle cx='32' cy='24' r='12' fill='%23adb5bd'/%3E%3Cellipse cx='32' cy='60' rx='22' ry='18' fill='%23adb5bd'/%3E%3C/svg%3E"
+
 export function resolveDoctorImage(image) {
-  if (!image) return null
+  if (!image) return DEFAULT_AVATAR_SVG
   if (/^https?:\/\//i.test(image)) return image
   return image.startsWith('/') ? image : `/${image}`
 }
