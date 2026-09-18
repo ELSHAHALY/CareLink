@@ -1,8 +1,9 @@
 import { useMemo } from 'react'
 import { Navigate } from 'react-router-dom'
+import { FaRegCalendarAlt, FaRegClipboard } from 'react-icons/fa'
 import useAuth from '../hooks/useAuth'
 import { useAppointments } from '../hooks/useAppointments'
-import DashboardLayout from '../components/layout/DashboardLayout'
+// تم إزالة استيراد DashboardLayout
 import Badge from '../components/common/Badge'
 import EmptyState from '../components/common/EmptyState'
 import Loader from '../components/common/Loader'
@@ -55,14 +56,14 @@ export default function MyAppointments() {
 
   if (isLoading) {
     return (
-      <DashboardLayout>
+      <div className={styles.pageContainer}>
         <Loader message='Loading appointments...' />
-      </DashboardLayout>
+      </div>
     )
   }
 
   return (
-    <DashboardLayout>
+    <div className={styles.pageContainer}>
       <div className={styles.page}>
         <h1 className={styles.title}>My Appointments</h1>
 
@@ -77,7 +78,7 @@ export default function MyAppointments() {
           </h2>
           {upcomingAppointments.length === 0 ? (
             <EmptyState
-              icon='📅'
+              icon={<FaRegCalendarAlt />}
               message="You don't have any upcoming appointments."
               actionLabel='Book Appointment'
               onAction={() => (window.location.href = '/doctors')}
@@ -97,7 +98,7 @@ export default function MyAppointments() {
             <span className={styles.count}>({pastAppointments.length})</span>
           </h2>
           {pastAppointments.length === 0 ? (
-            <EmptyState icon='📋' message='No past appointments found.' />
+            <EmptyState icon={<FaRegClipboard />} message='No past appointments found.' />
           ) : (
             <div className={styles.appointmentList}>
               {pastAppointments.map((apt) => (
@@ -107,7 +108,7 @@ export default function MyAppointments() {
           )}
         </section>
       </div>
-    </DashboardLayout>
+    </div>
   )
 }
 

@@ -1,4 +1,5 @@
 import { getDoctorTimezone, convertTimeToLocal } from '../../utils/timezone'
+import styles from './TimeSlotPicker.module.css'
 
 const START_HOUR = 9
 const END_HOUR = 17
@@ -37,17 +38,17 @@ export default function TimeSlotPicker({
 
   if (!doctor) {
     return (
-      <p className='placeholder-text'>
-        A doctor must be selected before choosing a time.
-      </p>
+      <div className={styles.slotStateContainer}>
+        <p className={styles.placeholderText}>A doctor must be selected before choosing a time.</p>
+      </div>
     )
   }
 
   if (!selectedDate) {
     return (
-      <p className='placeholder-text'>
-        Please select a date to view available time slots.
-      </p>
+      <div className={styles.slotStateContainer}>
+        <p className={styles.placeholderText}>Please select a date to view available time slots.</p>
+      </div>
     )
   }
 
@@ -60,9 +61,9 @@ export default function TimeSlotPicker({
 
   if (!isWorkingDay) {
     return (
-      <p className='placeholder-text'>
-        This doctor is not available on this day.
-      </p>
+      <div className={styles.slotStateContainer}>
+        <p className={styles.placeholderText}>This doctor is not available on this day.</p>
+      </div>
     )
   }
 
@@ -82,73 +83,40 @@ export default function TimeSlotPicker({
   }
 
   return (
-    <div
-      className='time-slot-grid'
-      role='group'
-      aria-label='Available time slots'
-    >
+    <div className={styles.timeSlotWrapper}>
       {showTimezone && (
-        <p className='timezone-notice'>
+        <p className={styles.timezoneNotice}>
           Times shown in your local timezone (doctor is in{' '}
           {doctor.location?.state || 'unknown timezone'})
         </p>
       )}
-      <style>{`
-        .time-slot-grid {
-          display: grid;
-          grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
-          gap: 0.5rem;
-        }
-        .time-slot {
-          padding: 0.5rem;
-          border: 1px solid #007BFF;
-          border-radius: 6px;
-          background: #fff;
-          color: #007BFF;
-          font-size: 0.9rem;
-          cursor: pointer;
-        }
-        .time-slot:hover:not(:disabled) {
-          background: #e7f1ff;
-        }
-        .time-slot:disabled {
-          border-color: #ced4da;
-          color: #adb5bd;
-          background: #F8F9FA;
-          cursor: not-allowed;
-          text-decoration: line-through;
-        }
-        .time-slot--selected {
-          background: #00A676;
-          border-color: #00A676;
-          color: #fff;
-        }
-        .timezone-notice {
-          font-size: 0.75rem;
-          color: #6c757d;
-          margin-bottom: 0.5rem;
-        }
-      `}</style>
-      {DAILY_SLOTS.map((time) => {
-        const isBooked = bookedTimes.includes(time)
-        const isSelected = time === selectedTime
-        const displayTime = showTimezone
-          ? convertTimeToLocal(time, getDoctorTimezone(doctor))
-          : time
-        return (
-          <button
-            key={time}
-            type='button'
-            className={`time-slot${isSelected ? ' time-slot--selected' : ''}`}
-            disabled={isBooked}
-            aria-pressed={isSelected}
-            onClick={() => handleSelect(time)}
-            title={showTimezone ? `${time} (doctor's local)` : ''}
-          >
-            {displayTime}
-          </button>
-        )
-      })}
+      
+      <div
+        className={styles.timeSlotGrid}
+        role='group'
+        aria-label='Available time slots'
+      >
+        {DAILY_SLOTS.map((time) => {
+          const isBooked = bookedTimes.includes(time)
+          const isSelected = time === selectedTime
+          const displayTime = showTimezone
+            ? convertTimeToLocal(time, getDoctorTimezone(doctor))
+            : time
+          return (
+            <button
+              key={time}
+              type='button'
+              className={`${styles.timeSlot} ${isSelected ? styles.timeSlotSelected : ''}`}
+              disabled={isBooked}
+              aria-pressed={isSelected}
+              onClick={() => handleSelect(time)}
+              title={showTimezone ? `${time} (doctor's local)` : ''}
+            >
+              {displayTime}
+            </button>
+          )
+        })}
+      </div>
     </div>
   )
 }

@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
+import { FaUser, FaEnvelope, FaLock, FaUserPlus } from 'react-icons/fa'
 import useAuth from '../hooks/useAuth'
 import {
   validateEmail,
@@ -7,7 +8,7 @@ import {
   validatePassword,
 } from '../utils/validation'
 import PasswordStrength from '../components/common/PasswordStrength'
-import styles from './Login.module.css'
+import styles from './Register.module.css'
 
 export default function Register() {
   const [name, setName] = useState('')
@@ -47,6 +48,9 @@ export default function Register() {
   return (
     <div className={styles.container}>
       <div className={styles.card}>
+        <div className={styles.headerIcon}>
+          <FaUserPlus />
+        </div>
         <h1 className={styles.title}>Create account</h1>
         <p className={styles.subtitle}>Join CareLink as a patient</p>
 
@@ -61,17 +65,20 @@ export default function Register() {
             <label className={styles.label} htmlFor='name'>
               Full name
             </label>
-            <input
-              id='name'
-              type='text'
-              className={`${styles.input} ${
-                errors.name ? styles.inputError : ''
-              }`}
-              placeholder='John Doe'
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              autoComplete='name'
-            />
+            <div className={styles.inputWrapper}>
+              <FaUser className={styles.fieldIcon} />
+              <input
+                id='name'
+                type='text'
+                className={`${styles.input} ${
+                  errors.name ? styles.inputError : ''
+                }`}
+                placeholder='John Doe'
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                autoComplete='name'
+              />
+            </div>
             {errors.name && <p className={styles.errorText}>{errors.name}</p>}
           </div>
 
@@ -79,17 +86,20 @@ export default function Register() {
             <label className={styles.label} htmlFor='email'>
               Email
             </label>
-            <input
-              id='email'
-              type='email'
-              className={`${styles.input} ${
-                errors.email ? styles.inputError : ''
-              }`}
-              placeholder='you@example.com'
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              autoComplete='email'
-            />
+            <div className={styles.inputWrapper}>
+              <FaEnvelope className={styles.fieldIcon} />
+              <input
+                id='email'
+                type='email'
+                className={`${styles.input} ${
+                  errors.email ? styles.inputError : ''
+                }`}
+                placeholder='you@example.com'
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                autoComplete='email'
+              />
+            </div>
             {errors.email && <p className={styles.errorText}>{errors.email}</p>}
           </div>
 
@@ -97,17 +107,20 @@ export default function Register() {
             <label className={styles.label} htmlFor='password'>
               Password
             </label>
-            <input
-              id='password'
-              type='password'
-              className={`${styles.input} ${
-                errors.password ? styles.inputError : ''
-              }`}
-              placeholder='Min. 6 characters'
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              autoComplete='new-password'
-            />
+            <div className={styles.inputWrapper}>
+              <FaLock className={styles.fieldIcon} />
+              <input
+                id='password'
+                type='password'
+                className={`${styles.input} ${
+                  errors.password ? styles.inputError : ''
+                }`}
+                placeholder='Min. 6 characters'
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                autoComplete='new-password'
+              />
+            </div>
             {errors.password && (
               <p className={styles.errorText}>{errors.password}</p>
             )}
@@ -118,17 +131,20 @@ export default function Register() {
             <label className={styles.label} htmlFor='confirm'>
               Confirm password
             </label>
-            <input
-              id='confirm'
-              type='password'
-              className={`${styles.input} ${
-                errors.confirm ? styles.inputError : ''
-              }`}
-              placeholder='Repeat password'
-              value={confirm}
-              onChange={(e) => setConfirm(e.target.value)}
-              autoComplete='new-password'
-            />
+            <div className={styles.inputWrapper}>
+              <FaLock className={styles.fieldIcon} />
+              <input
+                id='confirm'
+                type='password'
+                className={`${styles.input} ${
+                  errors.confirm ? styles.inputError : ''
+                }`}
+                placeholder='Repeat password'
+                value={confirm}
+                onChange={(e) => setConfirm(e.target.value)}
+                autoComplete='new-password'
+              />
+            </div>
             {errors.confirm && (
               <p className={styles.errorText}>{errors.confirm}</p>
             )}

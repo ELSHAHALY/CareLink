@@ -1,3 +1,4 @@
+import { FiCheck, FiX } from 'react-icons/fi'
 import styles from './PasswordStrength.module.css'
 
 export function calculatePasswordStrength(password) {
@@ -60,7 +61,9 @@ export default function PasswordStrength({ password }) {
             key={key}
             className={`${styles.checkItem} ${passed ? styles.passed : ''}`}
           >
-            <span className={styles.checkIcon}>{passed ? '✓' : '✗'}</span>
+            <span className={styles.checkIcon}>
+              {passed ? <FiCheck /> : <FiX />}
+            </span>
             <span>{key.charAt(0).toUpperCase() + key.slice(1)}</span>
           </li>
         ))}

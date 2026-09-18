@@ -1,14 +1,15 @@
 import { FcSearch } from 'react-icons/fc'
+import styles from './DoctorFilterBar.module.css'
 
 export default function DoctorFilterBar({ filters, onFilterChange, onClear }) {
   return (
-    <section className='doctor-filters'>
-      <div className='doctor-search'>
-        <label htmlFor='doctor-search' className='visually-hidden'>
+    <section className={styles.doctorFilters}>
+      <div className={styles.doctorSearch}>
+        <label htmlFor='doctor-search' className={styles.visuallyHidden}>
           Search doctors
         </label>
 
-        <span className='search-icon' aria-hidden='true'>
+        <span className={styles.searchIcon} aria-hidden='true'>
           <FcSearch size={20} />
         </span>
 
@@ -21,8 +22,8 @@ export default function DoctorFilterBar({ filters, onFilterChange, onClear }) {
         />
       </div>
 
-      <div className='doctor-filter-options'>
-        <label htmlFor='doctor-specialty' className='visually-hidden'>
+      <div className={styles.doctorFilterOptions}>
+        <label htmlFor='doctor-specialty' className={styles.visuallyHidden}>
           Specialty
         </label>
         <select
@@ -36,7 +37,7 @@ export default function DoctorFilterBar({ filters, onFilterChange, onClear }) {
           <option value='Dermatologist'>Dermatology</option>
         </select>
 
-        <label htmlFor='doctor-city' className='visually-hidden'>
+        <label htmlFor='doctor-city' className={styles.visuallyHidden}>
           City
         </label>
         <select
@@ -50,7 +51,7 @@ export default function DoctorFilterBar({ filters, onFilterChange, onClear }) {
           <option value='Chicago'>Chicago</option>
         </select>
 
-        <label htmlFor='doctor-rating' className='visually-hidden'>
+        <label htmlFor='doctor-rating' className={styles.visuallyHidden}>
           Rating
         </label>
         <select
@@ -63,7 +64,7 @@ export default function DoctorFilterBar({ filters, onFilterChange, onClear }) {
           <option value='4.5'>4.5+ Stars</option>
         </select>
 
-        <button type='button' className='clear-filters' onClick={onClear}>
+        <button type='button' className={styles.clearFilters} onClick={onClear}>
           Clear Filters
         </button>
       </div>

@@ -1,13 +1,13 @@
 import { Outlet } from 'react-router-dom'
 import Navbar from './Navbar'
 import Footer from './Footer'
-import '../../styles/layout.css'
+import styles from './MainLayout.module.css'
 
 export default function MainLayout() {
   return (
-    <div className='main-layout'>
+    <div className={styles.mainLayout}>
       <Navbar />
-      <main className='main-layout__content'>
+      <main className={styles.mainLayoutContent}>
         <Outlet />
       </main>
       <Footer />

@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { FiMenu } from 'react-icons/fi'
 import Sidebar from './Sidebar'
 import styles from './DashboardLayout.module.css'
 
@@ -31,7 +32,7 @@ export default function DashboardLayout({
             aria-label='Open navigation menu'
           >
             <span className={styles.menuIcon} aria-hidden='true'>
-              ☰
+              <FiMenu />
             </span>
           </button>
           <div className={styles.topbarTitles}>

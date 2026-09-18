@@ -4,82 +4,225 @@
   justify-content: center;
   min-height: 100vh;
   background: #f5f7fa;
+  width: 100%;
+  box-sizing: border-box;
 }
 
-.dashboard {
+.page {
   display: flex;
   flex-direction: column;
-  gap: 1.75rem;
+  gap: 1.25rem;
+  width: 100%;
+  box-sizing: border-box;
 }
 
-.welcome {
-  margin-bottom: 0;
-}
-
-.greeting {
+.title {
   font-size: 1.5rem;
   font-weight: 700;
   color: #212529;
-  margin: 0 0 0.25rem;
-}
-
-.subtitle {
-  font-size: 0.9375rem;
-  color: #6c757d;
   margin: 0;
+  word-break: break-word;
 }
 
-.quickActions {
-  margin-bottom: 0;
-}
-
-.sectionTitle {
-  font-size: 1.125rem;
-  font-weight: 700;
-  color: #212529;
-  margin: 0 0 0.875rem;
-}
-
-.actions {
+.error {
   display: flex;
-  gap: 0.75rem;
-}
-
-.actionBtn {
-  display: inline-flex;
   align-items: center;
-  justify-content: center;
-  padding: 0.625rem 1.25rem;
-  border: 1px solid #dee2e6;
+  gap: 0.5rem;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
   border-radius: 8px;
-  background: #fff;
-  color: #343a40;
-  font-size: 0.9375rem;
-  font-weight: 600;
-  text-decoration: none;
-  transition: border-color 0.2s, color 0.2s;
+  padding: 0.75rem 1rem;
+  color: #b91c1c;
+  font-size: 0.875rem;
+  margin: 0;
+  width: 100%;
+  box-sizing: border-box;
+  word-break: break-word;
 }
 
-.actionBtn:hover {
-  border-color: #007bff;
+.errorIcon {
+  font-size: 1rem;
+  flex-shrink: 0;
+}
+
+.tabs {
+  display: flex;
+  gap: 0.5rem;
+  border-bottom: 1px solid #e9ecef;
+  padding-bottom: 0;
+  width: 100%;
+  box-sizing: border-box;
+  overflow-x: auto;
+}
+
+.tab {
+  padding: 0.625rem 1rem;
+  border: none;
+  border-bottom: 2px solid transparent;
+  background: transparent;
+  color: #6c757d;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-bottom: -1px;
+  transition: color 0.15s, border-color 0.15s;
+  white-space: nowrap;
+}
+
+.tab:hover {
   color: #007bff;
 }
 
-.actionBtn:focus-visible {
+.tabActive {
+  color: #007bff;
+  border-bottom-color: #007bff;
+}
+
+.tab:focus-visible {
   outline: 2px solid #007bff;
   outline-offset: 2px;
+  border-radius: 4px;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.875rem 1rem;
+  background: #fff;
+  border: 1px solid #e9ecef;
+  border-bottom: none;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.card:first-child {
+  border-radius: 10px 10px 0 0;
+}
+
+.card:last-child {
+  border-bottom: 1px solid #e9ecef;
+  border-radius: 0 0 10px 10px;
+}
+
+.card:only-child {
+  border-radius: 10px;
+}
+
+.cardMain {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex: 1;
+  min-width: 0;
+}
+
+.timeWrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  flex-shrink: 0;
+}
+
+.timeIcon {
+  font-size: 0.875rem;
+  color: #007bff;
+  flex-shrink: 0;
+}
+
+.time {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #007bff;
+  white-space: nowrap;
+}
+
+.cardInfo {
+  min-width: 0;
+  flex: 1;
+}
+
+.patientWrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  margin-bottom: 0.125rem;
+  min-width: 0;
+}
+
+.patientIcon {
+  font-size: 0.875rem;
+  color: #6c757d;
+  flex-shrink: 0;
+}
+
+.patient {
+  margin: 0;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: #212529;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.type {
+  margin: 0;
+  font-size: 0.8125rem;
+  color: #6c757d;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.cardMeta {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-shrink: 0;
+}
+
+.dateWrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+}
+
+.dateIcon {
+  font-size: 0.875rem;
+  color: #6c757d;
+  flex-shrink: 0;
+}
+
+.date {
+  font-size: 0.8125rem;
+  color: #6c757d;
+  white-space: nowrap;
+}
+
+.emptyIcon {
+  font-size: 2rem;
+  color: #6c757d;
 }
 
 @media (max-width: 480px) {
-  .actions {
+  .card {
     flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
   }
 
-  .actionBtn {
+  .cardMeta {
     width: 100%;
-  }
-
-  .greeting {
-    font-size: 1.25rem;
+    justify-content: space-between;
   }
 }

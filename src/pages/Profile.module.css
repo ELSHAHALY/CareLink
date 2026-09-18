@@ -4,12 +4,15 @@
   justify-content: center;
   min-height: 100vh;
   background: #f5f7fa;
+  padding: 1rem;
 }
 
 .page {
   padding: 2rem 1.5rem;
   max-width: 800px;
   margin: 0 auto;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .title {
@@ -23,6 +26,7 @@
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
+  width: 100%;
 }
 
 .card {
@@ -30,6 +34,8 @@
   border-radius: 10px;
   padding: 2rem;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .header {
@@ -37,6 +43,7 @@
   align-items: center;
   gap: 1.5rem;
   margin-bottom: 1.5rem;
+  flex-wrap: wrap;
 }
 
 .avatar {
@@ -55,6 +62,7 @@
 
 .headerInfo {
   flex: 1;
+  min-width: 0;
 }
 
 .name {
@@ -62,6 +70,7 @@
   font-weight: 600;
   color: #212529;
   margin: 0;
+  word-break: break-word;
 }
 
 .roleBadge {
@@ -84,6 +93,7 @@
   justify-content: space-between;
   padding: 0.75rem 0;
   border-bottom: 1px solid #e9ecef;
+  gap: 1rem;
 }
 
 .detailRow:last-child {
@@ -93,11 +103,23 @@
 .detailRow dt {
   font-weight: 600;
   color: #495057;
+  flex-shrink: 0;
 }
 
 .detailRow dd {
   color: #6c757d;
   margin: 0;
+  text-align: right;
+  word-break: break-word;
+}
+
+.actionGroup {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 1.5rem;
 }
 
 .editBtn {
@@ -122,9 +144,13 @@
 .editActions {
   display: flex;
   gap: 0.75rem;
+  flex-wrap: wrap;
 }
 
 .cancelBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
   padding: 0.625rem 1.25rem;
   background: #f8f9fa;
   color: #495057;
@@ -140,6 +166,9 @@
 }
 
 .saveBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
   padding: 0.625rem 1.25rem;
   background: #007bff;
   color: #fff;
@@ -164,9 +193,10 @@
   padding: 0.5rem 0.75rem;
   border: 1px solid #ced4da;
   border-radius: 6px;
-  font-size: 1.5rem;
+  font-size: 1.25rem;
   font-weight: 600;
   color: #212529;
+  box-sizing: border-box;
 }
 
 .editInput:focus {
@@ -178,27 +208,69 @@
 .error {
   color: #dc3545;
   font-size: 0.875rem;
-  margin-top: 0.5rem;
+  margin-top: 1rem;
+  word-break: break-word;
 }
 
 .success {
   color: #198754;
   font-size: 0.875rem;
-  margin-top: 0.5rem;
+  margin-top: 1rem;
+  word-break: break-word;
 }
 
 .logoutBtn {
-  margin-top: 1rem;
-  padding: 0.5rem 1rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.625rem 1.25rem;
   background: #dc3545;
   color: #fff;
   border: none;
   border-radius: 6px;
-  font-size: 0.875rem;
+  font-size: 0.9rem;
+  font-weight: 500;
   cursor: pointer;
-  align-self: flex-start;
 }
 
 .logoutBtn:hover {
   background: #c82333;
+}
+
+@media (max-width: 600px) {
+  .page {
+    padding: 1rem 0.75rem;
+  }
+
+  .card {
+    padding: 1.25rem;
+  }
+
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .actionGroup {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .editBtn,
+  .logoutBtn,
+  .editActions {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .editActions {
+    flex-direction: column;
+  }
+
+  .cancelBtn,
+  .saveBtn {
+    width: 100%;
+    justify-content: center;
+  }
 }

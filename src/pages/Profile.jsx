@@ -1,8 +1,9 @@
 import { useState, useEffect, useCallback } from 'react'
 import { Navigate } from 'react-router-dom'
+import { FaUserEdit, FaCheck, FaTimes, FaSignOutAlt } from 'react-icons/fa'
 import useAuth from '../hooks/useAuth'
 import supabase, { isSupabaseConfigured } from '../services/supabase'
-import DashboardLayout from '../components/layout/DashboardLayout'
+// تم إزالة استيراد DashboardLayout
 import Loader from '../components/common/Loader'
 import styles from './Profile.module.css'
 
@@ -27,20 +28,24 @@ export default function Profile() {
       return
     }
 
-    const { data, error } = supabase
-      .from('profiles')
-      .select('name, email, role, created_at')
-      .eq('id', user.id)
-      .single()
+    const fetchProfile = async () => {
+      const { data, error } = await supabase
+        .from('profiles')
+        .select('name, email, role, created_at')
+        .eq('id', user.id)
+        .single()
 
-    if (error) {
-      setProfile({ name: user.name, email: user.email, role: user.role })
-      setName(user.name)
-    } else if (data) {
-      setProfile(data)
-      setName(data.name)
+      if (error) {
+        setProfile({ name: user.name, email: user.email, role: user.role })
+        setName(user.name)
+      } else if (data) {
+        setProfile(data)
+        setName(data.name)
+      }
+      setLoading(false)
     }
-    setLoading(false)
+
+    fetchProfile()
   }, [user, authLoading])
 
   const handleSave = useCallback(async () => {
@@ -95,7 +100,7 @@ export default function Profile() {
   }
 
   return (
-    <DashboardLayout>
+    <div className={styles.pageContainer}>
       <div className={styles.page}>
         <h1 className={styles.title}>My Profile</h1>
 
@@ -161,51 +166,58 @@ export default function Profile() {
                 )}
               </dl>
 
-              {!editMode ? (
+              <div className={styles.actionGroup}>
+                {!editMode ? (
+                  <button
+                    type='button'
+                    className={styles.editBtn}
+                    onClick={() => setEditMode(true)}
+                  >
+                    <FaUserEdit />
+                    <span>Edit Profile</span>
+                  </button>
+                ) : (
+                  <div className={styles.editActions}>
+                    <button
+                      type='button'
+                      className={styles.cancelBtn}
+                      onClick={() => {
+                        setEditMode(false)
+                        setName(profile?.name || user.name)
+                        setError('')
+                      }}
+                    >
+                      <FaTimes />
+                      <span>Cancel</span>
+                    </button>
+                    <button
+                      type='button'
+                      className={styles.saveBtn}
+                      onClick={handleSave}
+                      disabled={saving}
+                    >
+                      <FaCheck />
+                      <span>{saving ? 'Saving...' : 'Save'}</span>
+                    </button>
+                  </div>
+                )}
+
                 <button
                   type='button'
-                  className={styles.editBtn}
-                  onClick={() => setEditMode(true)}
+                  className={styles.logoutBtn}
+                  onClick={handleLogout}
                 >
-                  Edit Profile
+                  <FaSignOutAlt />
+                  <span>Logout</span>
                 </button>
-              ) : (
-                <div className={styles.editActions}>
-                  <button
-                    type='button'
-                    className={styles.cancelBtn}
-                    onClick={() => {
-                      setEditMode(false)
-                      setName(profile?.name || user.name)
-                      setError('')
-                    }}
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    type='button'
-                    className={styles.saveBtn}
-                    onClick={handleSave}
-                    disabled={saving}
-                  >
-                    {saving ? 'Saving...' : 'Save'}
-                  </button>
-                </div>
-              )}
+              </div>
 
               {error && <p className={styles.error}>{error}</p>}
               {success && <p className={styles.success}>{success}</p>}
-              <button
-                type='button'
-                className={styles.logoutBtn}
-                onClick={handleLogout}
-              >
-                Logout
-              </button>
             </section>
           </div>
         )}
       </div>
-    </DashboardLayout>
+    </div>
   )
 }
