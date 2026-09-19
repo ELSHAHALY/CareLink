@@ -24,14 +24,6 @@ const EMPTY_PROFILE = {
   servicesText: '',
 }
 
-/**
- * Smart doctor creation form for admins.
- * - "New profile" mode: full bilingual personal data + optional photo,
- *   slug auto-generated from the English name (editable).
- * - "Link existing" mode: attach login credentials to a catalog entry.
- * Calls onSubmit({ mode, profile, auth, photoFile }) — the parent owns the
- * async orchestration (upload → catalog insert → auth account).
- */
 export default function DoctorForm({ catalog, submitting, onSubmit }) {
   const [mode, setMode] = useState('new')
   const [profile, setProfile] = useState(EMPTY_PROFILE)
@@ -119,8 +111,6 @@ export default function DoctorForm({ catalog, submitting, onSubmit }) {
       setFormError(profileError)
       return
     }
-    // Fallback logic: if accountName is empty and name_en is Arabic-only (no Latin chars),
-    // use slugified name_en or email prefix as fallback
     const hasLatinChars = /[a-zA-Z]/.test(profile.name_en)
     const fallbackName = hasLatinChars
       ? profile.name_en.trim()
@@ -180,7 +170,7 @@ export default function DoctorForm({ catalog, submitting, onSubmit }) {
         <select
           value={doctorId}
           onChange={(e) => setDoctorId(e.target.value)}
-          className={styles.input}
+          className={styles.select}
           aria-label='Doctor profile'
         >
           <option value=''>Select doctor profile</option>
@@ -214,7 +204,7 @@ export default function DoctorForm({ catalog, submitting, onSubmit }) {
                 disabled={submitting}
               />
             </label>
-            {photoFile && <span className={styles.hint}>{photoFile.name}</span>}
+            {photoFile && <span className={styles.fileName}>{photoFile.name}</span>}
           </div>
 
           <input

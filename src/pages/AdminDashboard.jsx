@@ -1,5 +1,14 @@
 import { useEffect, useState } from 'react'
 import { Link, Navigate } from 'react-router-dom'
+import { 
+  FiUserCheck, 
+  FiFileText, 
+  FiUsers, 
+  FiCalendar, 
+  FiPlus, 
+  FiSettings, 
+  FiArrowRight 
+} from 'react-icons/fi'
 import useAuth from '../hooks/useAuth'
 import DashboardLayout from '../components/layout/DashboardLayout'
 import Loader from '../components/common/Loader'
@@ -7,11 +16,14 @@ import supabase, { isSupabaseConfigured } from '../services/supabase'
 import { resolveDoctorImage } from '../utils/doctors'
 import styles from './AdminDashboard.module.css'
 
-function StatCard({ label, value, tone = 'default', linkTo = null }) {
+function StatCard({ label, value, tone = 'default', linkTo = null, icon: Icon }) {
   const content = (
     <div className={`${styles.statCard} ${styles[`tone-${tone}`]}`}>
+      <div className={styles.statHeader}>
+        <p className={styles.statLabel}>{label}</p>
+        {Icon && <Icon className={styles.statIcon} />}
+      </div>
       <p className={styles.statValue}>{value}</p>
-      <p className={styles.statLabel}>{label}</p>
     </div>
   )
   if (linkTo) {
@@ -24,12 +36,20 @@ function StatCard({ label, value, tone = 'default', linkTo = null }) {
   return content
 }
 
-function ActionCard({ title, description, to, label }) {
+function ActionCard({ title, description, to, label, icon: Icon }) {
   return (
     <Link to={to} className={styles.actionCard}>
-      <h3 className={styles.actionTitle}>{title}</h3>
-      <p className={styles.actionDescription}>{description}</p>
-      <span className={styles.actionLabel}>{label} →</span>
+      <div className={styles.actionIconWrapper}>
+        {Icon && <Icon className={styles.actionCardIcon} />}
+      </div>
+      <div className={styles.actionContent}>
+        <h3 className={styles.actionTitle}>{title}</h3>
+        <p className={styles.actionDescription}>{description}</p>
+        <span className={styles.actionLabel}>
+          <span>{label}</span>
+          <FiArrowRight />
+        </span>
+      </div>
     </Link>
   )
 }
@@ -53,37 +73,55 @@ export default function AdminDashboard() {
         return
       }
       try {
-        const [{ data: doctors }, { count: patientCount }, { data: apts }] =
-          await Promise.all([
-            supabase
-              .from('doctors')
-              .select('id, status, name_en, name_ar, specialty_en, image')
-              .order('created_at', { ascending: false })
-              .limit(6),
-            supabase
-              .from('profiles')
-              .select('*', { count: 'exact', head: true })
-              .eq('role', 'patient'),
-            supabase
-              .from('appointments')
-              .select('id', { count: 'exact', head: true })
-              .gte('date', new Date().toISOString().slice(0, 10))
-              .eq('status', 'scheduled'),
-          ])
+        const today = new Date().toISOString().slice(0, 10)
+        const [
+          { data: recent, error: recentErr },
+          { count: publishedCount, error: publishedErr },
+          { count: draftCount, error: draftErr },
+          { count: patientCount, error: patientErr },
+          { count: upcomingCount, error: upcomingErr },
+        ] = await Promise.all([
+          supabase
+            .from('doctors')
+            .select('id, status, name_en, name_ar, specialty_en, image, created_at')
+            .order('created_at', { ascending: false })
+            .limit(6),
+          supabase
+            .from('doctors')
+            .select('*', { count: 'exact', head: true })
+            .or('status.is.null,status.eq.published'),
+          supabase
+            .from('doctors')
+            .select('*', { count: 'exact', head: true })
+            .eq('status', 'draft'),
+          supabase
+            .from('profiles')
+            .select('*', { count: 'exact', head: true })
+            .eq('role', 'patient'),
+          supabase
+            .from('appointments')
+            .select('*', { count: 'exact', head: true })
+            .gte('date', today)
+            .eq('status', 'scheduled'),
+        ])
         if (cancelled) return
-        const published = (doctors || []).filter(
-          (d) => !d.status || d.status === 'published',
-        ).length
-        const draft = (doctors || []).length - published
+        if (recentErr) throw recentErr
+        if (publishedErr) throw publishedErr
+        if (draftErr) throw draftErr
+        if (patientErr) throw patientErr
+        if (upcomingErr) throw upcomingErr
         setStats({
-          publishedDoctors: published,
-          draftDoctors: draft,
+          publishedDoctors: publishedCount || 0,
+          draftDoctors: draftCount || 0,
           totalPatients: patientCount || 0,
-          upcomingAppointments: apts?.length ?? 0,
+          upcomingAppointments: upcomingCount || 0,
         })
-        setRecentDoctors((doctors || []).slice(0, 5))
-      } catch {
-        // ignore
+        setRecentDoctors((recent || []).slice(0, 5))
+      } catch (err) {
+        if (!cancelled) {
+          // Surface error via console; UI keeps previous zeros.
+          console.error('Failed to load admin dashboard stats:', err)
+        }
       } finally {
         if (!cancelled) setLoading(false)
       }
@@ -115,7 +153,8 @@ export default function AdminDashboard() {
       subtitle='Manage doctors, users, and appointments from one place.'
       action={
         <Link to='/admin/doctors' className={styles.primaryBtn}>
-          + Add Doctor
+          <FiPlus className={styles.btnIcon} />
+          <span>Add Doctor</span>
         </Link>
       }
     >
@@ -125,18 +164,26 @@ export default function AdminDashboard() {
           value={stats.publishedDoctors}
           tone='primary'
           linkTo='/admin/doctors'
+          icon={FiUserCheck}
         />
         <StatCard
           label='Draft Doctors'
           value={stats.draftDoctors}
           tone='warning'
           linkTo='/admin/doctors?status=draft'
+          icon={FiFileText}
         />
-        <StatCard label='Patients' value={stats.totalPatients} tone='success' />
+        <StatCard 
+          label='Patients' 
+          value={stats.totalPatients} 
+          tone='success' 
+          icon={FiUsers}
+        />
         <StatCard
           label='Upcoming Appointments'
           value={stats.upcomingAppointments}
           tone='info'
+          icon={FiCalendar}
         />
       </div>
 
@@ -148,12 +195,14 @@ export default function AdminDashboard() {
             description='Create a new doctor profile and login account in one guided flow.'
             to='/admin/doctors'
             label='Add Doctor'
+            icon={FiPlus}
           />
           <ActionCard
             title='Manage Doctors'
             description='Search, edit, archive, and link accounts for existing doctors.'
             to='/admin/doctors'
             label='Manage'
+            icon={FiSettings}
           />
         </div>
       </section>

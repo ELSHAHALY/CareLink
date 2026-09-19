@@ -1,14 +1,15 @@
 import { FcSearch } from 'react-icons/fc'
+import styles from './DoctorFilterBar.module.css'
 
 export default function DoctorFilterBar({ filters, onFilterChange, onClear }) {
   return (
-    <section className='doctor-filters'>
-      <div className='doctor-search'>
-        <label htmlFor='doctor-search' className='visually-hidden'>
+    <section className={styles.doctorFilters}>
+      <div className={styles.doctorSearch}>
+        <label htmlFor='doctor-search' className={styles.visuallyHidden}>
           Search doctors
         </label>
 
-        <span className='search-icon' aria-hidden='true'>
+        <span className={styles.searchIcon} aria-hidden='true'>
           <FcSearch size={20} />
         </span>
 
@@ -21,11 +22,10 @@ export default function DoctorFilterBar({ filters, onFilterChange, onClear }) {
         />
       </div>
 
-      <div className='doctor-filter-options'>
-        <label htmlFor='doctor-specialty' className='visually-hidden'>
+      <div className={styles.doctorFilterOptions}>
+        <label htmlFor='doctor-specialty' className={styles.visuallyHidden}>
           Specialty
         </label>
-
         <select
           id='doctor-specialty'
           value={filters.specialty}
@@ -33,18 +33,16 @@ export default function DoctorFilterBar({ filters, onFilterChange, onClear }) {
         >
           <option value=''>All Specialties</option>
           <option value='Cardiologist'>Cardiology</option>
-          <option value='Dentist'>Dentistry</option>
           <option value='Neurologist'>Neurology</option>
           <option value='Dermatologist'>Dermatology</option>
         </select>
 
-        <label htmlFor='doctor-city' className='visually-hidden'>
+        <label htmlFor='doctor-city' className={styles.visuallyHidden}>
           City
         </label>
-
         <select
           id='doctor-city'
-          value={filters.city || ''}
+          value={filters.city}
           onChange={(e) => onFilterChange('city', e.target.value)}
         >
           <option value=''>All Cities</option>
@@ -53,24 +51,9 @@ export default function DoctorFilterBar({ filters, onFilterChange, onClear }) {
           <option value='Chicago'>Chicago</option>
         </select>
 
-        <label htmlFor='doctor-availability' className='visually-hidden'>
-          Availability
-        </label>
-
-        <select
-          id='doctor-availability'
-          value={filters.availability || ''}
-          onChange={(e) => onFilterChange('availability', e.target.value)}
-        >
-          <option value=''>Any Availability</option>
-          <option value='available'>Available Today</option>
-          <option value='unavailable'>Unavailable</option>
-        </select>
-
-        <label htmlFor='doctor-rating' className='visually-hidden'>
+        <label htmlFor='doctor-rating' className={styles.visuallyHidden}>
           Rating
         </label>
-
         <select
           id='doctor-rating'
           value={filters.rating}
@@ -81,7 +64,7 @@ export default function DoctorFilterBar({ filters, onFilterChange, onClear }) {
           <option value='4.5'>4.5+ Stars</option>
         </select>
 
-        <button type='button' className='clear-filters' onClick={onClear}>
+        <button type='button' className={styles.clearFilters} onClick={onClear}>
           Clear Filters
         </button>
       </div>

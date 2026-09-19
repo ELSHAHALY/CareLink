@@ -1,0 +1,108 @@
+.doctorsPage {
+  min-height: 100vh;
+  background-color: #f8fafc;
+  padding: 2rem 1rem;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+}
+
+.doctorsContainer {
+  width: 100%;
+  max-width: 1200px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  box-sizing: border-box;
+}
+
+.doctorsHeader {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+  text-align: center;
+  margin-bottom: 0.5rem;
+}
+
+.doctorsHeaderEyebrow {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: #0f62fe;
+  margin: 0;
+}
+
+.doctorsHeader h1 {
+  font-size: clamp(1.5rem, 3vw, 2.25rem);
+  font-weight: 700;
+  color: #111827;
+  margin: 0;
+  word-break: break-word;
+}
+
+.doctorsHeader p {
+  font-size: 0.9375rem;
+  color: #6b7280;
+  margin: 0;
+}
+
+.doctorsResultsHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 1rem;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.doctorsResultsHeader h2 {
+  font-size: clamp(1.125rem, 2vw, 1.25rem);
+  font-weight: 700;
+  color: #111827;
+  margin: 0;
+}
+
+.doctorsResultsHeader span {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #6b7280;
+}
+
+.errorMessage {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  color: #b91c1c;
+  font-size: 0.875rem;
+  margin: 0;
+  word-break: break-word;
+}
+
+.noDoctorsState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 3rem 1rem;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  text-align: center;
+  color: #6b7280;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  box-sizing: border-box;
+}
+
+.noDoctorsIcon {
+  font-size: 2.5rem;
+  color: #9ca3af;
+}
+
+@media (max-width: 480px) {
+  .doctorsPage {
+    padding: 1rem 0.5rem;
+  }
+}

@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useLocation } from 'react-router-dom'
+import { FiCalendar, FiClock, FiUser, FiCheckCircle, FiPlus } from 'react-icons/fi'
 import AppointmentForm from '../components/appointments/AppointmentForm'
 import TimeSlotPicker from '../components/appointments/TimeSlotPicker'
 import useAuth from '../hooks/useAuth'
@@ -89,8 +90,9 @@ export default function BookAppointment() {
       <section aria-label='Doctor information'>
         <h2>Doctor</h2>
         {doctor ? (
-          <p>
-            {doctor.name} — {doctor.specialty}
+          <p className={styles.doctorInfoText}>
+            <FiUser className={styles.sectionIcon} />
+            <span>{doctor.name} — {doctor.specialty}</span>
           </p>
         ) : (
           <p className={styles.placeholderText}>
@@ -101,15 +103,18 @@ export default function BookAppointment() {
 
       <section aria-label='Date selection'>
         <h2>Select a Date</h2>
-        <label htmlFor='appointment-date'>Appointment date</label>
-        <input
-          id='appointment-date'
-          type='date'
-          className={styles.dateInput}
-          value={selectedDate}
-          min={minimumDate}
-          onChange={handleDateChange}
-        />
+        <label htmlFor='appointment-date' className={styles.label}>Appointment date</label>
+        <div className={styles.inputWrapper}>
+          <FiCalendar className={styles.inputIcon} />
+          <input
+            id='appointment-date'
+            type='date'
+            className={styles.dateInput}
+            value={selectedDate}
+            min={minimumDate}
+            onChange={handleDateChange}
+          />
+        </div>
       </section>
 
       <section aria-label='Time slot selection'>
@@ -123,7 +128,8 @@ export default function BookAppointment() {
         />
         {selectedTime && (
           <p className={styles.selectedTimeSummary}>
-            Selected time: <strong>{selectedTime}</strong>
+            <FiClock className={styles.summaryIcon} />
+            <span>Selected time: <strong>{selectedTime}</strong></span>
           </p>
         )}
       </section>
@@ -135,7 +141,10 @@ export default function BookAppointment() {
             role='status'
             aria-live='polite'
           >
-            <h2>Appointment Confirmed</h2>
+            <div className={styles.confirmationHeader}>
+              <FiCheckCircle className={styles.confirmationIcon} />
+              <h2>Appointment Confirmed</h2>
+            </div>
             <dl className={styles.confirmationDetails}>
               <dt>Doctor</dt>
               <dd>{doctor?.name}</dd>
@@ -157,7 +166,8 @@ export default function BookAppointment() {
               className={styles.bookAnotherButton}
               onClick={handleBookAnother}
             >
-              Book Another Appointment
+              <FiPlus className={styles.btnIcon} />
+              <span>Book Another Appointment</span>
             </button>
           </div>
         </section>

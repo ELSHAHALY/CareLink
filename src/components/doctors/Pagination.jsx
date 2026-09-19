@@ -1,10 +1,11 @@
-import '../../styles/pagination.css'
+import styles from './Pagination.module.css'
 
 export default function Pagination({ currentPage, totalPages, onPageChange }) {
   return (
-    <nav className='pagination' aria-label='Doctors Pagination'>
+    <nav className={styles.pagination} aria-label='Doctors Pagination'>
       <button
         type='button'
+        className={styles.pageButton}
         disabled={currentPage === 1}
         onClick={() => onPageChange(currentPage - 1)}
       >
@@ -18,7 +19,7 @@ export default function Pagination({ currentPage, totalPages, onPageChange }) {
           <button
             key={page}
             type='button'
-            className={currentPage === page ? 'active' : ''}
+            className={`${styles.pageButton} ${currentPage === page ? styles.active : ''}`}
             onClick={() => onPageChange(page)}
           >
             {page}
@@ -28,6 +29,7 @@ export default function Pagination({ currentPage, totalPages, onPageChange }) {
 
       <button
         type='button'
+        className={styles.pageButton}
         disabled={currentPage === totalPages}
         onClick={() => onPageChange(currentPage + 1)}
       >

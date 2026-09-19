@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react'
 import { useNavigate, Link, Navigate, useLocation } from 'react-router-dom'
+import { FaEnvelope, FaLock, FaSignInAlt } from 'react-icons/fa'
 import useAuth from '../hooks/useAuth'
 import { validateEmail, validatePassword } from '../utils/validation'
-import { getRoleRedirect } from '../context/AuthContext'
 import styles from './Login.module.css'
 
 export default function Login() {
@@ -24,11 +24,9 @@ export default function Login() {
     }
   }, [location.state])
 
+  // إذا كان المستخدم مسجل الدخول بالفعل، سيتم توجيهه إلى الصفحة الرئيسية (/)
   if (!authLoading && user) {
-    if (user.role === 'doctor')
-      return <Navigate to='/doctor/dashboard' replace />
-    if (user.role === 'admin') return <Navigate to='/admin/doctors' replace />
-    return <Navigate to='/dashboard' replace />
+    return <Navigate to='/' replace />
   }
 
   function validate() {
@@ -50,7 +48,8 @@ export default function Login() {
 
     const result = await login(email, password)
     if (result.success) {
-      navigate(getRoleRedirect(result.role))
+      // توجيه المستخدم إلى الصفحة الرئيسية (/) مباشرة بعد نجاح تسجيل الدخول
+      navigate('/', { replace: true })
     } else {
       setServerError(result.error)
     }
@@ -94,17 +93,20 @@ export default function Login() {
             <label className={styles.label} htmlFor='email'>
               Email
             </label>
-            <input
-              id='email'
-              type='email'
-              className={`${styles.input} ${
-                errors.email ? styles.inputError : ''
-              }`}
-              placeholder='you@example.com'
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              autoComplete='email'
-            />
+            <div className={styles.inputWrapper}>
+              <FaEnvelope className={styles.inputIcon} />
+              <input
+                id='email'
+                type='email'
+                className={`${styles.input} ${
+                  errors.email ? styles.inputError : ''
+                }`}
+                placeholder='you@example.com'
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                autoComplete='email'
+              />
+            </div>
             {errors.email && <p className={styles.errorText}>{errors.email}</p>}
           </div>
 
@@ -112,27 +114,31 @@ export default function Login() {
             <label className={styles.label} htmlFor='password'>
               Password
             </label>
-            <input
-              id='password'
-              type='password'
-              className={`${styles.input} ${
-                errors.password ? styles.inputError : ''
-              }`}
-              placeholder='Min. 6 characters'
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              autoComplete='current-password'
-            />
+            <div className={styles.inputWrapper}>
+              <FaLock className={styles.inputIcon} />
+              <input
+                id='password'
+                type='password'
+                className={`${styles.input} ${
+                  errors.password ? styles.inputError : ''
+                }`}
+                placeholder='Min. 6 characters'
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                autoComplete='current-password'
+              />
+            </div>
             {errors.password && (
               <p className={styles.errorText}>{errors.password}</p>
             )}
           </div>
 
           <button type='submit' className={styles.button} disabled={loading}>
+            <FaSignInAlt />
             {loading ? 'Signing in...' : 'Sign in'}
           </button>
         </form>
-
+        <br />
         <p className={styles.forgotLink}>
           <Link to='/forgot-password'>Forgot password?</Link>
         </p>

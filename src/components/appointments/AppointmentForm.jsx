@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import styles from './AppointmentForm.module.css'
 
 const APPOINTMENT_TYPES = ['Consultation', 'Follow-up', 'Treatment', 'Check-up']
 
@@ -118,99 +119,14 @@ export default function AppointmentForm({
   }
 
   return (
-    <form className='appointment-form' onSubmit={handleSubmit} noValidate>
-      <style>{`
-        .appointment-form {
-          display: flex;
-          flex-direction: column;
-          gap: 1rem;
-        }
-        .appointment-form .form-field {
-          display: flex;
-          flex-direction: column;
-          gap: 0.35rem;
-        }
-        .appointment-form label {
-          font-size: 0.85rem;
-          color: #343A40;
-          font-weight: 600;
-        }
-        .appointment-form input,
-        .appointment-form select,
-        .appointment-form textarea {
-          padding: 0.6rem 0.75rem;
-          border: 1px solid #ced4da;
-          border-radius: 6px;
-          font-size: 0.95rem;
-          color: #343A40;
-          font-family: inherit;
-          width: 100%;
-        }
-        .appointment-form input:focus,
-        .appointment-form select:focus,
-        .appointment-form textarea:focus {
-          outline: none;
-          border-color: #007BFF;
-          box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.2);
-        }
-        .appointment-form input[aria-invalid='true'],
-        .appointment-form select[aria-invalid='true'],
-        .appointment-form textarea[aria-invalid='true'] {
-          border-color: #d64545;
-        }
-        .appointment-form textarea {
-          resize: vertical;
-          min-height: 80px;
-        }
-        .appointment-form .field-error {
-          color: #d64545;
-          font-size: 0.8rem;
-        }
-        .appointment-form .field-help {
-          color: #6c757d;
-          font-size: 0.78rem;
-        }
-        .appointment-form .char-count {
-          align-self: flex-end;
-          font-size: 0.75rem;
-          color: #6c757d;
-        }
-        .appointment-form .form-error {
-          background: #fdecea;
-          border: 1px solid #d64545;
-          color: #843534;
-          padding: 0.75rem 1rem;
-          border-radius: 6px;
-          font-size: 0.9rem;
-        }
-        .appointment-form .submit-button {
-          background: #00A676;
-          color: #fff;
-          border: none;
-          border-radius: 6px;
-          padding: 0.75rem 1.5rem;
-          font-size: 1rem;
-          cursor: pointer;
-          width: 100%;
-        }
-        .appointment-form .submit-button:disabled {
-          opacity: 0.6;
-          cursor: not-allowed;
-        }
-        @media (min-width: 600px) {
-          .appointment-form .submit-button {
-            width: auto;
-          }
-        }
-      `}</style>
-
+    <form className={styles.appointmentForm} onSubmit={handleSubmit} noValidate>
       {submissionError && (
-        <div role='alert' className='form-error'>
+        <div role='alert' className={styles.formError}>
           {submissionError}
         </div>
       )}
 
-      <div className='form-field'>
+      <div className={styles.formField}>
         <label htmlFor='patientName'>Full name</label>
         <input
           id='patientName'
@@ -222,15 +138,16 @@ export default function AppointmentForm({
           aria-describedby={
             errors.patientName ? 'patientName-error' : undefined
           }
+          placeholder='Enter patient full name'
         />
         {errors.patientName && (
-          <p id='patientName-error' role='alert' className='field-error'>
+          <p id='patientName-error' role='alert' className={styles.fieldError}>
             {errors.patientName}
           </p>
         )}
       </div>
 
-      <div className='form-field'>
+      <div className={styles.formField}>
         <label htmlFor='patientEmail'>Email</label>
         <input
           id='patientEmail'
@@ -242,15 +159,16 @@ export default function AppointmentForm({
           aria-describedby={
             errors.patientEmail ? 'patientEmail-error' : undefined
           }
+          placeholder='example@domain.com'
         />
         {errors.patientEmail && (
-          <p id='patientEmail-error' role='alert' className='field-error'>
+          <p id='patientEmail-error' role='alert' className={styles.fieldError}>
             {errors.patientEmail}
           </p>
         )}
       </div>
 
-      <div className='form-field'>
+      <div className={styles.formField}>
         <label htmlFor='patientPhone'>Phone number</label>
         <input
           id='patientPhone'
@@ -264,18 +182,19 @@ export default function AppointmentForm({
               ? 'patientPhone-error patientPhone-help'
               : 'patientPhone-help'
           }
+          placeholder='+1 (555) 000-0000'
         />
-        <p id='patientPhone-help' className='field-help'>
+        <p id='patientPhone-help' className={styles.fieldHelp}>
           Digits, spaces, +, -, and parentheses are allowed.
         </p>
         {errors.patientPhone && (
-          <p id='patientPhone-error' role='alert' className='field-error'>
+          <p id='patientPhone-error' role='alert' className={styles.fieldError}>
             {errors.patientPhone}
           </p>
         )}
       </div>
 
-      <div className='form-field'>
+      <div className={styles.formField}>
         <label htmlFor='type'>Appointment type</label>
         <select
           id='type'
@@ -295,13 +214,13 @@ export default function AppointmentForm({
           ))}
         </select>
         {errors.type && (
-          <p id='type-error' role='alert' className='field-error'>
+          <p id='type-error' role='alert' className={styles.fieldError}>
             {errors.type}
           </p>
         )}
       </div>
 
-      <div className='form-field'>
+      <div className={styles.formField}>
         <label htmlFor='notes'>Notes (optional)</label>
         <textarea
           id='notes'
@@ -313,18 +232,19 @@ export default function AppointmentForm({
           aria-describedby={
             errors.notes ? 'notes-error notes-counter' : 'notes-counter'
           }
+          placeholder='Add any additional instructions or information...'
         />
-        <span id='notes-counter' className='char-count'>
+        <span id='notes-counter' className={styles.charCount}>
           {values.notes.length}/{NOTES_MAX_LENGTH}
         </span>
         {errors.notes && (
-          <p id='notes-error' role='alert' className='field-error'>
+          <p id='notes-error' role='alert' className={styles.fieldError}>
             {errors.notes}
           </p>
         )}
       </div>
 
-      <button type='submit' className='submit-button' disabled={isSubmitting}>
+      <button type='submit' className={styles.submitButton} disabled={isSubmitting}>
         {isSubmitting ? 'Submitting…' : 'Continue'}
       </button>
     </form>

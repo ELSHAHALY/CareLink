@@ -32,7 +32,7 @@ export function filterDoctors(doctors, filters = {}) {
   })
 }
 
-async function loadCatalogDoctors() {
+export async function loadCatalogDoctors() {
   // Strategy 1: real cloud catalog (uuid + bilingual columns).
   // This is the production path - should always succeed in production.
   try {

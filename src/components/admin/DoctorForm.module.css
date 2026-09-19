@@ -2,6 +2,10 @@
   display: flex;
   flex-direction: column;
   gap: 0.875rem;
+  width: 100%;
+  max-width: 650px;
+  margin: 0 auto;
+  box-sizing: border-box;
 }
 
 .input,
@@ -14,6 +18,7 @@
   background: #fff;
   color: var(--color-text, #343a40);
   width: 100%;
+  box-sizing: border-box;
 }
 
 .input:focus,
@@ -56,12 +61,14 @@
 
 .photoRow {
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  align-items: stretch;
   gap: 0.875rem;
   padding: 0.75rem;
   border: 1px dashed var(--color-border, #d1d5db);
   border-radius: 12px;
   background: var(--color-bg-soft, #f8f9fa);
+  box-sizing: border-box;
 }
 
 .photoPreview {
@@ -71,6 +78,7 @@
   object-fit: cover;
   border: 2px solid #fff;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+  align-self: center;
 }
 
 .photoPlaceholder {
@@ -85,9 +93,12 @@
   justify-content: center;
   text-align: center;
   border: 2px dashed var(--color-border, #d1d5db);
+  align-self: center;
 }
 
 .photoBtn {
+  display: block;
+  text-align: center;
   padding: 0.5rem 0.875rem;
   border: 1px solid var(--color-border, #d1d5db);
   border-radius: 8px;
@@ -114,6 +125,7 @@
   font-size: 0.75rem;
   color: var(--color-text-muted, #6c757d);
   margin: 0;
+  text-align: center;
 }
 
 .modeToggle {
@@ -123,6 +135,7 @@
   border-radius: 8px;
   padding: 0.25rem;
   width: 100%;
+  box-sizing: border-box;
 }
 
 .modeBtn {
@@ -159,6 +172,7 @@
   font-size: 0.9375rem;
   cursor: pointer;
   transition: background 0.15s;
+  width: 100%;
 }
 
 .button:hover {
@@ -190,4 +204,22 @@
 .optionalTag {
   font-weight: 400;
   color: var(--color-text-muted, #6c757d);
+}
+
+@media (min-width: 640px) {
+  .photoRow {
+    flex-direction: row;
+    align-items: center;
+  }
+  .photoPreview,
+  .photoPlaceholder {
+    align-self: auto;
+  }
+  .photoBtn {
+    display: inline-block;
+    width: auto;
+  }
+  .fileName {
+    text-align: left;
+  }
 }

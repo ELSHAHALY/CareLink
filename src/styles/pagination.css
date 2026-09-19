@@ -1,27 +1,57 @@
+/* =========================
+   Pagination
+========================= */
+
 .pagination {
+  width: 100%;
+
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-wrap: wrap;
+
   gap: 8px;
+
   margin-top: 40px;
   padding: 20px 0;
+
+  overflow-x: auto;
+  scrollbar-width: none;
 }
+
+.pagination::-webkit-scrollbar {
+  display: none;
+}
+
+/* =========================
+   Pagination Buttons
+========================= */
 
 .pagination button {
   min-width: 40px;
   height: 40px;
+
   padding: 0 12px;
 
-  border: 1px solid #dee2e6;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 1px solid var(--color-border, #dee2e6);
   border-radius: 6px;
 
   background-color: #ffffff;
-  color: #343a40;
+  color: var(--color-text, #343a40);
 
+  font-family: inherit;
   font-size: 14px;
   font-weight: 500;
 
+  line-height: 1;
+  white-space: nowrap;
+
   cursor: pointer;
+
   transition:
     background-color 0.2s ease,
     color 0.2s ease,
@@ -29,41 +59,84 @@
     transform 0.2s ease;
 }
 
+/* =========================
+   Hover
+========================= */
+
 .pagination button:hover:not(:disabled) {
-  border-color: #00a676;
+  border-color: var(--color-accent, #00a676);
+  color: var(--color-accent, #00a676);
 }
 
+/* =========================
+   Active Page
+========================= */
+
 .pagination button.active {
-  background-color: #00a676;
-  border-color: #00a676;
+  background-color: var(--color-accent, #00a676);
+  border-color: var(--color-accent, #00a676);
   color: #ffffff;
 }
+
+.pagination button.active:hover {
+  background-color: var(--color-accent-hover, #00905f);
+  border-color: var(--color-accent-hover, #00905f);
+  color: #ffffff;
+}
+
+/* =========================
+   Previous / Next
+========================= */
 
 .pagination button:first-child,
 .pagination button:last-child {
   padding: 0 16px;
 }
 
+/* =========================
+   Disabled
+========================= */
+
 .pagination button:disabled {
   background-color: #f1f3f5;
   border-color: #e9ecef;
-  color: #abd5bd;
+  color: #adb5bd;
+
   cursor: not-allowed;
 }
 
-.pagination button:active:not(:disabled) {
-  transform: scale(0.8);
+/* =========================
+   Focus
+========================= */
+
+.pagination button:focus-visible {
+  outline: 2px solid var(--color-accent, #00a676);
+  outline-offset: 2px;
 }
+
+/* =========================
+   Click Animation
+========================= */
+
+.pagination button:active:not(:disabled) {
+  transform: scale(0.95);
+}
+
+/* =========================
+   Tablet
+========================= */
 
 @media (max-width: 767px) {
   .pagination {
     gap: 6px;
     margin-top: 30px;
+    padding: 16px 0;
   }
 
-   .pagination button {
+  .pagination button {
     min-width: 36px;
     height: 36px;
+
     padding: 0 8px;
 
     font-size: 13px;
@@ -72,5 +145,68 @@
   .pagination button:first-child,
   .pagination button:last-child {
     padding: 0 10px;
+  }
+}
+
+/* =========================
+   Small Mobile
+========================= */
+
+@media (max-width: 480px) {
+  .pagination {
+    gap: 5px;
+
+    justify-content: flex-start;
+
+    padding-left: 8px;
+    padding-right: 8px;
+  }
+
+  .pagination button {
+    min-width: 34px;
+    height: 34px;
+
+    padding: 0 7px;
+
+    font-size: 12px;
+  }
+
+  .pagination button:first-child,
+  .pagination button:last-child {
+    padding: 0 9px;
+  }
+}
+
+/* =========================
+   Very Small Screens
+========================= */
+
+@media (max-width: 360px) {
+  .pagination {
+    gap: 4px;
+  }
+
+  .pagination button {
+    min-width: 32px;
+    height: 32px;
+
+    padding: 0 6px;
+
+    font-size: 12px;
+  }
+
+  .pagination button:first-child,
+  .pagination button:last-child {
+    padding: 0 7px;
+  }
+}
+
+/* =========================
+   Reduced Motion
+========================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .pagination button {
+    transition: none;
   }
 }

@@ -1,24 +1,28 @@
 .badge {
   display: inline-block;
-  padding: 0.2rem 0.6rem;
+  padding: 0.25rem 0.75rem;
   border-radius: 999px;
   font-size: 0.75rem;
   font-weight: 600;
   line-height: 1.4;
   white-space: nowrap;
+  box-sizing: border-box;
 }
 
 .scheduled {
-  background: #eff6ff;
+  background-color: #eff6ff;
   color: #1d4ed8;
+  border: 1px solid #bfdbfe;
 }
 
 .completed {
-  background: #ecfdf5;
+  background-color: #ecfdf5;
   color: #047857;
+  border: 1px solid #a7f3d0;
 }
 
 .cancelled {
-  background: #fef2f2;
+  background-color: #fef2f2;
   color: #b91c1c;
+  border: 1px solid #fecaca;
 }

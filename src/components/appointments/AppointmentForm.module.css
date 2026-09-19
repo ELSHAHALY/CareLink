@@ -1,0 +1,134 @@
+.appointmentForm {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  background: #ffffff;
+  padding: 1.75rem;
+  border-radius: 14px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.formField {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.appointmentForm label {
+  font-size: 0.875rem;
+  color: #1f2937;
+  font-weight: 600;
+}
+
+.appointmentForm input,
+.appointmentForm select,
+.appointmentForm textarea {
+  padding: 0.75rem 1rem;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  color: #1f2937;
+  font-family: inherit;
+  width: 100%;
+  box-sizing: border-box;
+  background-color: #f9fafb;
+  transition: all 0.2s ease;
+}
+
+.appointmentForm input:hover,
+.appointmentForm select:hover,
+.appointmentForm textarea:hover {
+  border-color: #9ca3af;
+}
+
+.appointmentForm input:focus,
+.appointmentForm select:focus,
+.appointmentForm textarea:focus {
+  outline: none;
+  background-color: #ffffff;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+}
+
+.appointmentForm input[aria-invalid='true'],
+.appointmentForm select[aria-invalid='true'],
+.appointmentForm textarea[aria-invalid='true'] {
+  border-color: #dc2626;
+  background-color: #fef2f2;
+}
+
+.appointmentForm textarea {
+  resize: vertical;
+  min-height: 90px;
+}
+
+.fieldError {
+  color: #dc2626;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  margin-top: 0.1rem;
+}
+
+.fieldHelp {
+  color: #6b7280;
+  font-size: 0.8rem;
+  margin-top: 0.1rem;
+}
+
+.charCount {
+  align-self: flex-end;
+  font-size: 0.75rem;
+  color: #6b7280;
+  margin-top: 0.2rem;
+}
+
+.formError {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #b91c1c;
+  padding: 0.875rem 1rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.submitButton {
+  background: #059669;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.875rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  width: 100%;
+  transition: background 0.2s ease, transform 0.1s ease;
+  box-shadow: 0 2px 4px rgba(5, 150, 105, 0.2);
+}
+
+.submitButton:hover:not(:disabled) {
+  background: #047857;
+}
+
+.submitButton:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.submitButton:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+@media (min-width: 640px) {
+  .appointmentForm {
+    padding: 2.25rem;
+  }
+  .submitButton {
+    width: auto;
+    align-self: flex-start;
+    min-width: 180px;
+  }
+}

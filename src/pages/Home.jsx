@@ -1,6 +1,15 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import '../styles/home.css'
+import { 
+  FaSearch, 
+  FaHeartbeat, 
+  FaBandAid, 
+  FaBrain, 
+  FaTooth, 
+  FaChild, 
+  FaBone 
+} from 'react-icons/fa'
+import styles from './Home.module.css'
 
 const STATS = [
   { value: '500+', label: 'Verified Doctors' },
@@ -27,17 +36,13 @@ const STEPS = [
   },
 ]
 
-// `value` matches the specialty option values in DoctorFilterBar so picking
-// a specialty here pre-filters the Doctors page. Specialties with no
-// matching filter option yet (Pediatrics, Orthopedics) just link through
-// unfiltered until that option is added.
 const SPECIALTIES = [
-  { name: 'Cardiology', icon: '❤️', value: 'Cardiologist' },
-  { name: 'Dermatology', icon: '🩹', value: 'Dermatologist' },
-  { name: 'Neurology', icon: '🧠', value: 'Neurologist' },
-  { name: 'Dentistry', icon: '🦷', value: 'Dentist' },
-  { name: 'Pediatrics', icon: '🧒', value: '' },
-  { name: 'Orthopedics', icon: '🦴', value: '' },
+  { name: 'Cardiology', icon: <FaHeartbeat />, value: 'Cardiologist' },
+  { name: 'Dermatology', icon: <FaBandAid />, value: 'Dermatologist' },
+  { name: 'Neurology', icon: <FaBrain />, value: 'Neurologist' },
+  { name: 'Dentistry', icon: <FaTooth />, value: 'Dentist' },
+  { name: 'Pediatrics', icon: <FaChild />, value: '' },
+  { name: 'Orthopedics', icon: <FaBone />, value: '' },
 ]
 
 export default function Home() {
@@ -53,83 +58,82 @@ export default function Home() {
   }
 
   return (
-    <div className='home'>
-      {/* Hero */}
-      <section className='home-hero'>
-        <div className='home-hero__container'>
-          <p className='home-hero__eyebrow'>CARELINK</p>
-          <h1 className='home-hero__title'>
+    <div className={styles.home}>
+      <section className={styles.homeHero}>
+        <div className={styles.homeHeroContainer}>
+          <p className={styles.homeHeroEyebrow}>CARELINK</p>
+          <h1 className={styles.homeHeroTitle}>
             Find the right doctor, right when you need one.
           </h1>
-          <p className='home-hero__subtitle'>
+          <p className={styles.homeHeroSubtitle}>
             Search trusted healthcare providers, check real-time availability,
             and book your appointment online in minutes.
           </p>
 
-          <form className='home-hero__search' onSubmit={handleSearchSubmit}>
-            <input
-              type='text'
-              className='home-hero__search-input'
-              placeholder='Search by doctor name or specialty...'
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              aria-label='Search for a doctor or specialty'
-            />
-            <button type='submit' className='home-hero__search-btn'>
+          <form className={styles.homeHeroSearch} onSubmit={handleSearchSubmit}>
+            <div className={styles.homeHeroSearchWrapper}>
+              <FaSearch className={styles.homeHeroSearchIcon} />
+              <input
+                type='text'
+                className={styles.homeHeroSearchInput}
+                placeholder='Search by doctor name or specialty...'
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                aria-label='Search for a doctor or specialty'
+              />
+            </div>
+            <button type='submit' className={styles.homeHeroSearchBtn}>
               Search
             </button>
           </form>
 
-          <div className='home-hero__actions'>
-            <Link to='/doctors' className='home-btn home-btn--primary'>
+          <div className={styles.homeHeroActions}>
+            <Link to='/doctors' className={`${styles.homeBtn} ${styles.homeBtnPrimary}`}>
               Find a Doctor
             </Link>
-            <Link to='/login' className='home-btn home-btn--ghost'>
+            <Link to='/login' className={`${styles.homeBtn} ${styles.homeBtnGhost}`}>
               Sign In
             </Link>
           </div>
         </div>
       </section>
 
-      {/* Stats */}
-      <section className='home-stats'>
-        <div className='home-stats__container'>
+      <section className={styles.homeStats}>
+        <div className={styles.homeStatsContainer}>
           {STATS.map((stat) => (
-            <div className='home-stats__item' key={stat.label}>
-              <span className='home-stats__value'>{stat.value}</span>
-              <span className='home-stats__label'>{stat.label}</span>
+            <div className={styles.homeStatsItem} key={stat.label}>
+              <span className={styles.homeStatsValue}>{stat.value}</span>
+              <span className={styles.homeStatsLabel}>{stat.label}</span>
             </div>
           ))}
         </div>
       </section>
 
-      {/* How it works */}
-      <section className='home-section'>
-        <div className='home-section__container'>
-          <p className='home-section__eyebrow'>HOW IT WORKS</p>
-          <h2 className='home-section__title'>
+      <section className={styles.homeSection}>
+        <div className={styles.homeSectionContainer}>
+          <p className={styles.homeSectionEyebrow}>HOW IT WORKS</p>
+          <h2 className={styles.homeSectionTitle}>
             Booking an appointment takes three simple steps
           </h2>
 
-          <div className='home-steps'>
+          <div className={styles.homeSteps}>
             {STEPS.map((step) => (
-              <div className='home-step' key={step.number}>
-                <span className='home-step__number'>{step.number}</span>
-                <h3 className='home-step__title'>{step.title}</h3>
-                <p className='home-step__text'>{step.text}</p>
+              <div className={styles.homeStep} key={step.number}>
+                <span className={styles.homeStepNumber}>{step.number}</span>
+                <h3 className={styles.homeStepTitle}>{step.title}</h3>
+                <p className={styles.homeStepText}>{step.text}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Specialties */}
-      <section className='home-section home-section--muted'>
-        <div className='home-section__container'>
-          <p className='home-section__eyebrow'>SPECIALTIES</p>
-          <h2 className='home-section__title'>Browse doctors by specialty</h2>
+      <section className={`${styles.homeSection} ${styles.homeSectionMuted}`}>
+        <div className={styles.homeSectionContainer}>
+          <p className={styles.homeSectionEyebrow}>SPECIALTIES</p>
+          <h2 className={styles.homeSectionTitle}>Browse doctors by specialty</h2>
 
-          <div className='home-specialties'>
+          <div className={styles.homeSpecialties}>
             {SPECIALTIES.map((specialty) => (
               <Link
                 to={
@@ -139,13 +143,13 @@ export default function Home() {
                       )}`
                     : '/doctors'
                 }
-                className='home-specialty-card'
+                className={styles.homeSpecialtyCard}
                 key={specialty.name}
               >
-                <span className='home-specialty-card__icon'>
+                <span className={styles.homeSpecialtyCardIcon}>
                   {specialty.icon}
                 </span>
-                <span className='home-specialty-card__name'>
+                <span className={styles.homeSpecialtyCardName}>
                   {specialty.name}
                 </span>
               </Link>
@@ -154,17 +158,16 @@ export default function Home() {
         </div>
       </section>
 
-      {/* CTA banner */}
-      <section className='home-cta'>
-        <div className='home-cta__container'>
-          <h2 className='home-cta__title'>
+      <section className={styles.homeCta}>
+        <div className={styles.homeCtaContainer}>
+          <h2 className={styles.homeCtaTitle}>
             Ready to book your next appointment?
           </h2>
-          <p className='home-cta__text'>
+          <p className={styles.homeCtaText}>
             Join thousands of patients who trust CareLink to manage their
             healthcare.
           </p>
-          <Link to='/doctors' className='home-btn home-btn--primary'>
+          <Link to='/doctors' className={`${styles.homeBtn} ${styles.homeBtnPrimary}`}>
             Book an Appointment
           </Link>
         </div>
