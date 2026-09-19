@@ -6,4 +6,6 @@ others/
 .env
 .env.local
 .env.*.local
-lambda/
+
+lambda.md
+lambda/package.json

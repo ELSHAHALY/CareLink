@@ -1,96 +1,95 @@
-const MOCK_DELAY_MS = 800
+const LAMBDA_URL = import.meta.env.VITE_AI_LAMBDA_URL?.trim()
+const AI_ENDPOINT = import.meta.env.DEV ? '/api/ai' : LAMBDA_URL
 
-const MOCK_RESPONSES = [
+const LOCAL_RESPONSES = [
   {
-    keywords: ['appointment', 'book', 'schedule', 'reschedule', 'cancel'],
+    keywords: ['hello', 'hi', 'hey'],
     response:
-      'You can manage your appointments from the "My Appointments" page. To book a new appointment, browse our doctors and select an available time slot. Need help with something specific?',
+      "Hello! I'm CareLink AI, and I'm here to help you. I can assist with booking appointments, finding doctors, and managing your account. What would you like to know?",
   },
   {
-    keywords: ['doctor', 'specialist', 'find'],
-    response:
-      'You can find doctors by visiting the "Find a Doctor" page. Use the filters to search by specialty, location, or rating. Would you like me to help you find a specific type of doctor?',
+    keywords: ['thanks', 'thank you', 'thx'],
+    response: "You're welcome! If you need anything else, feel free to ask.",
   },
   {
-    keywords: ['account', 'profile', 'password', 'login', 'register', 'sign'],
-    response:
-      'For account-related questions, you can update your profile from the Profile page. If you\'re having trouble logging in, try the "Forgot Password" option on the login page.',
-  },
-  {
-    keywords: ['hello', 'hi', 'hey', 'help', 'support'],
-    response:
-      "Hello! I'm here to help you with CareLink. I can assist with booking appointments, finding doctors, managing your account, and more. What would you like to know?",
-  },
-  {
-    keywords: ['thank', 'thanks', 'bye', 'goodbye'],
-    response:
-      "You're welcome! If you need anything else, feel free to ask. Have a great day! 😊",
-  },
-  {
-    keywords: ['insurance', 'payment', 'cost', 'price', 'fee'],
-    response:
-      'For billing and insurance questions, please contact our support team at hello@carelink.com or call +20 100 000 0000. They can help with payment details and insurance verification.',
+    keywords: ['bye', 'goodbye'],
+    response: 'Goodbye! Have a great day.',
   },
 ]
 
-const DEFAULT_RESPONSE =
-  "Thank you for your question! I'm still learning, but I can help with booking appointments, finding doctors, and managing your account. Could you tell me more about what you need?"
+export function getLocalResponse(message) {
+  // Ignore surrounding punctuation, but only match the complete message.
+  // For example, "Hello!" is local while "Hello - how do I find a doctor?"
+  // must be sent to the AI service.
+  const normalizedMessage = message
+    .toLowerCase()
+    .trim()
+    .replace(/^[^a-z0-9]+|[^a-z0-9]+$/g, '')
 
-/**
- * Find a mock response based on keyword matching.
- * @param {string} message - The user's message.
- * @returns {string} A contextual mock response.
- */
-function getMockResponse(message) {
-  const lower = message.toLowerCase()
+  for (const item of LOCAL_RESPONSES) {
+    const isMatch = item.keywords.includes(normalizedMessage)
 
-  for (const entry of MOCK_RESPONSES) {
-    if (entry.keywords.some((kw) => lower.includes(kw))) {
-      return entry.response
+    if (isMatch) {
+      return item.response
     }
   }
 
-  return DEFAULT_RESPONSE
+  return null
 }
 
-/**
- * Send a message to the AI backend and return the assistant's response.
- *
- * @param {string} message - The user's current message.
- * @param {Array<{role: string, content: string}>} conversationHistory - Previous messages for context.
- * @returns {Promise<string>} The assistant's reply text.
- *
- * @example
- *   const reply = await sendMessage('How do I book an appointment?', [])
- */
 export async function sendMessage(message, conversationHistory = []) {
+  const localResponse = getLocalResponse(message)
 
-  await new Promise((resolve) => setTimeout(resolve, MOCK_DELAY_MS))
+  if (localResponse) {
+    return localResponse
+  }
 
-  return getMockResponse(message)
+  if (!LAMBDA_URL) {
+    throw new Error(
+      'Missing VITE_AI_LAMBDA_URL. Add it to .env and restart the Vite server.',
+    )
+  }
+
+  let response
+  try {
+    response = await fetch(AI_ENDPOINT, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        message,
+        conversationHistory,
+      }),
+    })
+  } catch (error) {
+    throw new Error(`Unable to reach the AI service. ${error.message}`, {
+      cause: error,
+    })
+  }
+
+  const responseText = await response.text()
+  let data
+
+  try {
+    data = responseText ? JSON.parse(responseText) : {}
+  } catch (error) {
+    throw new Error('AI service returned an invalid JSON response.', {
+      cause: error,
+    })
+  }
+
+  if (!response.ok) {
+    const detail =
+      data.error || data.message || data.reply || response.statusText
+    throw new Error(`AI service request failed (${response.status}): ${detail}`)
+  }
+
+  const reply = data.reply || data.message
+
+  if (typeof reply !== 'string' || !reply.trim()) {
+    throw new Error('AI service response did not contain a reply.')
+  }
+
+  return reply
 }
-// =====================================================
-// To connect Lambda function start from here
-// =====================================================
-// const LAMBDA_URL = import.meta.env.VITE_AI_LAMBDA_URL
-
-// export async function sendMessage(message, conversationHistory = []) {
-//   const response = await fetch(LAMBDA_URL, {
-//     method: 'POST',
-//     headers: {
-//       'Content-Type': 'application/json',
-//     },
-//     body: JSON.stringify({
-//       message,
-//       conversationHistory,
-//     }),
-//   })
-
-//   if (!response.ok) {
-//     throw new Error('AI service request failed')
-//   }
-
-//   const data = await response.json()
-
-//   return data.reply
-// }

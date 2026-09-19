@@ -114,7 +114,11 @@ export default function AIChatbot({ onRegisterOpen }) {
     if (!trimmed || isLoading) return
 
     // 1. Add user message immediately
-    const userMsg = { id: Date.now().toString(), role: 'user', content: trimmed }
+    const userMsg = {
+      id: Date.now().toString(),
+      role: 'user',
+      content: trimmed,
+    }
     setMessages((prev) => [...prev, userMsg])
     setInput('')
     setIsLoading(true)
@@ -126,7 +130,9 @@ export default function AIChatbot({ onRegisterOpen }) {
 
     try {
       // 2-3. Build history (exclude greeting id field), call service
-      const history = [...messages, userMsg].map(({ role, content }) => ({
+      // The current message is sent separately, so only send earlier messages
+      // as history. Including userMsg here would make Lambda receive it twice.
+      const history = messages.map(({ role, content }) => ({
         role,
         content,
       }))
@@ -138,7 +144,8 @@ export default function AIChatbot({ onRegisterOpen }) {
         ...prev,
         { id: (Date.now() + 1).toString(), role: 'assistant', content: reply },
       ])
-    } catch {
+    } catch (error) {
+      console.error('AI chatbot request failed:', error)
       // 6. Show friendly error
       setMessages((prev) => [
         ...prev,
@@ -176,7 +183,11 @@ export default function AIChatbot({ onRegisterOpen }) {
 
   function renderMessage(msg) {
     const variant =
-      msg.role === 'error' ? 'error' : msg.role === 'user' ? 'user' : 'assistant'
+      msg.role === 'error'
+        ? 'error'
+        : msg.role === 'user'
+        ? 'user'
+        : 'assistant'
 
     return (
       <div
@@ -221,13 +232,19 @@ export default function AIChatbot({ onRegisterOpen }) {
   /* ── Open state — full chat panel ──────────────────────────── */
 
   return (
-    <div className='chatbot__panel' role='dialog' aria-label='CareLink AI Help Center'>
+    <div
+      className='chatbot__panel'
+      role='dialog'
+      aria-label='CareLink AI Help Center'
+    >
       {/* Header */}
       <div className='chatbot__header'>
         <RobotIcon className='chatbot__header-icon' />
         <div>
           <h2 className='chatbot__header-title'>CareLink AI</h2>
-          <div className='chatbot__header-status'>Your healthcare assistant</div>
+          <div className='chatbot__header-status'>
+            Your healthcare assistant
+          </div>
         </div>
         <button
           className='chatbot__close-btn'
@@ -283,4 +300,3 @@ export default function AIChatbot({ onRegisterOpen }) {
     </div>
   )
 }
-
