@@ -1,13 +1,14 @@
 import { useEffect, useState } from 'react'
 import { Link, Navigate } from 'react-router-dom'
-import { 
-  FiUserCheck, 
-  FiFileText, 
-  FiUsers, 
-  FiCalendar, 
-  FiPlus, 
-  FiSettings, 
-  FiArrowRight 
+import {
+  FiUserCheck,
+  FiFileText,
+  FiUsers,
+  FiCalendar,
+  FiPlus,
+  FiSettings,
+  FiStar,
+  FiArrowRight
 } from 'react-icons/fi'
 import useAuth from '../hooks/useAuth'
 import DashboardLayout from '../components/layout/DashboardLayout'
@@ -203,6 +204,13 @@ export default function AdminDashboard() {
             to='/admin/doctors'
             label='Manage'
             icon={FiSettings}
+          />
+          <ActionCard
+            title='Moderate Reviews'
+            description='Approve or hide patient reviews before they go public.'
+            to='/admin/ratings'
+            label='Moderate'
+            icon={FiStar}
           />
         </div>
       </section>

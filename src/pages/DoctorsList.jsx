@@ -1,4 +1,4 @@
-import { useState, useContext } from 'react'
+import { useMemo, useState, useContext } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import DoctorFilterBar from '../components/doctors/DoctorFilterBar'
 import DoctorList from '../components/doctors/DoctorList'
@@ -7,6 +7,7 @@ import useDoctors from '../hooks/useDoctors'
 import { AppointmentContext } from '../context/AppointmentContext'
 import '../styles/doctors.css'
 import Pagination from '../components/doctors/Pagination'
+import { calculateRatings } from '../components/doctors/StarRating'
 import { useRatings } from '../hooks/useRatings'
 
 export default function DoctorsList() {
@@ -20,17 +21,30 @@ export default function DoctorsList() {
     rating: '',
   })
 
-  const { doctors: filteredDoctors, loading, error } = useDoctors(filters)
-  const { ratings } = useRatings()
+  // The rating filter is applied below from real Supabase averages, not
+  // from the static catalog `rating` field (always 0 for cloud doctors).
+  const { rating: ratingFilter, ...doctorFilters } = filters
+  const { doctors: filteredDoctors, loading, error } = useDoctors(doctorFilters)
+  const { ratings, ratingsByDoctor } = useRatings()
+
+  const ratingFilteredDoctors = useMemo(() => {
+    const min = Number(ratingFilter)
+    if (!ratingFilter || Number.isNaN(min)) return filteredDoctors
+    return filteredDoctors.filter((doctor) => {
+      const doctorRatings = ratingsByDoctor[String(doctor.id)] || []
+      const { average, count } = calculateRatings(doctorRatings, [])
+      return count > 0 && average >= min
+    })
+  }, [filteredDoctors, ratingsByDoctor, ratingFilter])
 
   const [currentPage, setCurrentPage] = useState(1)
   const doctorsPerPage = 6
 
-  const totalPages = Math.ceil(filteredDoctors.length / doctorsPerPage)
+  const totalPages = Math.ceil(ratingFilteredDoctors.length / doctorsPerPage)
 
   const startIndex = (currentPage - 1) * doctorsPerPage
 
-  const paginatedDoctors = filteredDoctors.slice(
+  const paginatedDoctors = ratingFilteredDoctors.slice(
     startIndex,
     startIndex + doctorsPerPage,
   )
@@ -73,18 +87,18 @@ export default function DoctorsList() {
 
         <div className='doctors-results-header'>
           <h2>Our Doctors</h2>
-          <span>{filteredDoctors.length} Doctors</span>
+          <span>{ratingFilteredDoctors.length} Doctors</span>
         </div>
 
         {loading && <DoctorSkeleton />}
 
         {error && <p className='error-message'>{error}</p>}
 
-        {!loading && !error && filteredDoctors.length === 0 && (
+        {!loading && !error && ratingFilteredDoctors.length === 0 && (
           <p>No Doctors Found.</p>
         )}
 
-        {!loading && !error && filteredDoctors.length > 0 && (
+        {!loading && !error && ratingFilteredDoctors.length > 0 && (
           <>
             <DoctorList
               doctors={paginatedDoctors}

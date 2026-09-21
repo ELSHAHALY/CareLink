@@ -16,6 +16,7 @@ import ResetPassword from '../pages/ResetPassword'
 import CheckEmail from '../pages/CheckEmail'
 import AdminDashboard from '../pages/AdminDashboard'
 import AdminDoctors from '../pages/AdminDoctors'
+import AdminRatings from '../pages/AdminRatings'
 import MyAppointments from '../pages/MyAppointments'
 import Profile from '../pages/Profile'
 import NotFound from '../pages/NotFound'
@@ -106,6 +107,14 @@ export default function AppRoutes() {
         element={
           <RequireRole roles={['admin']}>
             <AdminDoctors />
+          </RequireRole>
+        }
+      />
+      <Route
+        path='/admin/ratings'
+        element={
+          <RequireRole roles={['admin']}>
+            <AdminRatings />
           </RequireRole>
         }
       />

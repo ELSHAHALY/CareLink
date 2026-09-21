@@ -2,7 +2,7 @@ import { useMemo, useContext } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import StarRating, { calculateRatings } from '../components/doctors/StarRating'
 import { useRatings } from '../hooks/useRatings'
-import { isVerifiedRating } from '../utils/ratings'
+import { averageCategory, isVerifiedRating } from '../utils/ratings'
 import { useDoctorById } from '../hooks/useDoctors'
 import { resolveDoctorImage as resolveImage } from '../utils/doctors'
 import { AppointmentContext } from '../context/AppointmentContext'
@@ -39,12 +39,15 @@ function formatMonthYear(dateStr) {
 }
 
 function RatingBar({ label, value }) {
-  const percentage = (value / 5) * 100
+  const hasValue = typeof value === 'number'
+  const percentage = hasValue ? (value / 5) * 100 : 0
   return (
     <div className={styles.ratingBarContainer}>
       <div className={styles.ratingBarHeader}>
         <span className={styles.ratingBarLabel}>{label}</span>
-        <span className={styles.ratingBarValue}>{value.toFixed(1)} / 5.0</span>
+        <span className={styles.ratingBarValue}>
+          {hasValue ? `${value.toFixed(1)} / 5.0` : '—'}
+        </span>
       </div>
       <div className={styles.ratingBarTrack}>
         <div
@@ -82,21 +85,10 @@ export default function DoctorProfile() {
   }, [rawDoctorRatings, doctorAppointments])
 
   const categoryAverages = useMemo(() => {
-    if (validRatings.length === 0) {
-      return { bedsideManner: 0, communication: 0, waitTime: 0 }
-    }
-    const sums = validRatings.reduce(
-      (acc, r) => ({
-        bedsideManner: acc.bedsideManner + (r.bedsideManner || r.score),
-        communication: acc.communication + (r.communication || r.score),
-        waitTime: acc.waitTime + (r.waitTime || r.score),
-      }),
-      { bedsideManner: 0, communication: 0, waitTime: 0 },
-    )
     return {
-      bedsideManner: sums.bedsideManner / validRatings.length,
-      communication: sums.communication / validRatings.length,
-      waitTime: sums.waitTime / validRatings.length,
+      bedsideManner: averageCategory(validRatings, 'bedsideManner'),
+      communication: averageCategory(validRatings, 'communication'),
+      waitTime: averageCategory(validRatings, 'waitTime'),
     }
   }, [validRatings])
 
@@ -314,7 +306,7 @@ export default function DoctorProfile() {
                   .slice(0, 2)
 
                 return (
-                  <div key={idx} className={styles.reviewCard}>
+                  <div key={review.id || idx} className={styles.reviewCard}>
                     <div className={styles.reviewCardHeader}>
                       <div className={styles.reviewerAvatar}>{initials}</div>
                       <div className={styles.reviewerInfo}>

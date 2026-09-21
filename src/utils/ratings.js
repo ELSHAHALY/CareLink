@@ -103,3 +103,33 @@ export function averageScore(ratings = []) {
   const sum = valid.reduce((acc, r) => acc + r.score, 0)
   return { average: sum / valid.length, count: valid.length }
 }
+
+/**
+ * Averages one category from rated values only. Missing values stay out;
+ * returns null when nothing was rated (rendered as '—', never faked
+ * from the overall score).
+ */
+export function averageCategory(ratings = [], key) {
+  const values = (ratings || [])
+    .map((r) => r?.[key])
+    .filter((v) => typeof v === 'number')
+  if (values.length === 0) return null
+  return values.reduce((acc, v) => acc + v, 0) / values.length
+}
+
+/**
+ * Whether the review button may be shown: completed appointments that the
+ * caller has not reviewed yet. Anything else (scheduled/cancelled/reviewed)
+ * must not offer submission.
+ */
+export function canReviewAppointment(appointment, reviewedIds) {
+  if (!appointment || appointment.status !== 'completed') return false
+  if (!appointment.appointmentId) return false
+  if (reviewedIds instanceof Set) {
+    return !reviewedIds.has(String(appointment.appointmentId))
+  }
+  if (Array.isArray(reviewedIds)) {
+    return !reviewedIds.map(String).includes(String(appointment.appointmentId))
+  }
+  return true
+}
