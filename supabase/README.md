@@ -35,6 +35,9 @@ In Dashboard → SQL Editor, run exactly one file:
   (without it the first admin could never be created).
 - `supabase/migrations/011_storage_admin_upload.sql` — lets admins upload
   doctor photos to the public `ccc-images` bucket (public read untouched).
+- `supabase/migrations/014_ratings.sql` — patient ratings table + legacy/demo
+  seed (stays `pending`, never verified). Public reads published rows only;
+  `patient_id` / `appointment_id` are never granted to anon/authenticated.
 
 Then verify (paste separately):
 

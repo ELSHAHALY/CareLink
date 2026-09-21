@@ -7,7 +7,7 @@ import useDoctors from '../hooks/useDoctors'
 import { AppointmentContext } from '../context/AppointmentContext'
 import '../styles/doctors.css'
 import Pagination from '../components/doctors/Pagination'
-import ratingsData from '../data/ratings.json'
+import { useRatings } from '../hooks/useRatings'
 
 export default function DoctorsList() {
   const [searchParams] = useSearchParams()
@@ -21,6 +21,7 @@ export default function DoctorsList() {
   })
 
   const { doctors: filteredDoctors, loading, error } = useDoctors(filters)
+  const { ratings } = useRatings()
 
   const [currentPage, setCurrentPage] = useState(1)
   const doctorsPerPage = 6
@@ -87,7 +88,7 @@ export default function DoctorsList() {
           <>
             <DoctorList
               doctors={paginatedDoctors}
-              ratings={ratingsData.ratings}
+              ratings={ratings}
               appointments={appointments}
             />
 

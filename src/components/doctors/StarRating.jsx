@@ -1,24 +1,43 @@
 import { useMemo } from 'react'
 import styles from './StarRating.module.css'
+import {
+  averageScore,
+  filterPublishedRatings,
+  isVerifiedRating,
+  toUiRating,
+} from '../../utils/ratings'
+=======
+import styles from './StarRating.module.css'
+ main
 
 export function calculateRatings(ratings = [], appointments = []) {
-  const eligiblePatients = new Set(
-    appointments
-      .filter((apt) => apt.status === 'completed')
-      .map((apt) => apt.patientId),
-  )
+  const normalized = (ratings || []).map(toUiRating).filter(Boolean)
+  const published = filterPublishedRatings(normalized)
 
-  const validRatings = ratings.filter((r) => eligiblePatients.has(r.patientId))
-
-  if (validRatings.length === 0) {
-    return { average: 0, count: 0, validRatings: [] }
+  if (published.length === 0) {
+    return {
+      average: 0,
+      count: 0,
+      validRatings: [],
+      verifiedRatings: [],
+      legacyRatings: [],
+    }
   }
 
-  const sum = validRatings.reduce((acc, r) => acc + r.score, 0)
+  const verifiedRatings = published.filter((r) =>
+    isVerifiedRating(r, appointments),
+  )
+  const legacyRatings = published.filter(
+    (r) => r.source === 'legacy_demo' || r.isVerified === false,
+  )
+  const { average, count } = averageScore(published)
+
   return {
-    average: sum / validRatings.length,
-    count: validRatings.length,
-    validRatings,
+    average,
+    count,
+    validRatings: published,
+    verifiedRatings,
+    legacyRatings,
   }
 }
 

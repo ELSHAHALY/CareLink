@@ -1,7 +1,8 @@
 import { useMemo, useContext } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
-import ratingsData from '../data/ratings.json'
 import StarRating, { calculateRatings } from '../components/doctors/StarRating'
+import { useRatings } from '../hooks/useRatings'
+import { isVerifiedRating } from '../utils/ratings'
 import { useDoctorById } from '../hooks/useDoctors'
 import { resolveDoctorImage as resolveImage } from '../utils/doctors'
 import { AppointmentContext } from '../context/AppointmentContext'
@@ -28,7 +29,10 @@ function MiniStars({ score }) {
 }
 
 function formatMonthYear(dateStr) {
-  return new Date(dateStr).toLocaleDateString('en-US', {
+  if (!dateStr) return ''
+  const d = new Date(dateStr)
+  if (Number.isNaN(d.getTime())) return ''
+  return d.toLocaleDateString('en-US', {
     year: 'numeric',
     month: 'long',
   })
@@ -57,20 +61,23 @@ export default function DoctorProfile() {
   const navigate = useNavigate()
   const { doctor, loading } = useDoctorById(doctorId)
   const { appointments } = useContext(AppointmentContext)
+  const { ratingsByDoctor } = useRatings()
 
   const imageSrc = resolveImage(doctor?.image)
 
   const rawDoctorRatings = useMemo(() => {
     if (!doctor) return []
-    return ratingsData.ratings.filter((r) => r.doctorId === doctor.id)
-  }, [doctor])
+    return ratingsByDoctor[String(doctor.id)] || []
+  }, [doctor, ratingsByDoctor])
 
   const doctorAppointments = useMemo(() => {
     if (!doctor) return []
-    return appointments.filter((a) => a.doctorId === doctor.id)
+    return (appointments || []).filter(
+      (a) => String(a.doctorId) === String(doctor.id),
+    )
   }, [doctor, appointments])
 
-  const { average, count, validRatings } = useMemo(() => {
+  const { average, count, validRatings, verifiedRatings } = useMemo(() => {
     return calculateRatings(rawDoctorRatings, doctorAppointments)
   }, [rawDoctorRatings, doctorAppointments])
 
@@ -265,7 +272,9 @@ export default function DoctorProfile() {
                   Patient Reviews & Testimonials
                 </h2>
                 <p className={styles.sectionSubtitle}>
-                  Verified reviews from patients treated in the last 12 months
+                  {verifiedRatings.length > 0
+                    ? 'Verified reviews from patients with completed visits'
+                    : 'Patient reviews'}
                 </p>
               </div>
               <div className={styles.overallRatingBadge}>
@@ -290,8 +299,13 @@ export default function DoctorProfile() {
 
             <div className={styles.reviewsList}>
               {validRatings.map((review, idx) => {
+                const verified = isVerifiedRating(review, doctorAppointments)
+                const isLegacy = review.source === 'legacy_demo'
                 const name =
-                  review.patientName || `Patient ${review.patientId.slice(-3)}`
+                  review.patientName ||
+                  (review.patientId
+                    ? `Patient ${String(review.patientId).slice(-3)}`
+                    : 'Patient')
                 const initials = name
                   .split(' ')
                   .map((n) => n[0])
@@ -307,10 +321,16 @@ export default function DoctorProfile() {
                         <h4 className={styles.reviewerName}>{name}</h4>
                         <div className={styles.reviewMeta}>
                           <span className={styles.verifiedPatientText}>
-                            Verified Patient
+                            {verified
+                              ? 'Verified Patient'
+                              : isLegacy
+                              ? 'Legacy demo review'
+                              : 'Patient review'}
                           </span>
                           <span className={styles.dot}>•</span>
-                          <span>{formatMonthYear(review.date)}</span>
+                          <span>
+                            {review.date ? formatMonthYear(review.date) : ''}
+                          </span>
                         </div>
                       </div>
                       <div className={styles.reviewCardStars}>
