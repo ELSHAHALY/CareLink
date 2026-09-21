@@ -2,8 +2,7 @@ import { useMemo } from 'react'
 import { Link } from 'react-router-dom'
 import { useFavorites } from '../../hooks/useFavorites'
 import { useDoctorsCatalog } from '../../hooks/useDoctorsCatalog'
-import ratingsData from '../../data/ratings.json'
-import appointmentsData from '../../data/appointments.json'
+import { useRatings } from '../../hooks/useRatings'
 import { calculateRatings } from '../doctors/StarRating'
 import { resolveDoctorImage } from '../../utils/doctors'
 import EmptyState from '../common/EmptyState'
@@ -12,6 +11,7 @@ import styles from './FavoriteDoctors.module.css'
 export default function FavoriteDoctors() {
   const { favorites, toggleFavorite, isFavorite } = useFavorites()
   const { doctorMap } = useDoctorsCatalog()
+  const { ratingsByDoctor } = useRatings()
 
   const favoriteDoctors = useMemo(() => {
     return favorites
@@ -21,16 +21,8 @@ export default function FavoriteDoctors() {
   }, [favorites, doctorMap])
 
   function getDoctorRating(doctorId) {
-    const doctorRatings = ratingsData.ratings.filter(
-      (r) => r.doctorId === doctorId,
-    )
-    const doctorAppointments = appointmentsData.appointments.filter(
-      (a) => a.doctorId === doctorId,
-    )
-    const { average, count } = calculateRatings(
-      doctorRatings,
-      doctorAppointments,
-    )
+    const doctorRatings = ratingsByDoctor[String(doctorId)] || []
+    const { average, count } = calculateRatings(doctorRatings, [])
     return { average, count }
   }
 
@@ -59,12 +51,44 @@ export default function FavoriteDoctors() {
                 alt={doctor.name}
                 className={styles.image}
               />
+<<<<<<< Updated upstream
+=======
+              <div className={styles.imageWrapper}>
+                <img
+                  src={`/${doctor.image}`}
+                  alt={doctor.name}
+                  className={styles.image}
+                />
+                <button
+                  type='button'
+                  className={`${styles.favBtn} ${
+                    favorited ? styles.favorited : ''
+                  }`}
+                  onClick={() => toggleFavorite(doctor.id)}
+                  aria-label={
+                    favorited
+                      ? `Remove ${doctor.name} from favorites`
+                      : `Add ${doctor.name} to favorites`
+                  }
+                >
+                  <FiHeart className={styles.favIcon} />
+                </button>
+              </div>
+>>>>>>> Stashed changes
               <div className={styles.cardBody}>
                 <p className={styles.name}>{doctor.name}</p>
                 <p className={styles.specialty}>{doctor.specialty}</p>
                 {count > 0 && (
+<<<<<<< Updated upstream
                   <p className={styles.rating}>
                     ★ {average.toFixed(1)}{' '}
+=======
+                  <div className={styles.ratingWrapper}>
+                    <FiStar className={styles.starIcon} />
+                    <span className={styles.ratingScore}>
+                      {average.toFixed(1)}
+                    </span>
+>>>>>>> Stashed changes
                     <span className={styles.reviewCount}>
                       ({count} review{count !== 1 ? 's' : ''})
                     </span>
