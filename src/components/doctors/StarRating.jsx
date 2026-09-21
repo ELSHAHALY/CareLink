@@ -6,9 +6,6 @@ import {
   isVerifiedRating,
   toUiRating,
 } from '../../utils/ratings'
-=======
-import styles from './StarRating.module.css'
- main
 
 export function calculateRatings(ratings = [], appointments = []) {
   const normalized = (ratings || []).map(toUiRating).filter(Boolean)

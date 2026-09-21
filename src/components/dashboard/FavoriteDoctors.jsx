@@ -107,10 +107,7 @@ export default function FavoriteDoctors() {
                 )}
 
                 <div className={styles.actions}>
-                  <Link
-                    to={`/doctors/${doctor.id}`}
-                    className={styles.viewBtn}
-                  >
+                  <Link to={`/doctors/${doctor.id}`} className={styles.viewBtn}>
                     View Profile
                   </Link>
                 </div>
