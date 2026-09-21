@@ -1,81 +1,93 @@
 import { Link } from 'react-router-dom'
-import '../../styles/footer.css'
+import { FaEnvelope, FaPhone, FaMapMarkerAlt } from 'react-icons/fa'
+import styles from './Footer.module.css'
 
-export default function Footer() {
+export default function Footer({ onHelpCenterClick }) {
   return (
-    <footer className='footer'>
-      <div className='footer__container'>
-        {/* Brand */}
-        <div className='footer__brand'>
-          <a href='/' className='footer__logo'>
+    <footer className={styles.footer}>
+      <div className={styles.footerContainer}>
+        <div className={styles.footerBrand}>
+          <Link to='/' className={styles.footerLogo}>
             Care<span>Link</span>
-          </a>
+          </Link>
 
-          <p className='footer__description'>
+          <p className={styles.footerDescription}>
             Connecting you with trusted healthcare professionals, whenever you
             need them.
           </p>
         </div>
 
-        {/* Quick Links */}
-        <div className='footer__section'>
+        <div className={styles.footerSection}>
           <h3>Quick Links</h3>
 
           <ul>
             <li>
-              <a href='/'>Home</a>
+              <Link to='/'>Home</Link>
             </li>
             <li>
-              <a href='/doctors'>Find a Doctor</a>
+              <Link to='/doctors'>Find a Doctor</Link>
             </li>
             <li>
-              <a href='/services'>Services</a>
+              <Link to='/services'>Services</Link>
             </li>
             <li>
-              <a href='/about'>About Us</a>
+              <Link to='/about'>About Us</Link>
             </li>
           </ul>
         </div>
 
-        {/* For Patients */}
-        <div className='footer__section'>
+        <div className={styles.footerSection}>
           <h3>For Patients</h3>
 
           <ul>
             <li>
-              <a href='/doctors'>Find a Doctor</a>
+              <Link to='/doctors'>Find a Doctor</Link>
             </li>
             <li>
-              <a href='/appointments'>Appointments</a>
+              <Link to='/appointments'>Appointments</Link>
             </li>
             <li>
-              <a href='/health-tips'>Health Tips</a>
+              <Link to='/health-tips'>Health Tips</Link>
             </li>
             <li>
-              <a href='/help'>Help Center</a>
+              <button
+                type='button'
+                className='footer__link-button'
+                onClick={onHelpCenterClick}
+              >
+                Help Center
+              </button>
             </li>
+          
           </ul>
         </div>
 
-        {/* Contact */}
-        <div className='footer__section footer__contact'>
+        <div className={`${styles.footerSection} ${styles.footerContact}`}>
           <h3>
             <Link to='/contact'>Contact Us</Link>
           </h3>
 
-          <p>hello@carelink.com</p>
-          <p>+20 100 000 0000</p>
-          <p>Cairo, Egypt</p>
+          <p>
+            <FaEnvelope className={styles.contactIcon} />
+            <span>hello@carelink.com</span>
+          </p>
+          <p>
+            <FaPhone className={styles.contactIcon} />
+            <span>+20 100 000 0000</span>
+          </p>
+          <p>
+            <FaMapMarkerAlt className={styles.contactIcon} />
+            <span>Cairo, Egypt</span>
+          </p>
         </div>
       </div>
 
-      {/* Bottom */}
-      <div className='footer__bottom'>
+      <div className={styles.footerBottom}>
         <p>© 2026 CareLink. All rights reserved.</p>
 
-        <div className='footer__legal'>
-          <a href='/privacy'>Privacy Policy</a>
-          <a href='/terms'>Terms of Service</a>
+        <div className={styles.footerLegal}>
+          <Link to='/privacy'>Privacy Policy</Link>
+          <Link to='/terms'>Terms of Service</Link>
         </div>
       </div>
     </footer>

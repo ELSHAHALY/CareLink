@@ -1,0 +1,44 @@
+.starRating {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.starRatingStars {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.starIcon {
+  display: inline-block;
+  vertical-align: middle;
+  flex-shrink: 0;
+}
+
+.starRatingValue {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.starRatingCount {
+  font-size: 0.85rem;
+  color: #6b7280;
+}
+
+@media (max-width: 480px) {
+  .starRating {
+    gap: 4px;
+  }
+  
+  .starRatingValue {
+    font-size: 0.85rem;
+  }
+  
+  .starRatingCount {
+    font-size: 0.8rem;
+  }
+}

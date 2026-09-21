@@ -1,9 +1,10 @@
 import { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
+import { FaLock, FaCheckCircle, FaExclamationTriangle, FaArrowLeft } from 'react-icons/fa'
 import useAuth from '../hooks/useAuth'
 import { validatePassword } from '../utils/validation'
 import PasswordStrength from '../components/common/PasswordStrength'
-import styles from './Login.module.css'
+import styles from './ResetPassword.module.css'
 
 export default function ResetPassword() {
   const [password, setPassword] = useState('')
@@ -36,45 +37,60 @@ export default function ResetPassword() {
   return (
     <div className={styles.container}>
       <div className={styles.card}>
+        <div className={styles.iconHeader}>
+          <FaLock className={styles.headerIcon} />
+        </div>
         <h1 className={styles.title}>Set new password</h1>
-        <p className={styles.subtitle}>Enter your new password</p>
+        <p className={styles.subtitle}>Enter your new password below</p>
 
         {error && (
           <div className={styles.globalError}>
+            <FaExclamationTriangle className={styles.alertIcon} />
             <p className={styles.errorText}>{error}</p>
           </div>
         )}
-        {success && <p className={styles.successText}>{success}</p>}
+        {success && (
+          <div className={styles.globalSuccess}>
+            <FaCheckCircle className={styles.alertIcon} />
+            <p className={styles.successText}>{success}</p>
+          </div>
+        )}
 
         <form className={styles.form} onSubmit={handleSubmit} noValidate>
           <div className={styles.field}>
             <label className={styles.label} htmlFor='password'>
               New password
             </label>
-            <input
-              id='password'
-              type='password'
-              className={`${styles.input} ${error ? styles.inputError : ''}`}
-              placeholder='Min. 6 characters'
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              autoComplete='new-password'
-            />
+            <div className={styles.inputWrapper}>
+              <FaLock className={styles.inputIcon} />
+              <input
+                id='password'
+                type='password'
+                className={`${styles.input} ${error ? styles.inputError : ''}`}
+                placeholder='Min. 6 characters'
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                autoComplete='new-password'
+              />
+            </div>
             <PasswordStrength password={password} />
           </div>
           <div className={styles.field}>
             <label className={styles.label} htmlFor='confirm'>
               Confirm password
             </label>
-            <input
-              id='confirm'
-              type='password'
-              className={styles.input}
-              placeholder='Repeat password'
-              value={confirm}
-              onChange={(e) => setConfirm(e.target.value)}
-              autoComplete='new-password'
-            />
+            <div className={styles.inputWrapper}>
+              <FaLock className={styles.inputIcon} />
+              <input
+                id='confirm'
+                type='password'
+                className={styles.input}
+                placeholder='Repeat password'
+                value={confirm}
+                onChange={(e) => setConfirm(e.target.value)}
+                autoComplete='new-password'
+              />
+            </div>
           </div>
           <button type='submit' className={styles.button} disabled={loading}>
             {loading ? 'Updating...' : 'Update password'}
@@ -83,6 +99,7 @@ export default function ResetPassword() {
 
         <p className={styles.footer}>
           <Link to='/login' className={styles.link}>
+            <FaArrowLeft className={styles.backIcon} />
             Back to sign in
           </Link>
         </p>

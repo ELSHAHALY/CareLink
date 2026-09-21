@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react'
 import { Navigate, Link } from 'react-router-dom'
+import { FaCalendarAlt, FaClipboardList } from 'react-icons/fa'
 import useAuth from '../hooks/useAuth'
 import { useAppointments } from '../hooks/useAppointments'
 import DashboardLayout from '../components/layout/DashboardLayout'
@@ -153,7 +154,7 @@ function DoctorDashboardContent({
           <h2 className={styles.sectionTitle}>Today&apos;s Appointments</h2>
           {todayAppointments.length === 0 ? (
             <EmptyState
-              icon='📅'
+              icon={<FaCalendarAlt />}
               message="You don't have any appointments scheduled for today."
             />
           ) : (
@@ -179,7 +180,7 @@ function DoctorDashboardContent({
             </Link>
           </div>
           {upcomingAppointments.length === 0 ? (
-            <EmptyState icon='📋' message='No upcoming appointments.' />
+            <EmptyState icon={<FaClipboardList />} message='No upcoming appointments.' />
           ) : (
             <div className={styles.appointmentList}>
               {upcomingAppointments.map((apt) => (

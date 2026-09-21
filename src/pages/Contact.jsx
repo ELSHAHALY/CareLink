@@ -1,4 +1,13 @@
 import { useEffect, useRef, useState } from 'react'
+import { 
+  FiMail, 
+  FiUser, 
+  FiMessageSquare, 
+  FiSend, 
+  FiCheckCircle, 
+  FiAlertCircle, 
+  FiArrowRight 
+} from 'react-icons/fi'
 import { submitContactForm } from '../services/contactApi'
 import styles from './Contact.module.css'
 
@@ -210,14 +219,18 @@ export default function Contact() {
             aria-live='polite'
             tabIndex={-1}
           >
-            <h2 className={styles.successHeading}>Message Sent</h2>
+            <div className={styles.successHeader}>
+              <FiCheckCircle className={styles.successIcon} />
+              <h2 className={styles.successHeading}>Message Sent</h2>
+            </div>
             <p className={styles.successText}>{successMessage}</p>
             <button
               type='button'
               className={styles.secondaryButton}
               onClick={handleSendAnother}
             >
-              Send Another Message
+              <span>Send Another Message</span>
+              <FiArrowRight className={styles.btnIcon} />
             </button>
           </div>
         ) : (
@@ -229,7 +242,8 @@ export default function Contact() {
                 role='alert'
                 tabIndex={-1}
               >
-                {submissionError}
+                <FiAlertCircle className={styles.errorAlertIcon} />
+                <span>{submissionError}</span>
               </div>
             )}
 
@@ -237,31 +251,35 @@ export default function Contact() {
               <label className={styles.label} htmlFor='contact-name'>
                 Full name
               </label>
-              <input
-                id='contact-name'
-                ref={nameRef}
-                type='text'
-                className={`${styles.input} ${
-                  fieldErrors.name ? styles.inputError : ''
-                }`}
-                value={values.name}
-                onChange={handleFieldChange('name')}
-                disabled={isSubmitting}
-                required
-                autoComplete='name'
-                maxLength={LIMITS.name.max}
-                aria-invalid={Boolean(fieldErrors.name)}
-                aria-describedby={
-                  fieldErrors.name ? 'contact-name-error' : undefined
-                }
-              />
+              <div className={styles.inputWrapper}>
+                <FiUser className={styles.fieldIcon} />
+                <input
+                  id='contact-name'
+                  ref={nameRef}
+                  type='text'
+                  className={`${styles.input} ${
+                    fieldErrors.name ? styles.inputError : ''
+                  }`}
+                  value={values.name}
+                  onChange={handleFieldChange('name')}
+                  disabled={isSubmitting}
+                  required
+                  autoComplete='name'
+                  maxLength={LIMITS.name.max}
+                  aria-invalid={Boolean(fieldErrors.name)}
+                  aria-describedby={
+                    fieldErrors.name ? 'contact-name-error' : undefined
+                  }
+                />
+              </div>
               {fieldErrors.name && (
                 <p
                   id='contact-name-error'
                   role='alert'
                   className={styles.fieldError}
                 >
-                  {fieldErrors.name}
+                  <FiAlertCircle className={styles.fieldErrorIcon} />
+                  <span>{fieldErrors.name}</span>
                 </p>
               )}
             </div>
@@ -270,31 +288,35 @@ export default function Contact() {
               <label className={styles.label} htmlFor='contact-email'>
                 Email
               </label>
-              <input
-                id='contact-email'
-                ref={emailRef}
-                type='email'
-                className={`${styles.input} ${
-                  fieldErrors.email ? styles.inputError : ''
-                }`}
-                value={values.email}
-                onChange={handleFieldChange('email')}
-                disabled={isSubmitting}
-                required
-                autoComplete='email'
-                maxLength={LIMITS.email.max}
-                aria-invalid={Boolean(fieldErrors.email)}
-                aria-describedby={
-                  fieldErrors.email ? 'contact-email-error' : undefined
-                }
-              />
+              <div className={styles.inputWrapper}>
+                <FiMail className={styles.fieldIcon} />
+                <input
+                  id='contact-email'
+                  ref={emailRef}
+                  type='email'
+                  className={`${styles.input} ${
+                    fieldErrors.email ? styles.inputError : ''
+                  }`}
+                  value={values.email}
+                  onChange={handleFieldChange('email')}
+                  disabled={isSubmitting}
+                  required
+                  autoComplete='email'
+                  maxLength={LIMITS.email.max}
+                  aria-invalid={Boolean(fieldErrors.email)}
+                  aria-describedby={
+                    fieldErrors.email ? 'contact-email-error' : undefined
+                  }
+                />
+              </div>
               {fieldErrors.email && (
                 <p
                   id='contact-email-error'
                   role='alert'
                   className={styles.fieldError}
                 >
-                  {fieldErrors.email}
+                  <FiAlertCircle className={styles.fieldErrorIcon} />
+                  <span>{fieldErrors.email}</span>
                 </p>
               )}
             </div>
@@ -303,30 +325,34 @@ export default function Contact() {
               <label className={styles.label} htmlFor='contact-subject'>
                 Subject
               </label>
-              <input
-                id='contact-subject'
-                ref={subjectRef}
-                type='text'
-                className={`${styles.input} ${
-                  fieldErrors.subject ? styles.inputError : ''
-                }`}
-                value={values.subject}
-                onChange={handleFieldChange('subject')}
-                disabled={isSubmitting}
-                required
-                maxLength={LIMITS.subject.max}
-                aria-invalid={Boolean(fieldErrors.subject)}
-                aria-describedby={
-                  fieldErrors.subject ? 'contact-subject-error' : undefined
-                }
-              />
+              <div className={styles.inputWrapper}>
+                <FiMessageSquare className={styles.fieldIcon} />
+                <input
+                  id='contact-subject'
+                  ref={subjectRef}
+                  type='text'
+                  className={`${styles.input} ${
+                    fieldErrors.subject ? styles.inputError : ''
+                  }`}
+                  value={values.subject}
+                  onChange={handleFieldChange('subject')}
+                  disabled={isSubmitting}
+                  required
+                  maxLength={LIMITS.subject.max}
+                  aria-invalid={Boolean(fieldErrors.subject)}
+                  aria-describedby={
+                    fieldErrors.subject ? 'contact-subject-error' : undefined
+                  }
+                />
+              </div>
               {fieldErrors.subject && (
                 <p
                   id='contact-subject-error'
                   role='alert'
                   className={styles.fieldError}
                 >
-                  {fieldErrors.subject}
+                  <FiAlertCircle className={styles.fieldErrorIcon} />
+                  <span>{fieldErrors.subject}</span>
                 </p>
               )}
             </div>
@@ -362,7 +388,8 @@ export default function Contact() {
                   role='alert'
                   className={styles.fieldError}
                 >
-                  {fieldErrors.message}
+                  <FiAlertCircle className={styles.fieldErrorIcon} />
+                  <span>{fieldErrors.message}</span>
                 </p>
               )}
             </div>
@@ -372,7 +399,8 @@ export default function Contact() {
               className={styles.submitButton}
               disabled={isSubmitting}
             >
-              {isSubmitting ? 'Sending...' : 'Send Message'}
+              <FiSend className={styles.btnIcon} />
+              <span>{isSubmitting ? 'Sending...' : 'Send Message'}</span>
             </button>
           </form>
         )}

@@ -1,5 +1,6 @@
 import { useState, useMemo } from 'react'
 import { Navigate } from 'react-router-dom'
+import { FaClipboardList } from 'react-icons/fa'
 import useAuth from '../hooks/useAuth'
 import { useAppointments } from '../hooks/useAppointments'
 import DashboardLayout from '../components/layout/DashboardLayout'
@@ -106,7 +107,7 @@ export default function DoctorAppointments() {
         </div>
 
         {filtered.length === 0 ? (
-          <EmptyState icon='📋' message={`No ${activeTab} appointments.`} />
+          <EmptyState icon={<FaClipboardList />} message={`No ${activeTab} appointments.`} />
         ) : (
           <div className={styles.list}>
             {filtered.map((apt) => (

@@ -1,12 +1,45 @@
 .section {
-  margin-bottom: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 0.25rem;
+}
+
+.titleWrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.titleIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #2563eb;
+  font-size: 1.15rem;
 }
 
 .title {
-  font-size: 1.125rem;
+  font-size: 1.15rem;
   font-weight: 700;
-  color: #212529;
-  margin: 0 0 1rem;
+  color: #0f172a;
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+
+.emptyCard {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
 }
 
 .grid {
@@ -16,96 +49,145 @@
 }
 
 .card {
-  background: #fff;
-  border: 1px solid #e9ecef;
-  border-radius: 10px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
   overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+  transition: all 0.2s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.card:hover {
+  border-color: #cbd5e1;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.04), 0 2px 4px -1px rgba(0, 0, 0, 0.02);
+  transform: translateY(-2px);
+}
+
+.imageWrapper {
+  position: relative;
+  width: 100%;
+  height: 150px;
 }
 
 .image {
   width: 100%;
-  height: 140px;
+  height: 100%;
   object-fit: cover;
   display: block;
 }
 
+.favBtn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(4px);
+  border-radius: 50%;
+  cursor: pointer;
+  color: #64748b;
+  transition: all 0.2s ease;
+  padding: 0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+}
+
+.favBtn:hover {
+  background: #ffffff;
+  color: #dc2626;
+  transform: scale(1.1);
+}
+
+.favBtn.favorited {
+  background: #ffffff;
+  color: #dc2626;
+}
+
+.favIcon {
+  font-size: 1.1rem;
+}
+
 .cardBody {
-  padding: 0.875rem 1rem 1rem;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
 }
 
 .name {
-  margin: 0 0 0.125rem;
-  font-size: 0.9375rem;
+  margin: 0 0 0.2rem;
+  font-size: 0.95rem;
   font-weight: 600;
-  color: #212529;
+  color: #0f172a;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .specialty {
-  margin: 0 0 0.375rem;
-  font-size: 0.8125rem;
-  color: #007bff;
+  margin: 0 0 0.5rem;
+  font-size: 0.825rem;
+  color: #2563eb;
   font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.rating {
-  margin: 0 0 0.75rem;
-  font-size: 0.8125rem;
+.ratingWrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  margin-bottom: 0.875rem;
+  font-size: 0.825rem;
+}
+
+.starIcon {
   color: #f59e0b;
+  font-size: 0.9rem;
+}
+
+.ratingScore {
   font-weight: 600;
+  color: #0f172a;
 }
 
 .reviewCount {
-  color: #6c757d;
+  color: #64748b;
   font-weight: 400;
 }
 
 .actions {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 0.5rem;
+  margin-top: auto;
+  padding-top: 0.5rem;
+  border-top: 1px solid #f1f5f9;
 }
 
 .viewBtn {
-  font-size: 0.8125rem;
+  font-size: 0.85rem;
   font-weight: 600;
-  color: #007bff;
+  color: #2563eb;
   text-decoration: none;
+  transition: color 0.15s ease;
 }
 
 .viewBtn:hover {
+  color: #1d4ed8;
   text-decoration: underline;
 }
 
 .viewBtn:focus-visible {
-  outline: 2px solid #007bff;
+  outline: 2px solid #2563eb;
   outline-offset: 2px;
   border-radius: 2px;
-}
-
-.favBtn {
-  width: 32px;
-  height: 32px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: none;
-  background: transparent;
-  font-size: 1.25rem;
-  cursor: pointer;
-  color: #dc3545;
-  transition: transform 0.15s;
-  padding: 0;
-}
-
-.favBtn:hover {
-  transform: scale(1.15);
-}
-
-.favBtn:focus-visible {
-  outline: 2px solid #007bff;
-  outline-offset: 2px;
-  border-radius: 4px;
 }
 
 @media (max-width: 768px) {

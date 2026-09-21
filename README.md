@@ -100,10 +100,17 @@ Static Vite build on Fly.io. Anon key is a **build arg**, not a runtime secret. 
 ```bash
 fly deploy \
   --build-arg VITE_SUPABASE_URL=https://YOUR_PROJECT.supabase.co \
-  --build-arg VITE_SUPABASE_ANON_KEY=YOUR_ANON_KEY
+  --build-arg VITE_SUPABASE_ANON_KEY=YOUR_ANON_KEY \
+  --build-arg VITE_AI_LAMBDA_URL=https://YOUR_FUNCTION_URL.lambda-url.REGION.on.aws/
 ```
 
-GitHub Action on `main` does the same if these secrets exist: `FLY_API_TOKEN`, `VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY`.
+GitHub Action on `main` does the same if these secrets exist: `FLY_API_TOKEN`, `VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY`, `VITE_AI_LAMBDA_URL`.
+
+The Lambda Function URL must allow browser CORS for the deployed frontend
+origin (and local Vite origin during development), the `POST` method, and the
+`Content-Type` header. Configure CORS either on the Function URL or in the
+Lambda response, but not both; duplicate `Access-Control-Allow-Origin` headers
+are rejected by browsers.
 
 The Edge Function `admin-create-doctor` must be deployed on the same Supabase project (`supabase functions deploy admin-create-doctor`).
 

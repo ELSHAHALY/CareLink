@@ -1,0 +1,144 @@
+.doctor-card {
+  display: flex;
+  flex-direction: column;
+  background-color: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  width: 100%;
+  max-width: 380px; 
+  margin: 0 auto;
+  border: 1px solid #eaeaea;
+}
+
+.doctor-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+/* قسم الصورة */
+.doctor-card__image-wrapper {
+  width: 100%;
+  height: 220px;
+  overflow: hidden;
+  background-color: #f4f5f7;
+}
+
+.doctor-card__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  transition: transform 0.3s ease;
+}
+
+.doctor-card:hover .doctor-card__image {
+  transform: scale(1.05);
+}
+
+.doctor-card__content {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  gap: 12px;
+  flex-grow: 1;
+}
+
+.doctor-card__name {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin: 0;
+  line-height: 1.4;
+}
+
+.doctor-card__specialty {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #0066cc;
+  margin: 0;
+}
+
+.doctor-card__rating {
+  margin: 2px 0;
+}
+
+.doctor-card__location {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 0.875rem;
+  color: #666666;
+  margin: 0;
+  line-height: 1.5;
+}
+
+.doctor-card__location-icon {
+  color: #ff4d4f; 
+  font-size: 1rem;
+  margin-top: 3px;
+  flex-shrink: 0;
+}
+
+/* حالة التوافر */
+.doctor-card__availability {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #444444;
+  margin-top: 4px;
+}
+
+.availability-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.availability-dot.is-available {
+  background-color: #28a745;
+  box-shadow: 0 0 0 3px rgba(40, 167, 69, 0.15);
+}
+
+.availability-dot.is-unavailable {
+  background-color: #dc3545;
+}
+
+.doctor-card__button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 12px 16px;
+  background-color: #0066cc;
+  color: #ffffff;
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-decoration: none;
+  border-radius: 8px;
+  transition: background-color 0.2s ease;
+  margin-top: 8px;
+  box-sizing: border-box;
+}
+
+.doctor-card__button:hover {
+  background-color: #0052a3;
+}
+
+@media (max-width: 480px) {
+  .doctor-card {
+    max-width: 100%;
+  }
+  
+  .doctor-card__content {
+    padding: 15px;
+  }
+  
+  .doctor-card__name {
+    font-size: 1.15rem;
+  }
+}

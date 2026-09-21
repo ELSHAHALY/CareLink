@@ -1,25 +1,41 @@
+/* =========================
+   Navbar
+========================= */
+
 .navbar {
   position: sticky;
   top: 0;
   z-index: 100;
+
+  width: 100%;
 
   background: #ffffff;
   border-bottom: 1px solid #e9ecef;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
 }
 
+/* =========================
+   Container
+========================= */
+
 .navbar__container {
+  width: 100%;
   max-width: 1200px;
+  min-width: 0;
+
   margin: 0 auto;
   padding: 14px 24px;
 
   display: flex;
   align-items: center;
   justify-content: space-between;
+
   gap: 24px;
 }
 
-/* Logo */
+/* =========================
+   Logo
+========================= */
 
 .navbar__logo {
   display: flex;
@@ -33,27 +49,33 @@
   font-weight: 700;
 
   white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .navbar__logo-icon {
   width: 30px;
   height: 30px;
+
   object-fit: contain;
+  flex-shrink: 0;
 }
 
 .navbar__logo span {
   color: #00a676;
 }
 
-/* Desktop links */
+/* =========================
+   Desktop Links
+========================= */
 
 .navbar__links {
   display: flex;
   align-items: center;
-  gap: 28px;
-
-  flex: 1;
   justify-content: center;
+
+  gap: 28px;
+  flex: 1;
+  min-width: 0;
 }
 
 .navbar__link {
@@ -64,9 +86,14 @@
   font-weight: 500;
 
   padding: 6px 2px;
+
   border-bottom: 2px solid transparent;
 
-  transition: color 0.2s ease, border-color 0.2s ease;
+  transition:
+    color 0.2s ease,
+    border-color 0.2s ease;
+
+  white-space: nowrap;
 }
 
 .navbar__link:hover {
@@ -78,43 +105,68 @@
   border-bottom-color: #007bff;
 }
 
-/* Desktop actions */
+/* =========================
+   Desktop Actions
+========================= */
 
 .navbar__actions {
   display: flex;
   align-items: center;
+
   gap: 12px;
+  flex-shrink: 0;
 }
 
 .navbar__user {
   color: #343a40;
   text-decoration: none;
+
   font-size: 14px;
   font-weight: 600;
+
   margin-right: 4px;
+
   white-space: nowrap;
 }
 
 .navbar__btn {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 
-  border: none;
   border-radius: 8px;
   cursor: pointer;
 
+  font-family: inherit;
   font-size: 14px;
   font-weight: 600;
+
   text-decoration: none;
   white-space: nowrap;
 
   padding: 9px 18px;
 
-  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease;
 }
+
+.navbar__btn:focus-visible,
+.navbar__toggle:focus-visible,
+.navbar__link:focus-visible,
+.navbar__mobile-link:focus-visible {
+  outline: 2px solid #007bff;
+  outline-offset: 3px;
+}
+
+/* Ghost Button */
 
 .navbar__btn--ghost {
   background: transparent;
   color: #343a40;
+
   border: 1px solid #dee2e6;
 }
 
@@ -123,40 +175,57 @@
   color: #007bff;
 }
 
+/* Primary Button */
+
 .navbar__btn--primary {
   background: #007bff;
   color: #ffffff;
+
+  border: 1px solid #007bff;
 }
 
 .navbar__btn--primary:hover {
   background: #0069d9;
+  border-color: #0069d9;
 }
 
-/* Mobile hamburger */
+/* =========================
+   Mobile Hamburger
+========================= */
 
 .navbar__toggle {
   display: none;
 
   flex-direction: column;
+  align-items: center;
   justify-content: center;
+
   gap: 5px;
 
-  width: 32px;
-  height: 32px;
+  width: 36px;
+  height: 36px;
 
-  background: none;
-  border: none;
-  cursor: pointer;
   padding: 0;
+
+  background: transparent;
+  border: none;
+
+  cursor: pointer;
+  flex-shrink: 0;
 }
 
 .navbar__toggle span {
   display: block;
+
+  width: 24px;
   height: 2px;
-  width: 100%;
+
   background: #343a40;
   border-radius: 2px;
-  transition: transform 0.25s ease, opacity 0.25s ease;
+
+  transition:
+    transform 0.25s ease,
+    opacity 0.25s ease;
 }
 
 .navbar__toggle--open span:nth-child(1) {
@@ -171,26 +240,34 @@
   transform: translateY(-7px) rotate(-45deg);
 }
 
-/* Mobile menu panel */
+/* =========================
+   Mobile Menu
+========================= */
 
 .navbar__mobile {
+  width: 100%;
+
   max-height: 0;
   overflow: hidden;
 
   background: #ffffff;
+
   border-top: 1px solid transparent;
 
-  transition: max-height 0.3s ease, border-color 0.3s ease;
+  transition:
+    max-height 0.3s ease,
+    border-color 0.3s ease;
 }
 
 .navbar__mobile--open {
-  max-height: 400px;
+  max-height: 500px;
   border-top-color: #e9ecef;
 }
 
 .navbar__mobile-links {
   display: flex;
   flex-direction: column;
+
   padding: 16px 24px 0;
 }
 
@@ -202,9 +279,13 @@
   font-weight: 500;
 
   padding: 12px 0;
+
   border-bottom: 1px solid #f1f3f5;
+
+  transition: color 0.2s ease;
 }
 
+.navbar__mobile-link:hover,
 .navbar__mobile-link--active {
   color: #007bff;
 }
@@ -212,19 +293,26 @@
 .navbar__mobile-actions {
   display: flex;
   flex-direction: column;
+
   gap: 10px;
 
   padding: 16px 24px 20px;
 }
 
 .navbar__mobile-actions .navbar__btn {
-  text-align: center;
   width: 100%;
+  text-align: center;
 }
 
-/* Tablet & Mobile */
+/* =========================
+   Tablet
+========================= */
 
 @media (max-width: 900px) {
+  .navbar__container {
+    padding: 13px 24px;
+  }
+
   .navbar__links,
   .navbar__actions {
     display: none;
@@ -232,5 +320,83 @@
 
   .navbar__toggle {
     display: flex;
+  }
+}
+
+/* =========================
+   Mobile
+========================= */
+
+@media (max-width: 600px) {
+  .navbar__container {
+    padding: 12px 18px;
+  }
+
+  .navbar__logo {
+    font-size: 22px;
+  }
+
+  .navbar__logo-icon {
+    width: 28px;
+    height: 28px;
+  }
+
+  .navbar__mobile-links {
+    padding-left: 18px;
+    padding-right: 18px;
+  }
+
+  .navbar__mobile-actions {
+    padding-left: 18px;
+    padding-right: 18px;
+    padding-bottom: 18px;
+  }
+}
+
+/* =========================
+   Small Mobile
+========================= */
+
+@media (max-width: 400px) {
+  .navbar__container {
+    padding: 10px 14px;
+  }
+
+  .navbar__logo {
+    font-size: 20px;
+  }
+
+  .navbar__logo-icon {
+    width: 26px;
+    height: 26px;
+  }
+
+  .navbar__toggle {
+    width: 34px;
+    height: 34px;
+  }
+
+  .navbar__mobile-links {
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+
+  .navbar__mobile-actions {
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+}
+
+/* =========================
+   Reduced Motion
+========================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .navbar__link,
+  .navbar__btn,
+  .navbar__toggle span,
+  .navbar__mobile,
+  .navbar__mobile-link {
+    transition: none;
   }
 }

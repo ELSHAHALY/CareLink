@@ -1,8 +1,9 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
+import { FaEnvelope, FaPaperPlane } from 'react-icons/fa'
 import useAuth from '../hooks/useAuth'
 import { validateEmail } from '../utils/validation'
-import styles from './Login.module.css'
+import styles from './ForgotPassword.module.css'
 
 export default function ForgotPassword() {
   const [email, setEmail] = useState('')
@@ -48,17 +49,21 @@ export default function ForgotPassword() {
             <label className={styles.label} htmlFor='email'>
               Email
             </label>
-            <input
-              id='email'
-              type='email'
-              className={`${styles.input} ${error ? styles.inputError : ''}`}
-              placeholder='you@example.com'
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              autoComplete='email'
-            />
+            <div className={styles.inputWrapper}>
+              <FaEnvelope className={styles.inputIcon} />
+              <input
+                id='email'
+                type='email'
+                className={`${styles.input} ${error ? styles.inputError : ''}`}
+                placeholder='you@example.com'
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                autoComplete='email'
+              />
+            </div>
           </div>
           <button type='submit' className={styles.button} disabled={loading}>
+            <FaPaperPlane />
             {loading ? 'Sending...' : 'Send reset link'}
           </button>
         </form>

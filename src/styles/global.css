@@ -1,14 +1,43 @@
-/* CareLink brand tokens (see CareLink_Branding_and_UI_Overview) */
+/* ========================================
+   CareLink - Global Styles
+   ======================================== */
+
+/* =========================
+   Brand Tokens
+========================= */
+
 :root {
-  --color-primary: #007bff; /* Deep Sky Blue - trust, calm, primary actions */
+  --color-primary: #007bff;
   --color-primary-hover: #0069d9;
-  --color-accent: #00a676; /* Teal Green - healing, availability, highlights */
+
+  --color-accent: #00a676;
   --color-accent-hover: #00905f;
-  --color-bg-soft: #f8f9fa; /* Soft Grey - section backgrounds */
-  --color-text: #343a40; /* Dark Slate - readable, professional */
+
+  --color-bg-soft: #f8f9fa;
+
+  --color-text: #343a40;
   --color-text-muted: #6c757d;
+
   --color-border: #dee2e6;
+
+  /* Layout */
+  --container-width: 1200px;
+  --page-padding: 24px;
+
+  /* Radius */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 14px;
+
+  /* Shadows */
+  --shadow-sm: 0 2px 10px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.1);
 }
+
+
+/* =========================
+   Box Sizing
+========================= */
 
 *,
 *::before,
@@ -16,39 +45,230 @@
   box-sizing: border-box;
 }
 
-html,
+
+/* =========================
+   HTML / Body
+========================= */
+
+html {
+  margin: 0;
+  padding: 0;
+
+  /*
+    Keeps the scrollbar space reserved so
+    the layout doesn't jump horizontally.
+  */
+  scrollbar-gutter: stable;
+  overflow-y: scroll;
+
+  scroll-behavior: smooth;
+}
+
 body {
   margin: 0;
   padding: 0;
-}
 
-/* Reserve space for the vertical scrollbar at all times. Without this,
-   navigating between a tall page (needs a scrollbar) and a short one
-   (doesn't), or resizing the window across a breakpoint that changes the
-   page's height, makes the whole layout jump sideways by the scrollbar's
-   width on browsers with classic (non-overlay) scrollbars, e.g. Windows
-   Chrome/Edge. */
-html {
-  scrollbar-gutter: stable;
-  overflow-y: scroll;
-}
-
-body {
   font-family:
     -apple-system,
     BlinkMacSystemFont,
-    'Segoe UI',
+    "Segoe UI",
     Roboto,
     Helvetica,
     Arial,
     sans-serif;
+
+  background: #ffffff;
+  color: var(--color-text);
+
+  line-height: 1.5;
+
+  /*
+    Prevent accidental horizontal scrolling
+    caused by oversized elements.
+  */
+  overflow-x: hidden;
+
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
+
+/* =========================
+   Images
+========================= */
+
 img {
-  max-width: 100%;
   display: block;
+  max-width: 100%;
+  height: auto;
 }
+
+
+/* =========================
+   Links
+========================= */
 
 a {
   color: inherit;
+}
+
+
+/* =========================
+   Buttons & Inputs
+========================= */
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: not-allowed;
+}
+
+
+/* =========================
+   Forms
+========================= */
+
+input,
+select,
+textarea {
+  max-width: 100%;
+}
+
+
+/* =========================
+   Headings
+========================= */
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin-top: 0;
+  line-height: 1.25;
+}
+
+
+/* =========================
+   Paragraphs
+========================= */
+
+p {
+  margin-top: 0;
+}
+
+
+/* =========================
+   Lists
+========================= */
+
+ul,
+ol {
+  margin-top: 0;
+}
+
+
+/* =========================
+   Focus Accessibility
+========================= */
+
+:focus-visible {
+  outline: 3px solid rgba(0, 123, 255, 0.35);
+  outline-offset: 2px;
+}
+
+
+/* =========================
+   Selection
+========================= */
+
+::selection {
+  background: rgba(0, 123, 255, 0.15);
+}
+
+
+/* =========================
+   Responsive Container
+========================= */
+
+.container {
+  width: 100%;
+  max-width: var(--container-width);
+
+  margin-left: auto;
+  margin-right: auto;
+
+  padding-left: var(--page-padding);
+  padding-right: var(--page-padding);
+}
+
+
+/* =========================
+   Tablet
+========================= */
+
+@media (max-width: 768px) {
+  :root {
+    --page-padding: 18px;
+  }
+
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+
+/* =========================
+   Mobile
+========================= */
+
+@media (max-width: 600px) {
+  :root {
+    --page-padding: 16px;
+  }
+
+  body {
+    font-size: 15px;
+  }
+}
+
+
+/* =========================
+   Small Mobile
+========================= */
+
+@media (max-width: 400px) {
+  :root {
+    --page-padding: 14px;
+  }
+}
+
+
+/* =========================
+   Reduced Motion
+========================= */
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

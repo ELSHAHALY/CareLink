@@ -1,5 +1,15 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Link, Navigate } from 'react-router-dom'
+import { 
+  FiPlus, 
+  FiSearch, 
+  FiX, 
+  FiExternalLink, 
+  FiArchive, 
+  FiRotateCcw, 
+  FiUserCheck, 
+  FiAlertCircle 
+} from 'react-icons/fi'
 import useAuth from '../hooks/useAuth'
 import DashboardLayout from '../components/layout/DashboardLayout'
 import Loader from '../components/common/Loader'
@@ -267,7 +277,8 @@ function AdminDoctorsContent() {
           onClick={() => setShowAdd(true)}
           disabled={creating}
         >
-          + Add Doctor
+          <FiPlus className={styles.btnIcon} />
+          <span>Add Doctor</span>
         </button>
       }
     >
@@ -283,7 +294,7 @@ function AdminDoctorsContent() {
                 aria-label='Close'
                 disabled={creating}
               >
-                ×
+                <FiX />
               </button>
             </div>
             <div className={styles.drawerBody}>
@@ -299,13 +310,16 @@ function AdminDoctorsContent() {
       )}
 
       <section className={styles.toolbar}>
-        <input
-          type='search'
-          placeholder='Search by name or specialty…'
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          className={styles.searchInput}
-        />
+        <div className={styles.searchWrapper}>
+          <FiSearch className={styles.searchIcon} />
+          <input
+            type='search'
+            placeholder='Search by name or specialty…'
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className={styles.searchInput}
+          />
+        </div>
         <select
           value={statusFilter}
           onChange={(e) => setStatusFilter(e.target.value)}
@@ -319,8 +333,18 @@ function AdminDoctorsContent() {
         </select>
       </section>
 
-      {error && <p className={styles.error}>{error}</p>}
-      {success && <p className={styles.success}>{success}</p>}
+      {error && (
+        <p className={styles.error}>
+          <FiAlertCircle className={styles.alertIcon} />
+          <span>{error}</span>
+        </p>
+      )}
+      {success && (
+        <p className={styles.success}>
+          <FiUserCheck className={styles.alertIcon} />
+          <span>{success}</span>
+        </p>
+      )}
 
       {loading ? (
         <Loader message='Loading doctors...' />
@@ -392,14 +416,25 @@ function AdminDoctorsContent() {
                           target='_blank'
                           rel='noreferrer'
                         >
-                          View
+                          <FiExternalLink className={styles.actionIcon} />
+                          <span>View</span>
                         </Link>
                         <button
                           type='button'
                           className={styles.actionLink}
                           onClick={() => handleArchive(d.id, d.status)}
                         >
-                          {d.status === 'archived' ? 'Restore' : 'Archive'}
+                          {d.status === 'archived' ? (
+                            <>
+                              <FiRotateCcw className={styles.actionIcon} />
+                              <span>Restore</span>
+                            </>
+                          ) : (
+                            <>
+                              <FiArchive className={styles.actionIcon} />
+                              <span>Archive</span>
+                            </>
+                          )}
                         </button>
                       </div>
                     </td>

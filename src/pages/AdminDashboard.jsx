@@ -1,5 +1,14 @@
 import { useEffect, useState } from 'react'
 import { Link, Navigate } from 'react-router-dom'
+import { 
+  FiUserCheck, 
+  FiFileText, 
+  FiUsers, 
+  FiCalendar, 
+  FiPlus, 
+  FiSettings, 
+  FiArrowRight 
+} from 'react-icons/fi'
 import useAuth from '../hooks/useAuth'
 import DashboardLayout from '../components/layout/DashboardLayout'
 import Loader from '../components/common/Loader'
@@ -7,11 +16,14 @@ import supabase, { isSupabaseConfigured } from '../services/supabase'
 import { resolveDoctorImage } from '../utils/doctors'
 import styles from './AdminDashboard.module.css'
 
-function StatCard({ label, value, tone = 'default', linkTo = null }) {
+function StatCard({ label, value, tone = 'default', linkTo = null, icon: Icon }) {
   const content = (
     <div className={`${styles.statCard} ${styles[`tone-${tone}`]}`}>
+      <div className={styles.statHeader}>
+        <p className={styles.statLabel}>{label}</p>
+        {Icon && <Icon className={styles.statIcon} />}
+      </div>
       <p className={styles.statValue}>{value}</p>
-      <p className={styles.statLabel}>{label}</p>
     </div>
   )
   if (linkTo) {
@@ -24,12 +36,20 @@ function StatCard({ label, value, tone = 'default', linkTo = null }) {
   return content
 }
 
-function ActionCard({ title, description, to, label }) {
+function ActionCard({ title, description, to, label, icon: Icon }) {
   return (
     <Link to={to} className={styles.actionCard}>
-      <h3 className={styles.actionTitle}>{title}</h3>
-      <p className={styles.actionDescription}>{description}</p>
-      <span className={styles.actionLabel}>{label} →</span>
+      <div className={styles.actionIconWrapper}>
+        {Icon && <Icon className={styles.actionCardIcon} />}
+      </div>
+      <div className={styles.actionContent}>
+        <h3 className={styles.actionTitle}>{title}</h3>
+        <p className={styles.actionDescription}>{description}</p>
+        <span className={styles.actionLabel}>
+          <span>{label}</span>
+          <FiArrowRight />
+        </span>
+      </div>
     </Link>
   )
 }
@@ -133,7 +153,8 @@ export default function AdminDashboard() {
       subtitle='Manage doctors, users, and appointments from one place.'
       action={
         <Link to='/admin/doctors' className={styles.primaryBtn}>
-          + Add Doctor
+          <FiPlus className={styles.btnIcon} />
+          <span>Add Doctor</span>
         </Link>
       }
     >
@@ -143,18 +164,26 @@ export default function AdminDashboard() {
           value={stats.publishedDoctors}
           tone='primary'
           linkTo='/admin/doctors'
+          icon={FiUserCheck}
         />
         <StatCard
           label='Draft Doctors'
           value={stats.draftDoctors}
           tone='warning'
           linkTo='/admin/doctors?status=draft'
+          icon={FiFileText}
         />
-        <StatCard label='Patients' value={stats.totalPatients} tone='success' />
+        <StatCard 
+          label='Patients' 
+          value={stats.totalPatients} 
+          tone='success' 
+          icon={FiUsers}
+        />
         <StatCard
           label='Upcoming Appointments'
           value={stats.upcomingAppointments}
           tone='info'
+          icon={FiCalendar}
         />
       </div>
 
@@ -166,12 +195,14 @@ export default function AdminDashboard() {
             description='Create a new doctor profile and login account in one guided flow.'
             to='/admin/doctors'
             label='Add Doctor'
+            icon={FiPlus}
           />
           <ActionCard
             title='Manage Doctors'
             description='Search, edit, archive, and link accounts for existing doctors.'
             to='/admin/doctors'
             label='Manage'
+            icon={FiSettings}
           />
         </div>
       </section>

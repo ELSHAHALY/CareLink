@@ -1,6 +1,4 @@
 import { useMemo } from 'react'
-<<<<<<< Updated upstream
-=======
 import styles from './StarRating.module.css'
 import {
   averageScore,
@@ -8,7 +6,9 @@ import {
   isVerifiedRating,
   toUiRating,
 } from '../../utils/ratings'
->>>>>>> Stashed changes
+=======
+import styles from './StarRating.module.css'
+ main
 
 export function calculateRatings(ratings = [], appointments = []) {
   const normalized = (ratings || []).map(toUiRating).filter(Boolean)
@@ -53,11 +53,11 @@ export default function StarRating({ ratings = [], appointments = [] }) {
     return (
       <svg
         key={index}
-        width='22'
-        height='22'
+        width='20'
+        height='20'
         viewBox='0 0 24 24'
         xmlns='http://www.w3.org/2000/svg'
-        style={{ marginRight: 2 }}
+        className={styles.starIcon}
         aria-hidden='true'
       >
         <defs>
@@ -78,17 +78,17 @@ export default function StarRating({ ratings = [], appointments = [] }) {
 
   return (
     <div
-      className='star-rating'
+      className={styles.starRating}
       role='img'
       aria-label={`Rating: ${average.toFixed(
         1,
       )} out of 5 stars based on ${count} reviews`}
     >
-      <div className='star-rating__stars'>
+      <div className={styles.starRatingStars}>
         {[0, 1, 2, 3, 4].map(renderStar)}
       </div>
-      <span className='star-rating__value'>{average.toFixed(1)}</span>
-      <span className='star-rating__count'>
+      <span className={styles.starRatingValue}>{average.toFixed(1)}</span>
+      <span className={styles.starRatingCount}>
         ({count} review{count !== 1 ? 's' : ''})
       </span>
     </div>

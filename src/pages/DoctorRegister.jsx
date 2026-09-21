@@ -1,8 +1,9 @@
 import { useState } from 'react'
 import { Navigate, Link } from 'react-router-dom'
+import { FaUserMd, FaEnvelope, FaStethoscope, FaCommentAlt, FaPaperPlane } from 'react-icons/fa'
 import useAuth from '../hooks/useAuth'
 import Loader from '../components/common/Loader'
-import styles from './Login.module.css'
+import styles from './DoctorRegister.module.css'
 
 const INTEREST_STORAGE_KEY = 'carelink_doctor_interest'
 
@@ -76,15 +77,18 @@ export default function DoctorRegister() {
         <label className={styles.label} htmlFor='name'>
           Full Name
         </label>
-        <input
-          id='name'
-          type='text'
-          className={`${styles.input} ${errors.name ? styles.inputError : ''}`}
-          placeholder='Dr. Jane Smith'
-          value={formData.name}
-          onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-          autoComplete='name'
-        />
+        <div className={styles.inputWrapper}>
+          <FaUserMd className={styles.inputIcon} />
+          <input
+            id='name'
+            type='text'
+            className={`${styles.input} ${errors.name ? styles.inputError : ''}`}
+            placeholder='Dr. Jane Smith'
+            value={formData.name}
+            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+            autoComplete='name'
+          />
+        </div>
         {errors.name && <p className={styles.errorText}>{errors.name}</p>}
       </div>
 
@@ -92,15 +96,18 @@ export default function DoctorRegister() {
         <label className={styles.label} htmlFor='email'>
           Email
         </label>
-        <input
-          id='email'
-          type='email'
-          className={`${styles.input} ${errors.email ? styles.inputError : ''}`}
-          placeholder='you@example.com'
-          value={formData.email}
-          onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-          autoComplete='email'
-        />
+        <div className={styles.inputWrapper}>
+          <FaEnvelope className={styles.inputIcon} />
+          <input
+            id='email'
+            type='email'
+            className={`${styles.input} ${errors.email ? styles.inputError : ''}`}
+            placeholder='you@example.com'
+            value={formData.email}
+            onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+            autoComplete='email'
+          />
+        </div>
         {errors.email && <p className={styles.errorText}>{errors.email}</p>}
       </div>
 
@@ -108,19 +115,22 @@ export default function DoctorRegister() {
         <label className={styles.label} htmlFor='specialty'>
           Specialty
         </label>
-        <input
-          id='specialty'
-          type='text'
-          className={`${styles.input} ${
-            errors.specialty ? styles.inputError : ''
-          }`}
-          placeholder='e.g., Cardiology, Dermatology'
-          value={formData.specialty}
-          onChange={(e) =>
-            setFormData({ ...formData, specialty: e.target.value })
-          }
-          autoComplete='off'
-        />
+        <div className={styles.inputWrapper}>
+          <FaStethoscope className={styles.inputIcon} />
+          <input
+            id='specialty'
+            type='text'
+            className={`${styles.input} ${
+              errors.specialty ? styles.inputError : ''
+            }`}
+            placeholder='e.g., Cardiology, Dermatology'
+            value={formData.specialty}
+            onChange={(e) =>
+              setFormData({ ...formData, specialty: e.target.value })
+            }
+            autoComplete='off'
+          />
+        </div>
         {errors.specialty && (
           <p className={styles.errorText}>{errors.specialty}</p>
         )}
@@ -130,19 +140,23 @@ export default function DoctorRegister() {
         <label className={styles.label} htmlFor='message'>
           Message (optional)
         </label>
-        <textarea
-          id='message'
-          className={`${styles.input} ${styles.textarea}`}
-          rows={4}
-          placeholder='Tell us about your experience, location, or any other details...'
-          value={formData.message}
-          onChange={(e) =>
-            setFormData({ ...formData, message: e.target.value })
-          }
-        />
+        <div className={styles.inputWrapper}>
+          <FaCommentAlt className={`${styles.inputIcon} ${styles.textareaIcon}`} />
+          <textarea
+            id='message'
+            className={`${styles.input} ${styles.textarea}`}
+            rows={4}
+            placeholder='Tell us about your experience, location, or any other details...'
+            value={formData.message}
+            onChange={(e) =>
+              setFormData({ ...formData, message: e.target.value })
+            }
+          />
+        </div>
       </div>
 
       <button type='submit' className={styles.button} disabled={isSubmitting}>
+        <FaPaperPlane />
         {isSubmitting ? 'Submitting...' : 'Submit Interest'}
       </button>
     </form>
